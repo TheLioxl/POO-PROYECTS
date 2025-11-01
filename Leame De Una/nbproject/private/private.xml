@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/vista/autor/VistaAutorCrear.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/dto/AutorDto.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/controlador/autor/AutorVistasControlador.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/vista/gestor/VistaCabecera.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/vista/editorial/VistaEditorialCrear.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/vista/autor/VistaAutorAdministrar.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/vista/libro/VistaLibroAdministrar.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/vista/editorial/VistaEditorialAdministrar.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/controlador/libro/LibroControladorEliminar.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/controlador/editorial/EditorialControladorEliminar.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/controlador/autor/AutorControladorEliminar.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/controlador/libro/LibroVistasControlador.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/controlador/editorial/EditorialVistasControlador.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/recurso/constante/Configuracion.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/recurso/constante/Persistencia.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/recurso/utilidad/Icono.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/vista/libro/VistaLibroListar.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/vista/editorial/VistaEditorialListar.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/vista/libro/VistaLibroCrear.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/modelo/Autor.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/modelo/Libro.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/NetBeansProjects/Leame%20De%20Una/src/org/poo/modelo/Editorial.java</file>
+        </group>
+    </open-files>
+</project-private>
