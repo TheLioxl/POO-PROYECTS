@@ -1,2 +1,0 @@
-1;Terror;true@
-2;Romance;true@
