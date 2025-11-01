@@ -54,7 +54,8 @@ public class VistaGeneroAdministrar extends StackPane {
                 Configuracion.MARCO_ALTO_PORCENTAJE,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.DEGRADE_ARREGLO_GENERO,
-                Configuracion.DEGRADE_BORDE);
+                Configuracion.DEGRADE_BORDE
+        );
 
         miTabla = new TableView<>();
         cajaVertical = new VBox(20);

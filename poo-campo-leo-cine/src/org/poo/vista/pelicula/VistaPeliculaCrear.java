@@ -60,7 +60,7 @@ public class VistaPeliculaCrear extends StackPane {
     public VistaPeliculaCrear(Stage esce, double ancho, double alto) {
         setAlignment(Pos.CENTER);
         miGrilla = new GridPane();
-        miMarco = Marco.crear(esce, Configuracion.MARCO_ANCHO_PORCENTAJE, Configuracion.MARCO_ALTO_PORCENTAJE,
+        miMarco = Marco.crear(esce, Configuracion.MARCO_ALTO_PORCENTAJE, Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.DEGRADE_ARREGLO_PELICULA, Configuracion.DEGRADE_BORDE);
         getChildren().add(miMarco);
         configurarMiGrilla(ancho, alto);
@@ -96,7 +96,7 @@ public class VistaPeliculaCrear extends StackPane {
     }
 
     private void crearTitulo() {
-        Text miTitulo = new Text("FORMULARIO CREAR PELICULA");
+        Text miTitulo = new Text("FORMULARIO - CREAR PELICULA");
         miTitulo.setFill(Color.web(Configuracion.MORADO_OSCURO));
         miTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
         GridPane.setHalignment(miTitulo, HPos.CENTER);
@@ -269,12 +269,13 @@ public class VistaPeliculaCrear extends StackPane {
             double alturaMarco = miMarco.getHeight();
             if (alturaMarco > 0) {
                 double desplazamiento = alturaMarco * AJUSTE_TITULO;
-                miGrilla.setTranslateY(alturaMarco / 15 + desplazamiento);
+                miGrilla.setTranslateY(alturaMarco / 8 + desplazamiento);
             }
         };
         calcular.run();
         miMarco.heightProperty().addListener((obs, antes, despues) -> {
             calcular.run();
         });
+
     }
 }

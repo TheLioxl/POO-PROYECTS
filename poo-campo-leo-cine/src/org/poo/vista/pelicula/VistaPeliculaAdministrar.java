@@ -56,10 +56,8 @@ public class VistaPeliculaAdministrar extends StackPane {
     public VistaPeliculaAdministrar(Stage ventanaPadre, double ancho, double alto) {
         setAlignment(Pos.CENTER);
         miEscenario = ventanaPadre;
-        marco = Marco.crear(miEscenario,
-                Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.MARCO_ANCHO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_PELICULA,
+        marco = Marco.crear(miEscenario, Configuracion.MARCO_ALTO_PORCENTAJE,
+                Configuracion.MARCO_ANCHO_PORCENTAJE, Configuracion.DEGRADE_ARREGLO_PELICULA,
                 Configuracion.DEGRADE_BORDE);
 
         miTabla = new TableView<>();

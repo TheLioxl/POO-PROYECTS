@@ -106,7 +106,6 @@ public class VistaGeneroCrear extends StackPane {
         GridPane.setHalignment(miTitulo, HPos.CENTER);
         GridPane.setMargin(miTitulo, new Insets(30, 0, 0, 0));
         miGrilla.add(miTitulo, 0, 0, 3, 1);
-        //columna, fila, unioncol, unionfil
     }
 
     private void crearFormulario() {
@@ -145,7 +144,6 @@ public class VistaGeneroCrear extends StackPane {
         btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
         btnSeleccionarImagen.setOnAction((e)->{rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(cajaImagen, objSeleccionar);
             if (rutaImagenSeleccionada.isEmpty()) {
-                //solo es para crear NO para actualizar
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 miGrilla.add(imgPorDefecto, 2, 1, 1, 5);
@@ -155,7 +153,6 @@ public class VistaGeneroCrear extends StackPane {
                 imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
                 miGrilla.add(imgPrevisualizar, 2, 1, 1, 5);
-                //Esto elimina si le das a cancelar cuando ya tienes otra 
             }
         });
         
@@ -235,13 +232,13 @@ public class VistaGeneroCrear extends StackPane {
             double alturaMarco = miMarco.getHeight();
             if (alturaMarco > 0) {
                 double desplazamiento = alturaMarco * AJUSTE_TITULO;
-                miGrilla.setTranslateY(alturaMarco / 5 + desplazamiento);
+                miGrilla.setTranslateY(alturaMarco / 8 + desplazamiento);
             }
         };
-
         calcular.run();
         miMarco.heightProperty().addListener((obs, antes, despues) -> {
             calcular.run();
         });
+
     }
 }

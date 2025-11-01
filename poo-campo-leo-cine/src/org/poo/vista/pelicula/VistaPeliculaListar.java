@@ -57,7 +57,7 @@ public class VistaPeliculaListar extends StackPane {
 
     private void crearTitulo() {
         Region bloqueSeparador = new Region();
-        bloqueSeparador.prefHeightProperty().bind(miEscenario.heightProperty().multiply(0.13));
+        bloqueSeparador.prefHeightProperty().bind(miEscenario.heightProperty().multiply(0.05));
         int cant = PeliculaControladorListar.obtenerCantidadPeliculas();
         Text titulo = new Text("LISTA DE PELICULAS (" + cant + ")");
         titulo.setFill(Color.web(Configuracion.MORADO_OSCURO));
