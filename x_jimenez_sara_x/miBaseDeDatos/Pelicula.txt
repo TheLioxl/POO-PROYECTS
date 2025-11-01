@@ -1,0 +1,4 @@
+1;Saw;Saw;10;125621266.1230;true@
+2;Yo antes de ti;emilia;30;12315640.1560;false@
+3;El conjuro;Anabelle;10;5165461.1235;true@
+4;Súper man;El profe de cálculo;60;15600.0;true@
