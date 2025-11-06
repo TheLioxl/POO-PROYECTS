@@ -142,7 +142,8 @@ public class VistaGeneroCrear extends StackPane {
         
         Button btnSeleccionarImagen = new Button("+");
         btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
-        btnSeleccionarImagen.setOnAction((e)->{rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(cajaImagen, objSeleccionar);
+        btnSeleccionarImagen.setOnAction((e)->{
+            rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(cajaImagen, objSeleccionar);
             if (rutaImagenSeleccionada.isEmpty()) {
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
@@ -192,6 +193,12 @@ public class VistaGeneroCrear extends StackPane {
         txtNombreGenero.setText("");
         cbmEstadoGenero.getSelectionModel().select(0);
         txtNombreGenero.requestFocus();
+        
+        rutaImagenSeleccionada = "";
+        cajaImagen.setText("");
+        miGrilla.getChildren().remove(imgPrevisualizar);
+        GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
+        miGrilla.add(imgPorDefecto, 2, 1, 1, 5);
     }
 
     private Boolean formularioCompleto() {
@@ -207,6 +214,11 @@ public class VistaGeneroCrear extends StackPane {
             cbmEstadoGenero.requestFocus();
             return false;
         }
+        if (rutaImagenSeleccionada.isBlank()) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, null,
+                    "Atención", "Ajá, y la imagen?");
+            return false;
+        }
         return true;
     }
 
@@ -215,8 +227,9 @@ public class VistaGeneroCrear extends StackPane {
             GeneroDto dto = new GeneroDto();
             dto.setNombreGenero(txtNombreGenero.getText());
             dto.setEstadoGenero(obtenerEstado());
+            dto.setNombreImagenPublicoGenero(cajaImagen.getText());
 
-            if (GeneroControladorGrabar.crearGenero(dto)) {
+            if (GeneroControladorGrabar.crearGenero(dto, rutaImagenSeleccionada)) {
                 Mensaje.mostrar(Alert.AlertType.INFORMATION, null,
                         "Éxito", "El Genero ha sido guardado exitosamente");
                 limpiarFormulario();
@@ -235,10 +248,10 @@ public class VistaGeneroCrear extends StackPane {
                 miGrilla.setTranslateY(alturaMarco / 8 + desplazamiento);
             }
         };
+
         calcular.run();
         miMarco.heightProperty().addListener((obs, antes, despues) -> {
             calcular.run();
         });
-
     }
 }

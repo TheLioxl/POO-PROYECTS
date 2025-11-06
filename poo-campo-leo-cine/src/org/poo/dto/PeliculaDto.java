@@ -1,23 +1,28 @@
 package org.poo.dto;
 
 public class PeliculaDto {
+
     private Integer idPelicula;
     private String nombrePelicula;
     private String protagonistaPelicula;
     private GeneroDto GeneroPelicula;
     private Double presupuestoPelicula;
     private Boolean estadoPelicula;
+    private String nombreImagenPublicoPelicula;   // Nombre original del archivo
+    private String nombreImagenPrivadoPelicula;
 
     public PeliculaDto() {
     }
 
-    public PeliculaDto(Integer idPelicula, String nombrePelicula, String protagonistaPelicula, GeneroDto idGeneroPelicula, Double presupuestoPelicula, Boolean estadoPelicula) {
+    public PeliculaDto(Integer idPelicula, String nombrePelicula, String protagonistaPelicula, GeneroDto GeneroPelicula, Double presupuestoPelicula, Boolean estadoPelicula, String nombreImagenPublicoPelicula, String nombreImagenPrivadoPelicula) {
         this.idPelicula = idPelicula;
         this.nombrePelicula = nombrePelicula;
         this.protagonistaPelicula = protagonistaPelicula;
-        this.GeneroPelicula = idGeneroPelicula;
+        this.GeneroPelicula = GeneroPelicula;
         this.presupuestoPelicula = presupuestoPelicula;
         this.estadoPelicula = estadoPelicula;
+        this.nombreImagenPublicoPelicula = nombreImagenPublicoPelicula;
+        this.nombreImagenPrivadoPelicula = nombreImagenPrivadoPelicula;
     }
 
     public Integer getIdPelicula() {
@@ -68,6 +73,20 @@ public class PeliculaDto {
         this.estadoPelicula = estadoPelicula;
     }
 
-    
+    public String getNombreImagenPublicoPelicula() {
+        return nombreImagenPublicoPelicula;
+    }
+
+    public void setNombreImagenPublicoPelicula(String nombreImagenPublicoPelicula) {
+        this.nombreImagenPublicoPelicula = nombreImagenPublicoPelicula;
+    }
+
+    public String getNombreImagenPrivadoPelicula() {
+        return nombreImagenPrivadoPelicula;
+    }
+
+    public void setNombreImagenPrivadoPelicula(String nombreImagenPrivadoPelicula) {
+        this.nombreImagenPrivadoPelicula = nombreImagenPrivadoPelicula;
+    }
 
 }

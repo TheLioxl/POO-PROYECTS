@@ -5,16 +5,17 @@ import org.poo.servicio.GeneroServicio;
 
 public class GeneroControladorGrabar {
 
-    public static Boolean crearGenero(GeneroDto dto) {
+    public static Boolean crearGenero(GeneroDto dto, String rutaDeLaImagen) {
         Boolean correcto = false;
 
         GeneroServicio generoServicio = new GeneroServicio();
         GeneroDto dtoRespuesta;
-        dtoRespuesta = generoServicio.insertInto(dto, "");
+        dtoRespuesta = generoServicio.insertInto(dto, rutaDeLaImagen);
+
         if (dtoRespuesta != null) {
             correcto = true;
         }
+
         return correcto;
     }
-
 }

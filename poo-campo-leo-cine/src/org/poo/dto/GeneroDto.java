@@ -1,15 +1,13 @@
 package org.poo.dto;
 
-/**
- * Data Transfer Object para Género
- * CORREGIDO: Nombres de propiedades consistentes con JavaFX
- */
 public class GeneroDto {
 
     private Integer idGenero;
     private String nombreGenero;
     private Boolean estadoGenero;
-    private Short cantidadPeliculasGenero; // ⚠️ CON "S" para JavaFX
+    private Short cantidadPeliculasGenero;
+    private String nombreImagenPublicoGenero;
+    private String nombreImagenPrivadoGenero;
 
     public GeneroDto() {
     }
@@ -52,13 +50,28 @@ public class GeneroDto {
         this.estadoGenero = estadoGenero;
     }
 
-    // ⚠️ IMPORTANTE: El getter debe llamarse getCantidadPeliculasGenero (CON "S")
     public Short getCantidadPeliculasGenero() {
         return cantidadPeliculasGenero;
     }
 
     public void setCantidadPeliculasGenero(Short cantidadPeliculasGenero) {
         this.cantidadPeliculasGenero = cantidadPeliculasGenero;
+    }
+
+    public String getNombreImagenPublicoGenero() {
+        return nombreImagenPublicoGenero;
+    }
+
+    public void setNombreImagenPublicoGenero(String nombreImagenPublicoGenero) {
+        this.nombreImagenPublicoGenero = nombreImagenPublicoGenero;
+    }
+
+    public String getNombreImagenPrivadoGenero() {
+        return nombreImagenPrivadoGenero;
+    }
+
+    public void setNombreImagenPrivadoGenero(String nombreImagenPrivadoGenero) {
+        this.nombreImagenPrivadoGenero = nombreImagenPrivadoGenero;
     }
 
     @Override

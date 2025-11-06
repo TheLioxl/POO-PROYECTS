@@ -8,17 +8,21 @@ public class Pelicula {
     private Genero GeneroPelicula;
     private Double presupuestoPelicula;
     private Boolean estadoPelicula;
-
+    private String nombreImagenPublicoGenero;   // Nombre original del archivo
+    private String nombreImagenPrivadoGenero;
+    
     public Pelicula() {
     }
 
-    public Pelicula(Integer idPelicula, String nombrePelicula, String protagonistaPelicula, Genero idGeneroPelicula, Double presupuestoPelicula, Boolean estadoPelicula) {
+    public Pelicula(Integer idPelicula, String nombrePelicula, String protagonistaPelicula, Genero GeneroPelicula, Double presupuestoPelicula, Boolean estadoPelicula, String nombreImagenPublicoGenero, String nombreImagenPrivadoGenero) {
         this.idPelicula = idPelicula;
         this.nombrePelicula = nombrePelicula;
         this.protagonistaPelicula = protagonistaPelicula;
-        this.GeneroPelicula = idGeneroPelicula;
+        this.GeneroPelicula = GeneroPelicula;
         this.presupuestoPelicula = presupuestoPelicula;
         this.estadoPelicula = estadoPelicula;
+        this.nombreImagenPublicoGenero = nombreImagenPublicoGenero;
+        this.nombreImagenPrivadoGenero = nombreImagenPrivadoGenero;
     }
 
     public Integer getIdPelicula() {
@@ -69,9 +73,26 @@ public class Pelicula {
         this.estadoPelicula = estadoPelicula;
     }
 
-    @Override
-    public String toString() {
-        return "Pelicula{" + "idPelicula=" + idPelicula + ", nombrePelicula=" + nombrePelicula + ", protagonistaPelicula=" + protagonistaPelicula + ", idGeneroPelicula=" + GeneroPelicula + ", presupuestoPelicula=" + presupuestoPelicula + ", estadoPelicula=" + estadoPelicula + '}';
+    public String getNombreImagenPublicoGenero() {
+        return nombreImagenPublicoGenero;
     }
 
+    public void setNombreImagenPublicoGenero(String nombreImagenPublicoGenero) {
+        this.nombreImagenPublicoGenero = nombreImagenPublicoGenero;
+    }
+
+    public String getNombreImagenPrivadoGenero() {
+        return nombreImagenPrivadoGenero;
+    }
+
+    public void setNombreImagenPrivadoGenero(String nombreImagenPrivadoGenero) {
+        this.nombreImagenPrivadoGenero = nombreImagenPrivadoGenero;
+    }
+
+    @Override
+    public String toString() {
+        return "Pelicula{" + "idPelicula=" + idPelicula + ", nombrePelicula=" + nombrePelicula + ", protagonistaPelicula=" + protagonistaPelicula + ", GeneroPelicula=" + GeneroPelicula + ", presupuestoPelicula=" + presupuestoPelicula + ", estadoPelicula=" + estadoPelicula + ", nombreImagenPublicoGenero=" + nombreImagenPublicoGenero + ", nombreImagenPrivadoGenero=" + nombreImagenPrivadoGenero + '}';
+    }
+
+    
 }

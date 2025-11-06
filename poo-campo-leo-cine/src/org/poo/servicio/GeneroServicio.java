@@ -11,6 +11,7 @@ import org.poo.api.ApiOperacionBD;
 import org.poo.dto.GeneroDto;
 import org.poo.modelo.Genero;
 import org.poo.recurso.constante.Persistencia;
+import org.poo.recurso.utilidad.GestorImagen;
 
 public class GeneroServicio implements ApiOperacionBD<GeneroDto, Integer> {
 
@@ -43,10 +44,16 @@ public class GeneroServicio implements ApiOperacionBD<GeneroDto, Integer> {
         objGenero.setIdGenero(getSerial());
         objGenero.setNombreGenero(dto.getNombreGenero());
         objGenero.setEstadoGenero(dto.getEstadoGenero());
+        
+        // Guardar nombres de imagen
+        objGenero.setNombreImagenPublicoGenero(dto.getNombreImagenPublicoGenero());
+        objGenero.setNombreImagenPrivadoGenero(GestorImagen.grabarLaImagen(ruta));
 
         String filaGrabar = objGenero.getIdGenero() + Persistencia.SEPARADOR_COLUMNAS
                 + objGenero.getNombreGenero() + Persistencia.SEPARADOR_COLUMNAS
-                + objGenero.getEstadoGenero();
+                + objGenero.getEstadoGenero() + Persistencia.SEPARADOR_COLUMNAS
+                + objGenero.getNombreImagenPublicoGenero() + Persistencia.SEPARADOR_COLUMNAS
+                + objGenero.getNombreImagenPrivadoGenero();
 
         if (miArchivo.agregarRegistro(filaGrabar)) {
             dto.setIdGenero(objGenero.getIdGenero());
@@ -56,17 +63,14 @@ public class GeneroServicio implements ApiOperacionBD<GeneroDto, Integer> {
         return null;
     }
 
-    // MÉTODO OPTIMIZADO CON MAP - Evita ciclos anidados O(n²) -> O(n)
     @Override
     public List<GeneroDto> selectFrom() {
         List<GeneroDto> arregloGenero = new ArrayList<>();
         List<String> arregloDatos = miArchivo.obtenerDatos();
 
-        // Un servicio puede llamar a otro servicio
         PeliculaServicio peliculaServicio = new PeliculaServicio();
         Map<Integer, Integer> arrCantPelis = peliculaServicio.peliculasPorGenero();
 
-        // Observe que por dentro de este ciclo for NO hay más ciclos
         for (String cadena : arregloDatos) {
             try {
                 cadena = cadena.replace("@", "");
@@ -75,11 +79,18 @@ public class GeneroServicio implements ApiOperacionBD<GeneroDto, Integer> {
                 int codGenero = Integer.parseInt(columnas[0].trim());
                 String nomGenero = columnas[1].trim();
                 Boolean estGenero = Boolean.valueOf(columnas[2].trim());
+                
+                // Leer nombres de imagen si existen
+                String imagenPublico = columnas.length > 3 ? columnas[3].trim() : "";
+                String imagenPrivado = columnas.length > 4 ? columnas[4].trim() : "";
 
-                // Una sola línea resuelve la cantidad de películas de un género
                 Short cantPelis = arrCantPelis.getOrDefault(codGenero, 0).shortValue();
 
-                arregloGenero.add(new GeneroDto(codGenero, nomGenero, estGenero, cantPelis));
+                GeneroDto generoDto = new GeneroDto(codGenero, nomGenero, estGenero, cantPelis);
+                generoDto.setNombreImagenPublicoGenero(imagenPublico);
+                generoDto.setNombreImagenPrivadoGenero(imagenPrivado);
+                
+                arregloGenero.add(generoDto);
 
             } catch (NumberFormatException error) {
                 Logger.getLogger(GeneroServicio.class.getName()).log(Level.SEVERE, null, error);
@@ -104,11 +115,17 @@ public class GeneroServicio implements ApiOperacionBD<GeneroDto, Integer> {
                 int codGenero = Integer.parseInt(columnas[0].trim());
                 String nomGenero = columnas[1].trim();
                 Boolean estGenero = Boolean.valueOf(columnas[2].trim());
+                
+                String imagenPublico = columnas.length > 3 ? columnas[3].trim() : "";
+                String imagenPrivado = columnas.length > 4 ? columnas[4].trim() : "";
 
                 Short cantPelis = arrCantPelis.getOrDefault(codGenero, 0).shortValue();
 
                 if (Boolean.TRUE.equals(estGenero)) {
-                    arregloGenero.add(new GeneroDto(codGenero, nomGenero, estGenero, cantPelis));
+                    GeneroDto generoDto = new GeneroDto(codGenero, nomGenero, estGenero, cantPelis);
+                    generoDto.setNombreImagenPublicoGenero(imagenPublico);
+                    generoDto.setNombreImagenPrivadoGenero(imagenPrivado);
+                    arregloGenero.add(generoDto);
                 }
 
             } catch (NumberFormatException error) {

@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -14,8 +15,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.RowConstraints;
@@ -27,12 +30,16 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.poo.controlador.genero.GeneroControladorListar;
 import org.poo.controlador.pelicula.PeliculaControladorGrabar;
 import org.poo.dto.GeneroDto;
 import org.poo.dto.PeliculaDto;
 import org.poo.recurso.constante.Configuracion;
+import org.poo.recurso.utilidad.Formulario;
+import org.poo.recurso.utilidad.GestorImagen;
+import org.poo.recurso.utilidad.Icono;
 import org.poo.recurso.utilidad.Marco;
 import org.poo.recurso.utilidad.Mensaje;
 
@@ -41,11 +48,8 @@ public class VistaPeliculaCrear extends StackPane {
     private static final int H_GAP = 10;
     private static final int V_GAP = 20;
     private static final int ALTO_FILA = 40;
-    private static final int ANCHO_FILA = 35;
     private static final int TAMANIO_FUENTE = 20;
     private static final int ALTO_CAJA = 35;
-    private static final double ANCHO = 0.8;
-
     private static final double AJUSTE_TITULO = 0.1;
 
     private final GridPane miGrilla;
@@ -56,8 +60,15 @@ public class VistaPeliculaCrear extends StackPane {
     private TextField txtPresupuestoPelicula;
     private ComboBox<GeneroDto> cbmGeneroPelicula;
     private ToggleGroup radioCodigoPelicula;
+    
+    // ✅ Propiedades para la imagen
+    private TextField cajaImagen;
+    private ImageView imgPorDefecto;
+    private ImageView imgPrevisualizar;
+    private String rutaImagenSeleccionada;
 
     public VistaPeliculaCrear(Stage esce, double ancho, double alto) {
+        rutaImagenSeleccionada = "";  // ✅ Inicializar
         setAlignment(Pos.CENTER);
         miGrilla = new GridPane();
         miMarco = Marco.crear(esce, Configuracion.MARCO_ALTO_PORCENTAJE, Configuracion.MARCO_ANCHO_PORCENTAJE,
@@ -78,14 +89,17 @@ public class VistaPeliculaCrear extends StackPane {
         miGrilla.setMinSize(miAnchoGrilla, alto);
         miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
+        // ✅ Ahora con 3 columnas para incluir la imagen
         ColumnConstraints col0 = new ColumnConstraints();
         ColumnConstraints col1 = new ColumnConstraints();
+        ColumnConstraints col2 = new ColumnConstraints();
 
         col0.setPrefWidth(250);
-        col1.setPrefWidth(400);
+        col1.setPrefWidth(250);
+        col2.setPrefWidth(200);
         col1.setHgrow(Priority.ALWAYS);
 
-        miGrilla.getColumnConstraints().addAll(col0, col1);
+        miGrilla.getColumnConstraints().addAll(col0, col1, col2);
 
         for (int i = 0; i < 9; i++) {
             RowConstraints fila = new RowConstraints();
@@ -96,12 +110,12 @@ public class VistaPeliculaCrear extends StackPane {
     }
 
     private void crearTitulo() {
-        Text miTitulo = new Text("FORMULARIO - CREAR PELICULA");
+        Text miTitulo = new Text("FORMULARIO CREAR PELICULA");
         miTitulo.setFill(Color.web(Configuracion.MORADO_OSCURO));
         miTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
         GridPane.setHalignment(miTitulo, HPos.CENTER);
         GridPane.setMargin(miTitulo, new Insets(30, 0, 0, 0));
-        miGrilla.add(miTitulo, 0, 0, 2, 1);
+        miGrilla.add(miTitulo, 0, 0, 3, 1);  // ✅ Ahora ocupa 3 columnas
     }
 
     private void crearFormulario() {
@@ -142,6 +156,16 @@ public class VistaPeliculaCrear extends StackPane {
         cbmGeneroPelicula.getSelectionModel().select(0);
         miGrilla.add(cbmGeneroPelicula, 1, 4);
 
+        Label lblPresupuestoPelicula = new Label("Presupuesto:");
+        lblPresupuestoPelicula.setFont(Font.font("Times New Roman", FontPosture.ITALIC, TAMANIO_FUENTE));
+        miGrilla.add(lblPresupuestoPelicula, 0, 5);
+
+        txtPresupuestoPelicula = new TextField();
+        txtPresupuestoPelicula.setPromptText("Digita el presupuesto");
+        GridPane.setHgrow(txtPresupuestoPelicula, Priority.ALWAYS);
+        txtPresupuestoPelicula.setPrefHeight(ALTO_CAJA);
+        miGrilla.add(txtPresupuestoPelicula, 1, 5);
+
         Label lblEdadPelicula = new Label("Edad:");
         lblEdadPelicula.setFont(Font.font("Times New Roman", FontPosture.ITALIC, TAMANIO_FUENTE));
         miGrilla.add(lblEdadPelicula, 0, 6);
@@ -158,15 +182,45 @@ public class VistaPeliculaCrear extends StackPane {
         vboxRadios.getChildren().addAll(rbAdulto, rbInfantil);
         miGrilla.add(vboxRadios, 1, 6);
 
-        Label lblPresupuestoPelicula = new Label("Presupuesto:");
-        lblPresupuestoPelicula.setFont(Font.font("Times New Roman", FontPosture.ITALIC, TAMANIO_FUENTE));
-        miGrilla.add(lblPresupuestoPelicula, 0, 5);
+        // ✅ NUEVO: Selector de imagen
+        Label lblImagen = new Label("Imagen Película:");
+        lblImagen.setFont(Font.font("Times New Roman", FontPosture.ITALIC, TAMANIO_FUENTE));
+        miGrilla.add(lblImagen, 0, 7);
 
-        txtPresupuestoPelicula = new TextField();
-        txtPresupuestoPelicula.setPromptText("Digita el presupuesto");
-        GridPane.setHgrow(txtPresupuestoPelicula, Priority.ALWAYS);
-        txtPresupuestoPelicula.setPrefHeight(ALTO_CAJA);
-        miGrilla.add(txtPresupuestoPelicula, 1, 5);
+        cajaImagen = new TextField();
+        cajaImagen.setDisable(true);
+        cajaImagen.setPrefHeight(ALTO_CAJA);
+        String[] extensiones = {"*.png", "*.jpg", "*.jpeg"};
+        FileChooser objSeleccionar = Formulario.selectorImagen("Selecciona la foto", "Imagenes", extensiones);
+
+        Button btnSeleccionarImagen = new Button("+");
+        btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
+        btnSeleccionarImagen.setOnAction((e) -> {
+            rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(cajaImagen, objSeleccionar);
+            if (rutaImagenSeleccionada.isEmpty()) {
+                miGrilla.getChildren().remove(imgPorDefecto);
+                miGrilla.getChildren().remove(imgPrevisualizar);
+                miGrilla.add(imgPorDefecto, 2, 1, 1, 7);
+            } else {
+                miGrilla.getChildren().remove(imgPorDefecto);
+                miGrilla.getChildren().remove(imgPrevisualizar);
+                imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
+                GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
+                miGrilla.add(imgPrevisualizar, 2, 1, 1, 7);
+            }
+        });
+
+        HBox.setHgrow(cajaImagen, Priority.ALWAYS);
+        HBox panelHorizontal = new HBox(2);
+        panelHorizontal.setAlignment(Pos.BOTTOM_RIGHT);
+        panelHorizontal.getChildren().addAll(cajaImagen, btnSeleccionarImagen);
+        miGrilla.add(panelHorizontal, 1, 7);
+
+        // ✅ Imagen por defecto
+        imgPorDefecto = Icono.obtenerIcono("imgNoDisponible.png", 150);
+        GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
+        GridPane.setValignment(imgPorDefecto, VPos.CENTER);
+        miGrilla.add(imgPorDefecto, 2, 1, 1, 7);
 
         Button btnGrabar = new Button("Grabar pelicula");
         btnGrabar.setTextFill(Color.PURPLE);
@@ -175,7 +229,7 @@ public class VistaPeliculaCrear extends StackPane {
         btnGrabar.setOnAction((e) -> {
             guardarPelicula();
         });
-        miGrilla.add(btnGrabar, 1, 7);
+        miGrilla.add(btnGrabar, 1, 8);
     }
 
     private Boolean obtenerEstado() {
@@ -207,6 +261,13 @@ public class VistaPeliculaCrear extends StackPane {
         txtPresupuestoPelicula.setText("");
         cbmGeneroPelicula.getSelectionModel().select(0);
         radioCodigoPelicula.selectToggle(null);
+        cajaImagen.setText("");
+        rutaImagenSeleccionada = "";
+        
+        // ✅ Restaurar imagen por defecto
+        miGrilla.getChildren().remove(imgPorDefecto);
+        miGrilla.getChildren().remove(imgPrevisualizar);
+        miGrilla.add(imgPorDefecto, 2, 1, 1, 7);
     }
 
     private Boolean formularioCompleto() {
@@ -228,7 +289,7 @@ public class VistaPeliculaCrear extends StackPane {
             txtPresupuestoPelicula.requestFocus();
             return false;
         }
-        if (cbmGeneroPelicula.getValue() == null) {
+        if (cbmGeneroPelicula.getValue() == null || cbmGeneroPelicula.getValue().getIdGenero() == 0) {
             Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
                     "Atención", "Por favor selecciona un género");
             cbmGeneroPelicula.requestFocus();
@@ -237,6 +298,11 @@ public class VistaPeliculaCrear extends StackPane {
         if (obtenerEstado() == null) {
             Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
                     "Atención", "Por favor selecciona la edad (+18 o Infantil)");
+            return false;
+        }
+        if (rutaImagenSeleccionada.isBlank()) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, null,
+                    "Atención", "Ajá, y la imagen?");
             return false;
         }
         return true;
@@ -250,17 +316,18 @@ public class VistaPeliculaCrear extends StackPane {
             dto.setGeneroPelicula(obtenerGenero());
             dto.setPresupuestoPelicula(Double.valueOf(txtPresupuestoPelicula.getText()));
             dto.setEstadoPelicula(obtenerEstado());
+            dto.setNombreImagenPublicoPelicula(cajaImagen.getText());
 
-            if (PeliculaControladorGrabar.crearPelicula(dto)) {
+            if (PeliculaControladorGrabar.crearPelicula(dto, rutaImagenSeleccionada)) {
                 Mensaje.mostrar(Alert.AlertType.INFORMATION, null,
                         "Exito", "La Pelicula se Guardó Exitosamente");
+                limpiarFormulario();
                 txtNombrePelicula.requestFocus();
             } else {
                 Mensaje.mostrar(Alert.AlertType.ERROR, null,
                         "Error", "Esto no sirve");
                 txtNombrePelicula.requestFocus();
             }
-            limpiarFormulario();
         }
     }
 
@@ -276,6 +343,6 @@ public class VistaPeliculaCrear extends StackPane {
         miMarco.heightProperty().addListener((obs, antes, despues) -> {
             calcular.run();
         });
-
     }
 }
+                

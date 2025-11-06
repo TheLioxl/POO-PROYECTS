@@ -1,15 +1,13 @@
 package org.poo.modelo;
 
-/**
- * Modelo de entidad Género
- * CORREGIDO: Nombres de propiedades consistentes
- */
 public class Genero {
 
     private Integer idGenero;
     private String nombreGenero;
     private Boolean estadoGenero;
-    private Short cantidadPeliculasGenero; // ⚠️ CON "S"
+    private Short cantidadPeliculasGenero;
+    private String nombreImagenPublicoGenero;   // Nombre original del archivo
+    private String nombreImagenPrivadoGenero;   // Nombre con UUID en disco
 
     public Genero() {
     }
@@ -52,13 +50,28 @@ public class Genero {
         this.estadoGenero = estadoGenero;
     }
 
-    // ⚠️ IMPORTANTE: El getter debe llamarse getCantidadPeliculasGenero (CON "S")
     public Short getCantidadPeliculasGenero() {
         return cantidadPeliculasGenero;
     }
 
     public void setCantidadPeliculasGenero(Short cantidadPeliculasGenero) {
         this.cantidadPeliculasGenero = cantidadPeliculasGenero;
+    }
+
+    public String getNombreImagenPublicoGenero() {
+        return nombreImagenPublicoGenero;
+    }
+
+    public void setNombreImagenPublicoGenero(String nombreImagenPublicoGenero) {
+        this.nombreImagenPublicoGenero = nombreImagenPublicoGenero;
+    }
+
+    public String getNombreImagenPrivadoGenero() {
+        return nombreImagenPrivadoGenero;
+    }
+
+    public void setNombreImagenPrivadoGenero(String nombreImagenPrivadoGenero) {
+        this.nombreImagenPrivadoGenero = nombreImagenPrivadoGenero;
     }
 
     @Override
