@@ -11,6 +11,7 @@ import org.unimag.api.ApiOperacionBD;
 import org.unimag.dto.GeneroDto;
 import org.unimag.modelo.Genero;
 import org.unimag.recurso.constante.Persistencia;
+import org.unimag.recurso.utilidad.GestorImagen;
 
 public class GeneroServicio implements ApiOperacionBD<GeneroDto, Integer> {
 
@@ -48,10 +49,15 @@ public class GeneroServicio implements ApiOperacionBD<GeneroDto, Integer> {
         objGenero.setIdGenero(getSerial());
         objGenero.setNombreGenero(dto.getNombreGenero());
         objGenero.setEstadoGenero(dto.getEstadoGenero());
+        
+        objGenero.setNombreImagenPublicoGenero(dto.getNombreImagenPublicoGenero());
+        objGenero.setNombreImagenPrivadoGenero(GestorImagen.grabarLaImagen(ruta));
 
         String filaGrabar = objGenero.getIdGenero() + Persistencia.SEPARADOR_COLUMNAS
                 + objGenero.getNombreGenero() + Persistencia.SEPARADOR_COLUMNAS
-                + objGenero.getEstadoGenero();
+                + objGenero.getEstadoGenero() + Persistencia.SEPARADOR_COLUMNAS
+                + objGenero.getNombreImagenPublicoGenero()+ Persistencia.SEPARADOR_COLUMNAS
+                + objGenero.getNombreImagenPrivadoGenero();
 
         if (miArchivo.agregarRegistro(filaGrabar)) {
             dto.setIdGenero(objGenero.getIdGenero());
@@ -83,12 +89,9 @@ public class GeneroServicio implements ApiOperacionBD<GeneroDto, Integer> {
                 int codGenero = Integer.parseInt(columnas[0].trim());
                 String nomGenero = columnas[1].trim();
                 Boolean estGenero = Boolean.valueOf(columnas[2].trim());
-
-                // Y en la siguiente linea resolvemos lo de la cantidad de peliculas de un género
-                // Breve y pulido: eres uniMagdalena
                 Short cantPelis = arrCantPelis.getOrDefault(codGenero, 0).shortValue();
 
-                arregloGenero.add(new GeneroDto(codGenero, nomGenero, estGenero, cantPelis));
+                arregloGenero.add(new GeneroDto(codGenero, nomGenero, estGenero, cantPelis, "", ""));
 
             } catch (NumberFormatException error) {
                 Logger.getLogger(GeneroServicio.class.getName()).log(Level.SEVERE, null, error);
@@ -123,7 +126,7 @@ public class GeneroServicio implements ApiOperacionBD<GeneroDto, Integer> {
                 Short cantPelis = arrCantPelis.getOrDefault(codGenero, 0).shortValue();
 
                 if (Boolean.TRUE.equals(estGenero)) {
-                    arregloGenero.add(new GeneroDto(codGenero, nomGenero, estGenero, cantPelis));
+                    arregloGenero.add(new GeneroDto(codGenero, nomGenero, estGenero, cantPelis, "", ""));
                 }
             } catch (NumberFormatException error) {
                 Logger.getLogger(GeneroServicio.class.getName()).log(Level.SEVERE, null, error);

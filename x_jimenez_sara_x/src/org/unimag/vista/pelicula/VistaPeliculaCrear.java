@@ -57,7 +57,7 @@ public class VistaPeliculaCrear extends StackPane {
     private ToggleGroup grupoRadioBoton;
 
     public VistaPeliculaCrear(Stage esce, double ancho, double alto) {
-        
+
         setAlignment(Pos.CENTER);
 
         miGrilla = new GridPane();
@@ -130,7 +130,6 @@ public class VistaPeliculaCrear extends StackPane {
         txtNombrePelicula.setPrefHeight(ALTO_CAJA);
         miGrilla.add(txtNombrePelicula, 1, 2);
 
-        
         Label lblProtagonista = new Label("Nombre del Protagonista");
         lblProtagonista.setFont(Font.font("Times New Roman", FontPosture.ITALIC, TAMANIO_FUENTE));
         miGrilla.add(lblProtagonista, 0, 3);
@@ -141,7 +140,6 @@ public class VistaPeliculaCrear extends StackPane {
         txtNombreProtagonista.setPrefHeight(ALTO_CAJA);
         miGrilla.add(txtNombreProtagonista, 1, 3);
 
-        
         Label lblEstado = new Label("Género");
         lblEstado.setFont(Font.font("Times New Roman", FontPosture.ITALIC, TAMANIO_FUENTE));
         miGrilla.add(lblEstado, 0, 4);
@@ -149,22 +147,21 @@ public class VistaPeliculaCrear extends StackPane {
         //ACÁ VIENE LO DEL COMBO
         List<GeneroDto> arrGeneros = GeneroControladorListar.obtenerGenerosActivos();
         //que el código inicie en 0
-        GeneroDto opcionInicial = new GeneroDto(0, "Seleccione genero", true, (short)0);
+        GeneroDto opcionInicial = new GeneroDto(0, "Seleccione género", true, (short) 0, "", "");
         arrGeneros.add(0, opcionInicial);
-        
+
         cbmGeneroPelicula = new ComboBox<>();
         cbmGeneroPelicula.setMaxWidth(Double.MAX_VALUE);
         cbmGeneroPelicula.setPrefHeight(ALTO_CAJA);
 
         //Listas que usa javafx para manipular la imformación
         ObservableList<GeneroDto> items = FXCollections.observableArrayList(arrGeneros);
-        
+
         cbmGeneroPelicula.setItems(items);
 
         cbmGeneroPelicula.getSelectionModel().select(0);
         miGrilla.add(cbmGeneroPelicula, 1, 4);
 
-        
         Label lblPresupuesto = new Label("Presupuesto");
         lblPresupuesto.setFont(Font.font("Times New Roman", FontPosture.ITALIC, TAMANIO_FUENTE));
         miGrilla.add(lblPresupuesto, 0, 5);
@@ -174,13 +171,11 @@ public class VistaPeliculaCrear extends StackPane {
         GridPane.setHgrow(txtPresupuesto, Priority.ALWAYS);
         txtPresupuesto.setPrefHeight(ALTO_CAJA);
         miGrilla.add(txtPresupuesto, 1, 5);
-        
-        
+
         Label lblRestriccion = new Label("Restriccion de Edad");
         lblRestriccion.setFont(Font.font("Times New Roman", FontPosture.ITALIC, TAMANIO_FUENTE));
         miGrilla.add(lblRestriccion, 0, 6);
-        
-        
+
         rbtRestriccion1 = new RadioButton("Infantil");
         rbtRestriccion2 = new RadioButton("Mayor de 12 años");
         grupoRadioBoton = new ToggleGroup();
@@ -188,10 +183,10 @@ public class VistaPeliculaCrear extends StackPane {
         rbtRestriccion2.setMaxWidth(Double.MAX_VALUE);
         rbtRestriccion1.setToggleGroup(grupoRadioBoton);
         rbtRestriccion2.setToggleGroup(grupoRadioBoton);
-        
+
         miGrilla.add(rbtRestriccion1, 1, 6);
         miGrilla.add(rbtRestriccion2, 1, 7);
-        
+
         Button btnGrabar = new Button("Grabar Pelicula");
         btnGrabar.setTextFill(Color.web(Configuracion.MORADO_OSCURO));
         btnGrabar.setMaxWidth(Double.MAX_VALUE);
@@ -202,18 +197,17 @@ public class VistaPeliculaCrear extends StackPane {
         miGrilla.add(btnGrabar, 1, 8);
     }
 
-    private GeneroDto obtenerGenero(){
+    private GeneroDto obtenerGenero() {
         GeneroDto seleccionado = cbmGeneroPelicula.getSelectionModel().getSelectedItem();
-        
+
         if (seleccionado != null && seleccionado.getIdGenero() != 0) {
-            
+
             return seleccionado;
         }
-              
+
         return null;
     }
-    
-    
+
     private Boolean obtenerRestriccion() {
         if (rbtRestriccion1.isSelected()) {
             return false;
@@ -223,7 +217,7 @@ public class VistaPeliculaCrear extends StackPane {
         }
         return null;
     }
-    
+
     private void limpiarFormulario() {
         txtNombrePelicula.setText("");
         cbmGeneroPelicula.getSelectionModel().select(0);
@@ -255,7 +249,7 @@ public class VistaPeliculaCrear extends StackPane {
             cbmGeneroPelicula.requestFocus();
             return false;
         }
-        
+
         if (txtPresupuesto.getText().isBlank()) {
 
             Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(), "Alerta", "Agrega un presupuesto");
@@ -268,8 +262,8 @@ public class VistaPeliculaCrear extends StackPane {
             txtPresupuesto.requestFocus();
             return false;
         }
-        
-        if (obtenerRestriccion()== null) {
+
+        if (obtenerRestriccion() == null) {
 
             Mensaje.mostrar(Alert.AlertType.WARNING, null, "Alerta", "Escoge una restricción");
             cbmGeneroPelicula.requestFocus();
@@ -278,19 +272,19 @@ public class VistaPeliculaCrear extends StackPane {
 
         return true;
     }
-    
+
     private void guardarPelicula() {
 
         if (formularioCompleto()) {
 
             PeliculaDto dto = new PeliculaDto();
-            
+
             dto.setNombrePelicula(txtNombrePelicula.getText());
             dto.setProtagonistaPelicula(txtNombreProtagonista.getText());
             dto.setGeneroPelicula(obtenerGenero());
             dto.setRestriccionEdadPelicula(obtenerRestriccion());
             dto.setPresupuestoPelicula(Double.valueOf(txtPresupuesto.getText()));
-   
+
             if (PeliculaControladorGrabar.crearPelicula(dto)) {
                 Mensaje.mostrar(Alert.AlertType.INFORMATION, null, "Exito", "La información ha sido guardada exitosamente");
                 txtNombrePelicula.requestFocus();
@@ -302,7 +296,7 @@ public class VistaPeliculaCrear extends StackPane {
                 txtNombrePelicula.requestFocus();
                 txtNombreProtagonista.requestFocus();
                 txtPresupuesto.requestFocus();
-            }  
+            }
         }
     }
 

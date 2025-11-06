@@ -47,11 +47,11 @@ public class PeliculaServicio implements ApiOperacionBD<PeliculaDto, Integer> {
 
     @Override
     public PeliculaDto inserInto(PeliculaDto dto, String ruta) {
-
         Genero objGenero = new Genero(dto.getGeneroPelicula().getIdGenero(),
                 dto.getGeneroPelicula().getNombreGenero(),
                 dto.getGeneroPelicula().getEstadoGenero(),
-                dto.getGeneroPelicula().getCantidadPeliculaGenero()
+                dto.getGeneroPelicula().getCantidadPeliculaGenero(),
+                "", ""
         );
 
         Pelicula objPelicula = new Pelicula();

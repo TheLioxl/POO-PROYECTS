@@ -209,21 +209,28 @@ public class VistaGeneroCrear extends StackPane {
         txtNombreGenero.setText("");
         cbmEstadoGenero.getSelectionModel().select(0);
         txtNombreGenero.requestFocus();
+        
+        rutaImagenSeleccionada = "";
+        cajaImagen.setText("");
+        miGrilla.getChildren().remove(imgPrevisualizar);
+        GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
+        miGrilla.add(imgPorDefecto, 2, 1, 1, 5);
     }
 
     private Boolean formularioCompleto() {
-
         if (txtNombreGenero.getText().isBlank()) {
-
             Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(), "Alerta", "Agrega un nombre");
             txtNombreGenero.requestFocus();
             return false;
         }
 
         if (cbmEstadoGenero.getSelectionModel().getSelectedIndex() == 0) {
-
             Mensaje.mostrar(Alert.AlertType.WARNING, null, "Alerta", "Escoge un estado");
             cbmEstadoGenero.requestFocus();
+            return false;
+        }
+        if (rutaImagenSeleccionada.isBlank()) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, null, "Alerta", "Ajá, y la imagen?");
             return false;
         }
 
@@ -233,12 +240,12 @@ public class VistaGeneroCrear extends StackPane {
     private void guardarGenero() {
 
         if (formularioCompleto()) {
-
             GeneroDto dto = new GeneroDto();
             dto.setNombreGenero(txtNombreGenero.getText());
             dto.setEstadoGenero(obtenerEstado());
+            dto.setNombreImagenPublicoGenero(cajaImagen.getText());
 
-            if (GeneroControladorGrabar.crearGenero(dto)) {
+            if (GeneroControladorGrabar.crearGenero(dto, rutaImagenSeleccionada)) {
                 Mensaje.mostrar(Alert.AlertType.INFORMATION, null, "Exito", "La información ha sido guardada exitosamente");
                 txtNombreGenero.requestFocus();
                 limpiarFormulario();
