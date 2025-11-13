@@ -1,0 +1,12 @@
+14;Aseo;true;aseo.png;f88717bc-6513-4580-aaec-4fc4aed80abc_aseo.png@
+21;Bebidas;true;bebidas.png;c1d49e4c-b806-4e54-a09e-a34be36a7c8c_bebidas.png@
+37;Ropa;false;camisas.png;b34337d5-4bd1-475b-9591-4b2321a3962d_camisas.png@
+46;Carnes;true;carnes.png;46de74b6-cd95-4a86-bde3-0fd52ee5cac4_carnes.png@
+51;Joyería;false;joyeria.png;fc211400-034e-4dcc-8763-8216c7e577f3_joyeria.png@
+63;Panadería;true;panaderia.png;f11672ce-0d83-49c5-a99e-37fc618c14ea_panaderia.png@
+79;Calzado;false;zapatos.png;7d0ebe38-59aa-49c1-830a-49af0b9996d9_zapatos.png@
+88;Pañales;false;pannales.png;2cedc8b2-e00a-4c60-8f8d-3d3b5744ba69_pannales.png@
+89;Bicicleta;true;bicicleta.png;feeddf14-e548-4357-9d44-f8e483f6b0b2_bicicleta.png@
+90;Cubo de rubik actualizado;false;cubo.png;9a1b48aa-6402-4a7d-ae21-bc3f6380e8f0_cubo.png@
+91;Computador;false;computador.png;adf4441a-333d-4966-967b-faba4ad82f26_computador.png@
+92;Ejemplo de categoría;false;escaleras.png;edcab7f8-72e9-4664-b58b-10eee0f87f9a_escaleras.png@
