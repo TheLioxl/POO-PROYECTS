@@ -4,6 +4,7 @@ import com.poo.persistence.NioFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.poo.api.ApiOperacionBD;
@@ -46,8 +47,6 @@ public class TerminalServicio implements ApiOperacionBD<TerminalDto, Integer> {
         objTerminal.setCiudadTerminal(dto.getCiudadTerminal());
         objTerminal.setDireccionTerminal(dto.getDireccionTerminal());
         objTerminal.setEstadoTerminal(dto.getEstadoTerminal());
-        objTerminal.setCantidadEmpresasTerminal(dto.getCantidadEmpresasTerminal());
-        
         objTerminal.setNombreImagenPublicoTerminal(dto.getNombreImagenPublicoTerminal());
         objTerminal.setNombreImagenPrivadoTerminal(GestorImagen.grabarLaImagen(ruta));
 
@@ -72,6 +71,10 @@ public class TerminalServicio implements ApiOperacionBD<TerminalDto, Integer> {
         List<TerminalDto> arregloTerminal = new ArrayList<>();
         List<String> arregloDatos = miArchivo.obtenerDatos();
 
+        // Obtener cantidad de empresas por terminal
+        EmpresaServicio empresaServicio = new EmpresaServicio();
+        Map<Integer, Integer> arrCantEmpresas = empresaServicio.empresasPorTerminal();
+
         for (String cadena : arregloDatos) {
             try {
                 cadena = cadena.replace("@", "");
@@ -85,12 +88,14 @@ public class TerminalServicio implements ApiOperacionBD<TerminalDto, Integer> {
                 String npub = columnas[5].trim();
                 String nocu = columnas[6].trim();
 
-                // Obtener cantidad de empresas de esta terminal
-                EmpresaServicio empresaServicio = new EmpresaServicio();
-                Short cantEmpresas = (short) empresaServicio.contarEmpresasPorTerminal(codTerminal);
+                Short cantEmpresas = arrCantEmpresas.getOrDefault(codTerminal, 0).shortValue();
 
-                arregloTerminal.add(new TerminalDto(codTerminal, nomTerminal, ciudadTerminal,
-                        direccionTerminal, estTerminal, cantEmpresas, npub, nocu));
+                TerminalDto dto = new TerminalDto(codTerminal, nomTerminal, ciudadTerminal,
+                        direccionTerminal, estTerminal, cantEmpresas);
+                dto.setNombreImagenPublicoTerminal(npub);
+                dto.setNombreImagenPrivadoTerminal(nocu);
+
+                arregloTerminal.add(dto);
 
             } catch (NumberFormatException error) {
                 Logger.getLogger(TerminalServicio.class.getName()).log(Level.SEVERE, null, error);
@@ -103,6 +108,9 @@ public class TerminalServicio implements ApiOperacionBD<TerminalDto, Integer> {
     public List<TerminalDto> selectFromWhereActivos() {
         List<TerminalDto> arregloTerminal = new ArrayList<>();
         List<String> arregloDatos = miArchivo.obtenerDatos();
+
+        EmpresaServicio empresaServicio = new EmpresaServicio();
+        Map<Integer, Integer> arrCantEmpresas = empresaServicio.empresasPorTerminal();
 
         for (String cadena : arregloDatos) {
             try {
@@ -118,11 +126,14 @@ public class TerminalServicio implements ApiOperacionBD<TerminalDto, Integer> {
                 String nocu = columnas[6].trim();
 
                 if (Boolean.TRUE.equals(estTerminal)) {
-                    EmpresaServicio empresaServicio = new EmpresaServicio();
-                    Short cantEmpresas = (short) empresaServicio.contarEmpresasPorTerminal(codTerminal);
+                    Short cantEmpresas = arrCantEmpresas.getOrDefault(codTerminal, 0).shortValue();
 
-                    arregloTerminal.add(new TerminalDto(codTerminal, nomTerminal, ciudadTerminal,
-                            direccionTerminal, estTerminal, cantEmpresas, npub, nocu));
+                    TerminalDto dto = new TerminalDto(codTerminal, nomTerminal, ciudadTerminal,
+                            direccionTerminal, estTerminal, cantEmpresas);
+                    dto.setNombreImagenPublicoTerminal(npub);
+                    dto.setNombreImagenPrivadoTerminal(nocu);
+
+                    arregloTerminal.add(dto);
                 }
             } catch (NumberFormatException error) {
                 Logger.getLogger(TerminalServicio.class.getName()).log(Level.SEVERE, null, error);
