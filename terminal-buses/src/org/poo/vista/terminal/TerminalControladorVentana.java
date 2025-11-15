@@ -71,4 +71,17 @@ public class TerminalControladorVentana {
         
         return contenedor;
     }
+    
+    public static StackPane editar (Stage miEscenario, BorderPane princ, Pane pane,
+            double anchoFrm, double altoFrm) {
+        
+        VistaTerminalAdministrar vista = new VistaTerminalAdministrar(
+                miEscenario, anchoFrm, altoFrm);
+        StackPane contenedor = vista;
+        
+        // Aplicar efecto al abrir
+        ControladorEfecto.aplicarEfecto(contenedor, anchoFrm, altoFrm);
+        
+        return contenedor;
+    }
 }
