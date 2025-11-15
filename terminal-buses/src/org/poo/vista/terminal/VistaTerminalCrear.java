@@ -5,8 +5,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
@@ -16,6 +19,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -44,16 +48,32 @@ public class VistaTerminalCrear extends StackPane {
     private final Rectangle miMarco;
     private final Stage miEscenario;
 
-    // Campos del formulario
+    // ==================== 6 TIPOS DE COMPONENTES ====================
+    // 1. TextField - Para textos
     private TextField txtNombreTerminal;
     private TextField txtCiudadTerminal;
     private TextField txtDireccionTerminal;
+    
+    // 2. ComboBox - Para selección de opciones
     private ComboBox<String> cmbEstadoTerminal;
-    private TextField txtImagen;
-
-    // Gestión de imágenes
+    
+    // 3. Spinner - Para números (capacidad de plataformas)
+    private Spinner<Integer> spinnerPlataformas;
+    
+    // 4. CheckBox - Para servicios de la terminal
+    private CheckBox chkWifi;
+    private CheckBox chkCafeteria;
+    private CheckBox chkBanos;
+    
+    // 5. Button - Botones de acción
+    private Button btnSeleccionarImagen;
+    private Button btnGrabar;
+    
+    // 6. ImageView - Visualización de imagen
     private ImageView imgPorDefecto;
     private ImageView imgPrevisualizar;
+    
+    private TextField txtImagen;
     private String rutaImagenSeleccionada;
 
     public VistaTerminalCrear(Stage escenario, double ancho, double alto) {
@@ -90,13 +110,13 @@ public class VistaTerminalCrear extends StackPane {
         miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         // Configurar columnas
-        ColumnConstraints col0 = new ColumnConstraints(200);
-        ColumnConstraints col1 = new ColumnConstraints(300);
+        ColumnConstraints col0 = new ColumnConstraints(220);
+        ColumnConstraints col1 = new ColumnConstraints(350);
         col1.setHgrow(Priority.ALWAYS);
         miGrilla.getColumnConstraints().addAll(col0, col1);
 
         // Configurar filas
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 11; i++) {
             RowConstraints fila = new RowConstraints(ALTO_FILA);
             miGrilla.getRowConstraints().add(fila);
         }
@@ -114,6 +134,7 @@ public class VistaTerminalCrear extends StackPane {
     private void crearFormulario() {
         int fila = 1;
 
+        // ============ TIPO 1: TextField ============
         // NOMBRE TERMINAL
         Label lblNombre = new Label("Nombre Terminal:");
         lblNombre.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -153,7 +174,7 @@ public class VistaTerminalCrear extends StackPane {
         Formulario.cantidadCaracteres(txtDireccionTerminal, 100);
         miGrilla.add(txtDireccionTerminal, 1, fila);
 
-        // ESTADO
+        // ============ TIPO 2: ComboBox ============
         fila++;
         Label lblEstado = new Label("Estado:");
         lblEstado.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -166,7 +187,40 @@ public class VistaTerminalCrear extends StackPane {
         cmbEstadoTerminal.getSelectionModel().select(0);
         miGrilla.add(cmbEstadoTerminal, 1, fila);
 
-        // IMAGEN
+        // ============ TIPO 3: Spinner ============
+        fila++;
+        Label lblPlataformas = new Label("Plataformas/Muelles:");
+        lblPlataformas.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblPlataformas, 0, fila);
+
+        spinnerPlataformas = new Spinner<>();
+        SpinnerValueFactory<Integer> valueFactory = 
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 10);
+        spinnerPlataformas.setValueFactory(valueFactory);
+        spinnerPlataformas.setPrefHeight(ALTO_CAJA);
+        spinnerPlataformas.setMaxWidth(Double.MAX_VALUE);
+        spinnerPlataformas.setEditable(true);
+        miGrilla.add(spinnerPlataformas, 1, fila);
+
+        // ============ TIPO 4: CheckBox ============
+        fila++;
+        Label lblServicios = new Label("Servicios disponibles:");
+        lblServicios.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblServicios, 0, fila);
+
+        chkWifi = new CheckBox("WiFi Gratis");
+        chkCafeteria = new CheckBox("Cafetería");
+        chkBanos = new CheckBox("Baños");
+        
+        chkWifi.setFont(Font.font("Arial", 14));
+        chkCafeteria.setFont(Font.font("Arial", 14));
+        chkBanos.setFont(Font.font("Arial", 14));
+
+        VBox vboxServicios = new VBox(5);
+        vboxServicios.getChildren().addAll(chkWifi, chkCafeteria, chkBanos);
+        miGrilla.add(vboxServicios, 1, fila);
+
+        // ============ TIPO 5: Button (Imagen) ============
         fila++;
         Label lblImagen = new Label("Imagen:");
         lblImagen.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -180,24 +234,24 @@ public class VistaTerminalCrear extends StackPane {
         FileChooser selector = Formulario.selectorImagen(
                 "Seleccionar imagen", "Imágenes", extensiones);
 
-        Button btnSeleccionar = new Button("+");
-        btnSeleccionar.setPrefHeight(ALTO_CAJA);
-        btnSeleccionar.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        btnSeleccionar.setOnAction(e -> seleccionarImagen(selector));
+        btnSeleccionarImagen = new Button("+");
+        btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
+        btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        btnSeleccionarImagen.setOnAction(e -> seleccionarImagen(selector));
 
         HBox.setHgrow(txtImagen, Priority.ALWAYS);
-        HBox panelImagen = new HBox(5, txtImagen, btnSeleccionar);
+        HBox panelImagen = new HBox(5, txtImagen, btnSeleccionarImagen);
         miGrilla.add(panelImagen, 1, fila);
 
-        // PREVISUALIZACIÓN
+        // ============ TIPO 6: ImageView ============
         fila++;
         imgPorDefecto = Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         miGrilla.add(imgPorDefecto, 1, fila);
 
-        // BOTÓN GRABAR
+        // ============ TIPO 5: Button (Grabar) ============
         fila++;
-        Button btnGrabar = new Button("CREAR TERMINAL");
+        btnGrabar = new Button("CREAR TERMINAL");
         btnGrabar.setPrefHeight(ALTO_CAJA);
         btnGrabar.setMaxWidth(Double.MAX_VALUE);
         btnGrabar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + 
@@ -215,7 +269,7 @@ public class VistaTerminalCrear extends StackPane {
             
             imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
             GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-            miGrilla.add(imgPrevisualizar, 1, 5);
+            miGrilla.add(imgPrevisualizar, 1, 7);
         }
     }
 
@@ -267,6 +321,9 @@ public class VistaTerminalCrear extends StackPane {
             dto.setCantidadEmpresasTerminal((short) 0);
             dto.setNombreImagenPublicoTerminal(txtImagen.getText());
 
+            // Nota: Los servicios (CheckBox) y plataformas (Spinner) podrían 
+            // guardarse en campos adicionales del DTO si se requiere
+
             if (TerminalControladorGrabar.crearTerminal(dto, rutaImagenSeleccionada)) {
                 Mensaje.mostrar(Alert.AlertType.INFORMATION, this.getScene().getWindow(),
                         "Éxito", "Terminal creada correctamente");
@@ -284,11 +341,15 @@ public class VistaTerminalCrear extends StackPane {
         txtDireccionTerminal.clear();
         txtImagen.clear();
         cmbEstadoTerminal.getSelectionModel().select(0);
+        spinnerPlataformas.getValueFactory().setValue(10);
+        chkWifi.setSelected(false);
+        chkCafeteria.setSelected(false);
+        chkBanos.setSelected(false);
         rutaImagenSeleccionada = "";
 
         miGrilla.getChildren().remove(imgPrevisualizar);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        miGrilla.add(imgPorDefecto, 1, 5);
+        miGrilla.add(imgPorDefecto, 1, 7);
 
         txtNombreTerminal.requestFocus();
     }
@@ -297,7 +358,7 @@ public class VistaTerminalCrear extends StackPane {
         Runnable ajustar = () -> {
             double alturaMarco = miMarco.getHeight();
             if (alturaMarco > 0) {
-                miGrilla.setTranslateY(-alturaMarco * 0.05);
+                miGrilla.setTranslateY(alturaMarco * 0.05);
             }
         };
         ajustar.run();

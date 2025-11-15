@@ -7,8 +7,8 @@ import javafx.stage.Screen;
 public class Configuracion {
 
     // DIMENSIONES DE LA APLICACIÓN
-    public static final int ALTO_APP = (int) (Screen.getPrimary().getBounds().getHeight() * 0.8);
-    public static final int ANCHO_APP = (int) (Screen.getPrimary().getBounds().getWidth() * 0.7);
+    public static final int ALTO_APP = (int) (Screen.getPrimary().getBounds().getHeight() * 0.9);
+    public static final int ANCHO_APP = (int) (Screen.getPrimary().getBounds().getWidth() * 0.8);
 
     // CABECERA
     private static final double CABECERA_ALTO_PORCENTAJE = 0.1;

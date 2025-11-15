@@ -75,24 +75,32 @@ public class VistaCabecera extends HBox {
     }
 
     // ====================== MENÚ TERMINAL ======================
+    // ====================== MENÚ TERMINAL ======================
     private void menuTerminal() {
         MenuItem opcion1 = new MenuItem("Crear Terminal");
         MenuItem opcion2 = new MenuItem("Listar Terminales");
         MenuItem opcion3 = new MenuItem("Administrar Terminales");
 
         opcion1.setOnAction(e -> {
-            System.out.println("Abrir formulario Crear Terminal");
-            // TODO: Implementar vista de creación
+            miPanelCuerpo = new org.poo.vista.terminal.VistaTerminalCrear(
+                    miEscenario, 
+                    Configuracion.ANCHO_APP, 
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         opcion2.setOnAction(e -> {
-            System.out.println("Abrir formulario Listar Terminales");
-            // TODO: Implementar vista de listado
+            miPanelCuerpo = new org.poo.vista.terminal.VistaTerminalListar(
+                    miEscenario,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         opcion3.setOnAction(e -> {
-            System.out.println("Abrir formulario Administrar Terminales");
-            // TODO: Implementar vista de administración
+            System.out.println("Administrar Terminales - Por implementar");
         });
 
         MenuButton menuButton = new MenuButton("Terminales");
