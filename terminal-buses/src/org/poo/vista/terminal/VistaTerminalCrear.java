@@ -17,7 +17,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -40,7 +39,6 @@ public class VistaTerminalCrear extends StackPane {
 
     private static final int H_GAP = 10;
     private static final int V_GAP = 20;
-    private static final int ALTO_FILA = 40;
     private static final int ALTO_CAJA = 35;
     private static final int TAMANIO_FUENTE = 18;
 
@@ -48,31 +46,19 @@ public class VistaTerminalCrear extends StackPane {
     private final Rectangle miMarco;
     private final Stage miEscenario;
 
-    // ==================== 6 TIPOS DE COMPONENTES ====================
-    // 1. TextField - Para textos
+    // Componentes del formulario
     private TextField txtNombreTerminal;
     private TextField txtCiudadTerminal;
     private TextField txtDireccionTerminal;
-    
-    // 2. ComboBox - Para selección de opciones
     private ComboBox<String> cmbEstadoTerminal;
-    
-    // 3. Spinner - Para números (capacidad de plataformas)
     private Spinner<Integer> spinnerPlataformas;
-    
-    // 4. CheckBox - Para servicios de la terminal
     private CheckBox chkWifi;
     private CheckBox chkCafeteria;
     private CheckBox chkBanos;
-    
-    // 5. Button - Botones de acción
     private Button btnSeleccionarImagen;
     private Button btnGrabar;
-    
-    // 6. ImageView - Visualización de imagen
     private ImageView imgPorDefecto;
     private ImageView imgPrevisualizar;
-    
     private TextField txtImagen;
     private String rutaImagenSeleccionada;
 
@@ -95,7 +81,6 @@ public class VistaTerminalCrear extends StackPane {
         configurarGrilla(ancho, alto);
         crearTitulo();
         crearFormulario();
-        ajustarPosicion();
         
         getChildren().add(miGrilla);
     }
@@ -105,53 +90,63 @@ public class VistaTerminalCrear extends StackPane {
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
+        miGrilla.setAlignment(Pos.CENTER); // ✅ CENTRADO
         miGrilla.setPrefSize(anchoGrilla, alto);
         miGrilla.setMinSize(anchoGrilla, alto);
         miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         // Configurar columnas
-        ColumnConstraints col0 = new ColumnConstraints(220);
-        ColumnConstraints col1 = new ColumnConstraints(350);
+        ColumnConstraints col0 = new ColumnConstraints();
+        col0.setPercentWidth(40);
+        
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(60);
         col1.setHgrow(Priority.ALWAYS);
+        
         miGrilla.getColumnConstraints().addAll(col0, col1);
-
-        // Configurar filas
-        for (int i = 0; i < 11; i++) {
-            RowConstraints fila = new RowConstraints(ALTO_FILA);
-            miGrilla.getRowConstraints().add(fila);
-        }
     }
 
     private void crearTitulo() {
-        Text titulo = new Text("CREAR TERMINAL");
+        int columna = 0, fila = 0, colSpan = 2, rowSpan = 1;
+
+        // Espacio superior
+        Region espacioSuperior = new Region();
+        espacioSuperior.prefHeightProperty().bind(
+                miEscenario.heightProperty().multiply(0.05));
+        miGrilla.add(espacioSuperior, columna, fila, colSpan, rowSpan);
+
+        // Título centrado
+        fila = 1;
+        Text titulo = new Text("Formulario Creación de Terminal");
         titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 26));
         GridPane.setHalignment(titulo, HPos.CENTER);
-        GridPane.setMargin(titulo, new Insets(20, 0, 20, 0));
-        miGrilla.add(titulo, 0, 0, 2, 1);
+        miGrilla.add(titulo, columna, fila, colSpan, rowSpan);
     }
 
     private void crearFormulario() {
-        int fila = 1;
+        int fila = 2; // Empezamos después del título
+        int primeraColumna = 0;
+        int segundaColumna = 1;
 
-        // ============ TIPO 1: TextField ============
         // NOMBRE TERMINAL
+        fila++;
         Label lblNombre = new Label("Nombre Terminal:");
         lblNombre.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblNombre, 0, fila);
+        miGrilla.add(lblNombre, primeraColumna, fila);
 
         txtNombreTerminal = new TextField();
         txtNombreTerminal.setPromptText("Ej: Terminal del Norte");
         txtNombreTerminal.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtNombreTerminal, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtNombreTerminal, 50);
-        miGrilla.add(txtNombreTerminal, 1, fila);
+        miGrilla.add(txtNombreTerminal, segundaColumna, fila);
 
         // CIUDAD
         fila++;
         Label lblCiudad = new Label("Ciudad:");
         lblCiudad.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblCiudad, 0, fila);
+        miGrilla.add(lblCiudad, primeraColumna, fila);
 
         txtCiudadTerminal = new TextField();
         txtCiudadTerminal.setPromptText("Ej: Santa Marta");
@@ -159,39 +154,39 @@ public class VistaTerminalCrear extends StackPane {
         GridPane.setHgrow(txtCiudadTerminal, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtCiudadTerminal, 30);
         Formulario.soloLetras(txtCiudadTerminal);
-        miGrilla.add(txtCiudadTerminal, 1, fila);
+        miGrilla.add(txtCiudadTerminal, segundaColumna, fila);
 
         // DIRECCIÓN
         fila++;
         Label lblDireccion = new Label("Dirección:");
         lblDireccion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblDireccion, 0, fila);
+        miGrilla.add(lblDireccion, primeraColumna, fila);
 
         txtDireccionTerminal = new TextField();
         txtDireccionTerminal.setPromptText("Ej: Calle 25 # 15-30");
         txtDireccionTerminal.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtDireccionTerminal, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtDireccionTerminal, 100);
-        miGrilla.add(txtDireccionTerminal, 1, fila);
+        miGrilla.add(txtDireccionTerminal, segundaColumna, fila);
 
-        // ============ TIPO 2: ComboBox ============
+        // ESTADO
         fila++;
         Label lblEstado = new Label("Estado:");
         lblEstado.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblEstado, 0, fila);
+        miGrilla.add(lblEstado, primeraColumna, fila);
 
         cmbEstadoTerminal = new ComboBox<>();
         cmbEstadoTerminal.setMaxWidth(Double.MAX_VALUE);
         cmbEstadoTerminal.setPrefHeight(ALTO_CAJA);
         cmbEstadoTerminal.getItems().addAll("Seleccione estado", "Activo", "Inactivo");
         cmbEstadoTerminal.getSelectionModel().select(0);
-        miGrilla.add(cmbEstadoTerminal, 1, fila);
+        miGrilla.add(cmbEstadoTerminal, segundaColumna, fila);
 
-        // ============ TIPO 3: Spinner ============
+        // PLATAFORMAS (Spinner)
         fila++;
         Label lblPlataformas = new Label("Plataformas/Muelles:");
         lblPlataformas.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblPlataformas, 0, fila);
+        miGrilla.add(lblPlataformas, primeraColumna, fila);
 
         spinnerPlataformas = new Spinner<>();
         SpinnerValueFactory<Integer> valueFactory = 
@@ -200,13 +195,13 @@ public class VistaTerminalCrear extends StackPane {
         spinnerPlataformas.setPrefHeight(ALTO_CAJA);
         spinnerPlataformas.setMaxWidth(Double.MAX_VALUE);
         spinnerPlataformas.setEditable(true);
-        miGrilla.add(spinnerPlataformas, 1, fila);
+        miGrilla.add(spinnerPlataformas, segundaColumna, fila);
 
-        // ============ TIPO 4: CheckBox ============
+        // SERVICIOS (CheckBox)
         fila++;
         Label lblServicios = new Label("Servicios disponibles:");
         lblServicios.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblServicios, 0, fila);
+        miGrilla.add(lblServicios, primeraColumna, fila);
 
         chkWifi = new CheckBox("WiFi Gratis");
         chkCafeteria = new CheckBox("Cafetería");
@@ -218,13 +213,13 @@ public class VistaTerminalCrear extends StackPane {
 
         VBox vboxServicios = new VBox(5);
         vboxServicios.getChildren().addAll(chkWifi, chkCafeteria, chkBanos);
-        miGrilla.add(vboxServicios, 1, fila);
+        miGrilla.add(vboxServicios, segundaColumna, fila);
 
-        // ============ TIPO 5: Button (Imagen) ============
+        // IMAGEN
         fila++;
-        Label lblImagen = new Label("Imagen:");
+        Label lblImagen = new Label("Imagen de la terminal:");
         lblImagen.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblImagen, 0, fila);
+        miGrilla.add(lblImagen, primeraColumna, fila);
 
         txtImagen = new TextField();
         txtImagen.setDisable(true);
@@ -237,40 +232,45 @@ public class VistaTerminalCrear extends StackPane {
         btnSeleccionarImagen = new Button("+");
         btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
         btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        btnSeleccionarImagen.setOnAction(e -> seleccionarImagen(selector));
+        btnSeleccionarImagen.setOnAction(e -> {
+            rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
+            
+            if (!rutaImagenSeleccionada.isEmpty()) {
+                miGrilla.getChildren().remove(imgPorDefecto);
+                miGrilla.getChildren().remove(imgPrevisualizar);
+                
+                imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
+                GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
+                miGrilla.add(imgPrevisualizar, segundaColumna, + 1);
+            }
+        });
 
         HBox.setHgrow(txtImagen, Priority.ALWAYS);
         HBox panelImagen = new HBox(5, txtImagen, btnSeleccionarImagen);
-        miGrilla.add(panelImagen, 1, fila);
+        miGrilla.add(panelImagen, segundaColumna, fila);
 
-        // ============ TIPO 6: ImageView ============
+        // PREVISUALIZACIÓN DE IMAGEN (con más espacio)
         fila++;
         imgPorDefecto = Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        miGrilla.add(imgPorDefecto, 1, fila);
+        miGrilla.add(imgPorDefecto, segundaColumna, fila);
 
-        // ============ TIPO 5: Button (Grabar) ============
+        // ESPACIO ADICIONAL antes del botón
         fila++;
-        btnGrabar = new Button("CREAR TERMINAL");
+        Region espacioAntes = new Region();
+        espacioAntes.setPrefHeight(15);
+        miGrilla.add(espacioAntes, segundaColumna, fila);
+
+        // BOTÓN GRABAR
+        fila++;
+        btnGrabar = new Button("Crear Terminal");
         btnGrabar.setPrefHeight(ALTO_CAJA);
         btnGrabar.setMaxWidth(Double.MAX_VALUE);
-        btnGrabar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + 
-                "; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;");
+        btnGrabar.setTextFill(Color.web("#FFFFFF"));
+        btnGrabar.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        btnGrabar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + ";");
         btnGrabar.setOnAction(e -> guardarTerminal());
-        miGrilla.add(btnGrabar, 1, fila);
-    }
-
-    private void seleccionarImagen(FileChooser selector) {
-        rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
-        
-        if (!rutaImagenSeleccionada.isEmpty()) {
-            miGrilla.getChildren().remove(imgPorDefecto);
-            miGrilla.getChildren().remove(imgPrevisualizar);
-            
-            imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
-            GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-            miGrilla.add(imgPrevisualizar, 1, 7);
-        }
+        miGrilla.add(btnGrabar, segundaColumna, fila);
     }
 
     private Boolean formularioCompleto() {
@@ -321,9 +321,6 @@ public class VistaTerminalCrear extends StackPane {
             dto.setCantidadEmpresasTerminal((short) 0);
             dto.setNombreImagenPublicoTerminal(txtImagen.getText());
 
-            // Nota: Los servicios (CheckBox) y plataformas (Spinner) podrían 
-            // guardarse en campos adicionales del DTO si se requiere
-
             if (TerminalControladorGrabar.crearTerminal(dto, rutaImagenSeleccionada)) {
                 Mensaje.mostrar(Alert.AlertType.INFORMATION, this.getScene().getWindow(),
                         "Éxito", "Terminal creada correctamente");
@@ -349,19 +346,9 @@ public class VistaTerminalCrear extends StackPane {
 
         miGrilla.getChildren().remove(imgPrevisualizar);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        miGrilla.add(imgPorDefecto, 1, 7);
+        int filaImagen = 9; // Ajustar según la fila donde está la imagen
+        miGrilla.add(imgPorDefecto, 1, filaImagen);
 
         txtNombreTerminal.requestFocus();
-    }
-
-    private void ajustarPosicion() {
-        Runnable ajustar = () -> {
-            double alturaMarco = miMarco.getHeight();
-            if (alturaMarco > 0) {
-                miGrilla.setTranslateY(alturaMarco * 0.05);
-            }
-        };
-        ajustar.run();
-        miMarco.heightProperty().addListener((obs, old, nuevo) -> ajustar.run());
     }
 }
