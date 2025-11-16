@@ -66,8 +66,6 @@ public class VistaTerminalAdministrar extends StackPane {
         panelPrincipal = princ;
         panelCuerpo = pane;
         
-        setStyle("-fx-background-color: linear-gradient(to bottom, #E0F2FE, #BFDBFE, #93C5FD);");
-        
         marco = Marco.crear(
                 miEscenario,
                 Configuracion.MARCO_ALTO_PORCENTAJE,

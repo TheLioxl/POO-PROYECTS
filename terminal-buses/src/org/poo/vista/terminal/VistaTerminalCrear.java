@@ -66,8 +66,6 @@ public class VistaTerminalCrear extends StackPane {
         miEscenario = escenario;
         rutaImagenSeleccionada = "";
         setAlignment(Pos.CENTER);
-        
-        setStyle("-fx-background-color: linear-gradient(to bottom, #E0F2FE, #BFDBFE, #93C5FD);");
 
         miGrilla = new GridPane();
         miMarco = Marco.crear(

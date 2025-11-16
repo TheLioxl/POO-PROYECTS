@@ -47,7 +47,7 @@ public class VistaTerminalListar extends StackPane {
                 Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
-
+        
         miTabla = new TableView<>();
         cajaVertical = new VBox(20);
         getChildren().add(marco);
