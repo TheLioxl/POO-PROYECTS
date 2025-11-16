@@ -5,7 +5,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.poo.controlador.ControladorEfecto;
+import org.poo.dto.TerminalDto;
 import org.poo.vista.terminal.VistaTerminalAdministrar;
+import org.poo.vista.terminal.VistaTerminalCarrusel;
 import org.poo.vista.terminal.VistaTerminalCrear;
 import org.poo.vista.terminal.VistaTerminalEditar;
 import org.poo.vista.terminal.VistaTerminalListar;
@@ -48,7 +50,7 @@ public class TerminalControladorVentana {
             double anchoFrm, double altoFrm) {
         
         VistaTerminalAdministrar vista = new VistaTerminalAdministrar(
-                miEscenario, anchoFrm, altoFrm);
+                miEscenario, princ, pane, anchoFrm, altoFrm);
         StackPane contenedor = vista;
         
         // Aplicar efecto al abrir
@@ -63,22 +65,24 @@ public class TerminalControladorVentana {
     public static BorderPane carrusel(Stage miEscenario, BorderPane princ, Pane pane,
             double anchoFrm, double altoFrm, int indice) {
         
-        // TODO: Implementar VistaTerminalCarrusel
-        System.out.println("Carrusel de terminales - Por implementar");
+        VistaTerminalCarrusel vista = new VistaTerminalCarrusel(
+                miEscenario, princ, pane, anchoFrm, altoFrm, indice);
+        BorderPane contenedor = vista;
         
-        // Por ahora retornamos un BorderPane vacío
-        BorderPane contenedor = new BorderPane();
         ControladorEfecto.aplicarEfecto(contenedor, anchoFrm, altoFrm);
         
         return contenedor;
     }
     
+    /**
+     * Crea la vista de edición de terminales
+     */
     public static StackPane editar(Stage miEscenario, BorderPane princ, Pane pane,
-            double anchoFrm, double altoFrm) {
+            double anchoFrm, double altoFrm, TerminalDto objTerminal, int posicion) {
         
         VistaTerminalEditar vista = new VistaTerminalEditar(
-                miEscenario, anchoFrm, altoFrm);
-        StackPane contenedor = vista;
+                miEscenario, princ, pane, anchoFrm, altoFrm, objTerminal, posicion);
+        StackPane contenedor = vista.getMiFormulario();
         
         // Aplicar efecto al abrir
         ControladorEfecto.aplicarEfecto(contenedor, anchoFrm, altoFrm);

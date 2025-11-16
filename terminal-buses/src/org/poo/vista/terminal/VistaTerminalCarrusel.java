@@ -41,7 +41,6 @@ import org.poo.controlador.terminal.TerminalControladorVentana;
 import org.poo.dto.TerminalDto;
 import org.poo.recurso.constante.Configuracion;
 import org.poo.recurso.constante.Persistencia;
-import org.poo.recurso.utilidad.Fondo;
 import org.poo.recurso.utilidad.Icono;
 import org.poo.recurso.utilidad.Marco;
 import org.poo.recurso.utilidad.Mensaje;
@@ -221,22 +220,22 @@ public class VistaTerminalCarrusel extends BorderPane {
         btnActualizar.setCursor(Cursor.HAND);
         btnActualizar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_EDITAR, tamanioIcono));
 
-        btnActualizar.setOnAction((ActionEvent t) -> {
+        btnActualizar.setOnAction(e -> {
+            // ✅ ORDEN CORRECTO DE PARÁMETROS
             panelCuerpo = TerminalControladorVentana.editar(
-                    miEscenario, panelPrincipal, panelCuerpo,
-                    Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO,
-                    objCargado, indiceActual);
+                    miEscenario,              // Stage
+                    panelPrincipal,           // BorderPane
+                    panelCuerpo,              // Pane
+                    Configuracion.ANCHO_APP,  // double anchoFrm
+                    Configuracion.ALTO_CUERPO,// double altoFrm
+                    objCargado,               // TerminalDto
+                    indiceActual);            // int posicion
+                    
             panelPrincipal.setCenter(null);
             panelPrincipal.setCenter(panelCuerpo);
         });
-
-        HBox panelHorizontalBotones = new HBox(6);
-        panelHorizontalBotones.setAlignment(Pos.CENTER);
-        panelHorizontalBotones.getChildren().addAll(btnEliminar, btnActualizar);
-
-        organizadorVertical.getChildren().add(panelHorizontalBotones);
     }
-
+    
     private void mostrarDatos() {
         int tamanioFuente = 22;
 

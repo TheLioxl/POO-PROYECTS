@@ -13,7 +13,9 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -28,6 +30,7 @@ import org.poo.controlador.terminal.TerminalControladorEliminar;
 import org.poo.controlador.terminal.TerminalControladorListar;
 import org.poo.dto.TerminalDto;
 import org.poo.recurso.constante.Configuracion;
+import org.poo.recurso.utilidad.Fondo;
 import org.poo.recurso.utilidad.Icono;
 import org.poo.recurso.utilidad.Marco;
 import org.poo.recurso.utilidad.Mensaje;
@@ -52,9 +55,18 @@ public class VistaTerminalAdministrar extends StackPane {
     private HBox cajaBotones;
     private final ObservableList<TerminalDto> datosTabla = FXCollections.observableArrayList();
 
-    public VistaTerminalAdministrar(Stage ventanaPadre, double ancho, double alto) {
+    private Pane panelCuerpo;
+    private final BorderPane panelPrincipal;
+
+    public VistaTerminalAdministrar(Stage ventanaPadre, BorderPane princ, Pane pane,
+            double ancho, double alto) {
         setAlignment(Pos.CENTER);
         miEscenario = ventanaPadre;
+        panelPrincipal = princ;
+        panelCuerpo = pane;
+        
+        // Fondo aleatorio
+        setBackground(Fondo.asignarAleatorio(Configuracion.FONDOS));
         
         marco = Marco.crear(
                 miEscenario,
@@ -238,13 +250,34 @@ public class VistaTerminalAdministrar extends StackPane {
             }
         });
         
-        // Botón actualizar
+        // Botón actualizar/editar
         Button btnActualizar = new Button();
         btnActualizar.setPrefWidth(ancho);
         btnActualizar.setCursor(Cursor.HAND);
         btnActualizar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_EDITAR, tamanioIconito));
+        
         btnActualizar.setOnAction((e) -> {
-            System.out.println("Actualizar - Por implementar");
+            if (miTabla.getSelectionModel().getSelectedItem() == null) {
+                Mensaje.mostrar(Alert.AlertType.WARNING,
+                        miEscenario, "Advertencia", 
+                        "Debe seleccionar una terminal para editar");
+            } else {
+                TerminalDto objTerminal = miTabla.getSelectionModel().getSelectedItem();
+                int posi = miTabla.getSelectionModel().getSelectedIndex();
+                
+
+                panelCuerpo = TerminalControladorVentana.editar(
+                        miEscenario,        // Stage
+                        panelPrincipal,     // BorderPane
+                        panelCuerpo,        // Pane
+                        Configuracion.ANCHO_APP,     // double anchoFrm
+                        Configuracion.ALTO_CUERPO,   // double altoFrm
+                        objTerminal,        // TerminalDto
+                        posi);              // int posicion
+                        
+                panelPrincipal.setCenter(null);
+                panelPrincipal.setCenter(panelCuerpo);
+            }
         });
         
         // Botón cancelar

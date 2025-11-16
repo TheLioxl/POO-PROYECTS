@@ -123,4 +123,12 @@ public class Configuracion {
 
     // ALTURA DEL CUERPO (calculada)
     public static final double ALTO_CUERPO = ALTO_APP - ALTO_CABECERA;
+    
+     public static final String[] FONDOS = {
+        "fondo01.png",
+        "fondo02.png",
+        "fondo03.png",
+        "fondo04.png",
+        "fondo05.png"
+    };
 }

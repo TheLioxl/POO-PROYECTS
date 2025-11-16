@@ -9,7 +9,10 @@ public class TerminalControladorEditar {
         boolean correcto;
 
         TerminalServicio miDao = new TerminalServicio();
-        correcto = miDao.updateSet(indiceExterno, objExterno, rutaImagen);
+        TerminalDto resultado = miDao.updateSet(indiceExterno, objExterno, rutaImagen);
+        
+        // Si el resultado no es null, la actualización fue exitosa
+        correcto = (resultado != null);
         
         return correcto;
     }
