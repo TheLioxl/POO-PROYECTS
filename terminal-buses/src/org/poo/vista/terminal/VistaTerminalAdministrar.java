@@ -66,8 +66,7 @@ public class VistaTerminalAdministrar extends StackPane {
         panelPrincipal = princ;
         panelCuerpo = pane;
         
-        // Fondo aleatorio
-        setBackground(Fondo.asignarAleatorio(Configuracion.FONDOS));
+        setStyle("-fx-background-color: linear-gradient(to bottom, #E0F2FE, #BFDBFE, #93C5FD);");
         
         marco = Marco.crear(
                 miEscenario,

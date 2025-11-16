@@ -33,7 +33,6 @@ public class TerminalDto {
         this.tieneBanos = tieneBanos;
     }
 
-    // Getters y Setters
     public Integer getIdTerminal() {
         return idTerminal;
     }
@@ -82,6 +81,38 @@ public class TerminalDto {
         this.cantidadEmpresasTerminal = cantidadEmpresasTerminal;
     }
 
+    public Integer getNumeroPlataformas() {
+        return numeroPlataformas;
+    }
+
+    public void setNumeroPlataformas(Integer numeroPlataformas) {
+        this.numeroPlataformas = numeroPlataformas;
+    }
+
+    public Boolean getTieneWifi() {
+        return tieneWifi;
+    }
+
+    public void setTieneWifi(Boolean tieneWifi) {
+        this.tieneWifi = tieneWifi;
+    }
+
+    public Boolean getTieneCafeteria() {
+        return tieneCafeteria;
+    }
+
+    public void setTieneCafeteria(Boolean tieneCafeteria) {
+        this.tieneCafeteria = tieneCafeteria;
+    }
+
+    public Boolean getTieneBanos() {
+        return tieneBanos;
+    }
+
+    public void setTieneBanos(Boolean tieneBanos) {
+        this.tieneBanos = tieneBanos;
+    }
+
     public String getNombreImagenPublicoTerminal() {
         return nombreImagenPublicoTerminal;
     }
@@ -97,6 +128,8 @@ public class TerminalDto {
     public void setNombreImagenPrivadoTerminal(String nombreImagenPrivadoTerminal) {
         this.nombreImagenPrivadoTerminal = nombreImagenPrivadoTerminal;
     }
+
+    
 
     @Override
     public String toString() {
