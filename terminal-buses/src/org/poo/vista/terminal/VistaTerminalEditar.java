@@ -34,6 +34,10 @@ public class VistaTerminalEditar extends StackPane {
     private TextField txtCiudadTerminal;
     private TextField txtDireccionTerminal;
     private ComboBox<String> cmbEstadoTerminal;
+    private Spinner<Integer> spinnerPlataformas;
+    private CheckBox chkWifi;
+    private CheckBox chkCafeteria;
+    private CheckBox chkBanos;
     private TextField txtImagen;
     private ImageView imgPorDefecto;
     private ImageView imgPrevisualizar;

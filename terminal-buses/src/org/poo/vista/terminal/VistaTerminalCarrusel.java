@@ -221,19 +221,24 @@ public class VistaTerminalCarrusel extends BorderPane {
         btnActualizar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_EDITAR, tamanioIcono));
 
         btnActualizar.setOnAction(e -> {
-            // ✅ ORDEN CORRECTO DE PARÁMETROS
             panelCuerpo = TerminalControladorVentana.editar(
-                    miEscenario,              // Stage
-                    panelPrincipal,           // BorderPane
-                    panelCuerpo,              // Pane
-                    Configuracion.ANCHO_APP,  // double anchoFrm
-                    Configuracion.ALTO_CUERPO,// double altoFrm
-                    objCargado,               // TerminalDto
-                    indiceActual);            // int posicion
+                    miEscenario,
+                    panelPrincipal,
+                    panelCuerpo,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO,
+                    objCargado,
+                    indiceActual);
                     
             panelPrincipal.setCenter(null);
             panelPrincipal.setCenter(panelCuerpo);
         });
+
+        HBox panelBotones = new HBox(5);
+        panelBotones.setAlignment(Pos.CENTER);
+        panelBotones.getChildren().addAll(btnEliminar, btnActualizar);
+        
+        organizadorVertical.getChildren().add(panelBotones);
     }
     
     private void mostrarDatos() {

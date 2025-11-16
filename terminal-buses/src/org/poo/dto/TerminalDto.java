@@ -8,6 +8,10 @@ public class TerminalDto {
     private String direccionTerminal;
     private Boolean estadoTerminal;
     private Short cantidadEmpresasTerminal;
+    private Integer numeroPlataformas;
+    private Boolean tieneWifi;
+    private Boolean tieneCafeteria;
+    private Boolean tieneBanos;
     private String nombreImagenPublicoTerminal;
     private String nombreImagenPrivadoTerminal;
 
@@ -15,13 +19,18 @@ public class TerminalDto {
     }
 
     public TerminalDto(Integer idTerminal, String nombreTerminal, String ciudadTerminal,
-                      String direccionTerminal, Boolean estadoTerminal, Short cantidadEmpresasTerminal) {
+                      String direccionTerminal, Boolean estadoTerminal, Short cantidadEmpresasTerminal,
+                      Integer numeroPlataformas, Boolean tieneWifi, Boolean tieneCafeteria, Boolean tieneBanos) {
         this.idTerminal = idTerminal;
         this.nombreTerminal = nombreTerminal;
         this.ciudadTerminal = ciudadTerminal;
         this.direccionTerminal = direccionTerminal;
         this.estadoTerminal = estadoTerminal;
         this.cantidadEmpresasTerminal = cantidadEmpresasTerminal;
+        this.numeroPlataformas = numeroPlataformas;
+        this.tieneWifi = tieneWifi;
+        this.tieneCafeteria = tieneCafeteria;
+        this.tieneBanos = tieneBanos;
     }
 
     // Getters y Setters

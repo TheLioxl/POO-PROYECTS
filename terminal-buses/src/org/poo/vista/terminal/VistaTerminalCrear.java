@@ -318,6 +318,10 @@ public class VistaTerminalCrear extends StackPane {
             dto.setCiudadTerminal(txtCiudadTerminal.getText());
             dto.setDireccionTerminal(txtDireccionTerminal.getText());
             dto.setEstadoTerminal(cmbEstadoTerminal.getValue().equals("Activo"));
+            dto.setNumeroPlataformas(spinnerPlataformas.getValue());
+            dto.setTieneWifi(chkWifi.isSelected());
+            dto.setTieneCafeteria(chkCafeteria.isSelected());
+            dto.setTieneBanos(chkBanos.isSelected());
             dto.setCantidadEmpresasTerminal((short) 0);
             dto.setNombreImagenPublicoTerminal(txtImagen.getText());
 

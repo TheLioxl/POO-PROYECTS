@@ -173,7 +173,38 @@ public class TerminalServicio implements ApiOperacionBD<TerminalDto, Integer> {
     }
 
     @Override
-    public TerminalDto updateSet(Integer codigo, TerminalDto objeto, String ruta) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public TerminalDto insertInto(TerminalDto dto, String ruta) {
+        Terminal objTerminal = new Terminal();
+
+        objTerminal.setIdTerminal(getSerial());
+        objTerminal.setNombreTerminal(dto.getNombreTerminal());
+        objTerminal.setCiudadTerminal(dto.getCiudadTerminal());
+        objTerminal.setDireccionTerminal(dto.getDireccionTerminal());
+        objTerminal.setEstadoTerminal(dto.getEstadoTerminal());
+        objTerminal.setNumeroPlataformas(dto.getNumeroPlataformas());
+        objTerminal.setTieneWifi(dto.getTieneWifi());
+        objTerminal.setTieneCafeteria(dto.getTieneCafeteria());
+        objTerminal.setTieneBanos(dto.getTieneBanos());
+        objTerminal.setNombreImagenPublicoTerminal(dto.getNombreImagenPublicoTerminal());
+        objTerminal.setNombreImagenPrivadoTerminal(GestorImagen.grabarLaImagen(ruta));
+
+        String filaGrabar = objTerminal.getIdTerminal() + Persistencia.SEPARADOR_COLUMNAS
+                + objTerminal.getNombreTerminal() + Persistencia.SEPARADOR_COLUMNAS
+                + objTerminal.getCiudadTerminal() + Persistencia.SEPARADOR_COLUMNAS
+                + objTerminal.getDireccionTerminal() + Persistencia.SEPARADOR_COLUMNAS
+                + objTerminal.getEstadoTerminal() + Persistencia.SEPARADOR_COLUMNAS
+                + objTerminal.getNumeroPlataformas() + Persistencia.SEPARADOR_COLUMNAS
+                + objTerminal.getTieneWifi() + Persistencia.SEPARADOR_COLUMNAS
+                + objTerminal.getTieneCafeteria() + Persistencia.SEPARADOR_COLUMNAS
+                + objTerminal.getTieneBanos() + Persistencia.SEPARADOR_COLUMNAS
+                + objTerminal.getNombreImagenPublicoTerminal() + Persistencia.SEPARADOR_COLUMNAS
+                + objTerminal.getNombreImagenPrivadoTerminal();
+
+        if (miArchivo.agregarRegistro(filaGrabar)) {
+            dto.setIdTerminal(objTerminal.getIdTerminal());
+            return dto;
+        }
+
+        return null;
     }
 }

@@ -79,18 +79,19 @@ public class VistaCabecera extends HBox {
         MenuItem opcion1 = new MenuItem("Crear Terminal");
         MenuItem opcion2 = new MenuItem("Listar Terminales");
         MenuItem opcion3 = new MenuItem("Administrar Terminales");
+        MenuItem opcion4 = new MenuItem("Carrusel");
 
         opcion1.setOnAction(e -> {
-            miPanelCuerpo = new org.poo.vista.terminal.VistaTerminalCrear(
-                    miEscenario, 
-                    Configuracion.ANCHO_APP, 
+            miPanelCuerpo = org.poo.controlador.terminal.TerminalControladorVentana.crear(
+                    miEscenario,
+                    Configuracion.ANCHO_APP,
                     Configuracion.ALTO_CUERPO);
             miPanelPrincipal.setCenter(null);
             miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         opcion2.setOnAction(e -> {
-            miPanelCuerpo = new org.poo.vista.terminal.VistaTerminalListar(
+            miPanelCuerpo = org.poo.controlador.terminal.TerminalControladorVentana.listar(
                     miEscenario,
                     Configuracion.ANCHO_APP,
                     Configuracion.ALTO_CUERPO);
@@ -99,7 +100,27 @@ public class VistaCabecera extends HBox {
         });
 
         opcion3.setOnAction(e -> {
-            System.out.println("Administrar Terminales - Por implementar");
+            miPanelCuerpo = org.poo.controlador.terminal.TerminalControladorVentana.administrar(
+                    miEscenario,
+                    miPanelPrincipal,
+                    miPanelCuerpo,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
+        });
+
+        opcion4.setOnAction(e -> {
+            int posicionInicial = 0;
+            miPanelCuerpo = org.poo.controlador.terminal.TerminalControladorVentana.carrusel(
+                    miEscenario,
+                    miPanelPrincipal,
+                    miPanelCuerpo,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO,
+                    posicionInicial);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         MenuButton menuButton = new MenuButton("Terminales");
@@ -108,7 +129,7 @@ public class VistaCabecera extends HBox {
         } catch (Exception ex) {
             System.out.println("No se pudo cargar ícono de Terminal");
         }
-        menuButton.getItems().addAll(opcion1, opcion2, opcion3);
+        menuButton.getItems().addAll(opcion1, opcion2, opcion3, opcion4);
         agregarMenu(menuButton);
     }
 
