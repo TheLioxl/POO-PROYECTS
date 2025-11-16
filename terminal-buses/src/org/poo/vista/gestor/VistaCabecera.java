@@ -73,8 +73,7 @@ public class VistaCabecera extends HBox {
         menu.setPrefHeight(MENU_ALTO);
         getChildren().add(menu);
     }
-
-    // ====================== MENÚ TERMINAL ======================
+    
     // ====================== MENÚ TERMINAL ======================
     private void menuTerminal() {
         MenuItem opcion1 = new MenuItem("Crear Terminal");

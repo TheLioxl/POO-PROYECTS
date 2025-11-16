@@ -28,6 +28,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.poo.controlador.terminal.TerminalControladorEliminar;
 import org.poo.controlador.terminal.TerminalControladorListar;
+import org.poo.controlador.terminal.TerminalControladorVentana;
 import org.poo.dto.TerminalDto;
 import org.poo.recurso.constante.Configuracion;
 import org.poo.recurso.utilidad.Fondo;
@@ -267,13 +268,13 @@ public class VistaTerminalAdministrar extends StackPane {
                 
 
                 panelCuerpo = TerminalControladorVentana.editar(
-                        miEscenario,        // Stage
-                        panelPrincipal,     // BorderPane
-                        panelCuerpo,        // Pane
+                        miEscenario,                 // Stage
+                        panelPrincipal,              // BorderPane
+                        panelCuerpo,                 // Pane
                         Configuracion.ANCHO_APP,     // double anchoFrm
                         Configuracion.ALTO_CUERPO,   // double altoFrm
-                        objTerminal,        // TerminalDto
-                        posi);              // int posicion
+                        objTerminal,                 // TerminalDto
+                        posi);             // int posicion
                         
                 panelPrincipal.setCenter(null);
                 panelPrincipal.setCenter(panelCuerpo);
