@@ -1,2 +1,2 @@
-1;aaaa;bbbbb;ccccc;true;7;true;true;true;f434198617b505887d949e52b0995f61.jpg;630d09df-39a8-4f93-a068-343cbeb6e3d9_f434198617b505887d949e52b0995f61.jpg@
-2;mamaguevo;aqui;3 alla y 2 aca;true;5;true;false;true;EnsQOQ8W4AAIDu7.jpg;dff42db9-100f-42b9-b69a-1e5c53aa5595_EnsQOQ8W4AAIDu7.jpg@
+1;Lamentable;Santa Marta;Calle 22 Kra 7;true;8;true;true;true;EnsQOQ8W4AAIDu7.jpg;408f9254-0c76-4e62-9e5f-2613a4a0aac8_EnsQOQ8W4AAIDu7.jpg@
+2;Barberos;Barranquilla;Calle 45 Kra 38;true;14;true;false;true;f434198617b505887d949e52b0995f61.jpg;c88a51cd-4837-4781-be40-280c61622d36_f434198617b505887d949e52b0995f61.jpg@

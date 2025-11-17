@@ -1,1 +1,1 @@
-1;brasilia;9001234-5;1;true;87b14ff7e9e66dd38bc8aced002adaff.png;3b8e79d6-cf0f-4f3a-817e-cf535cb3c34b_87b14ff7e9e66dd38bc8aced002adaff.png@
+1;Brasilia;900-13452-1;1;true;2021-02-17;50;true;true;true;es una empresa destinada al transporte rapido y eficiente;87b14ff7e9e66dd38bc8aced002adaff.png;3ffbb350-7f07-49ad-a15d-5ce422514d53_87b14ff7e9e66dd38bc8aced002adaff.png@
