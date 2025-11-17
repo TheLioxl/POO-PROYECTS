@@ -13,16 +13,26 @@ public class Viaje {
     private LocalTime horaSalidaViaje;
     private Double precioViaje;
     private Integer asientosDisponiblesViaje;
-    private Boolean estadoViaje; // Programado, En curso, Finalizado
+    private Boolean estadoViaje; // Activo/Inactivo
     private String nombreImagenPublicoViaje;
     private String nombreImagenPrivadoViaje;
+    
+    // NUEVOS CAMPOS PARA 6 TIPOS DE OBJETOS
+    private LocalTime horaLlegadaViaje;        // DatePicker (TimePicker)
+    private Boolean viajeDirecto;              // CheckBox
+    private Boolean incluyeRefrigerio;         // CheckBox
+    private Boolean tieneParadasIntermedias;   // CheckBox
+    private String descripcionViaje;           // TextField
+    private String notasAdicionalesViaje;      // TextArea
 
     public Viaje() {
     }
 
     public Viaje(Integer idViaje, Bus busViaje, Ruta rutaViaje, Conductor conductorViaje,
-                LocalDate fechaViaje, LocalTime horaSalidaViaje, Double precioViaje,
-                Integer asientosDisponiblesViaje, Boolean estadoViaje,
+                LocalDate fechaViaje, LocalTime horaSalidaViaje, LocalTime horaLlegadaViaje,
+                Double precioViaje, Integer asientosDisponiblesViaje, Boolean estadoViaje,
+                Boolean viajeDirecto, Boolean incluyeRefrigerio, Boolean tieneParadasIntermedias,
+                String descripcionViaje, String notasAdicionalesViaje,
                 String nombreImagenPublicoViaje, String nombreImagenPrivadoViaje) {
         this.idViaje = idViaje;
         this.busViaje = busViaje;
@@ -30,14 +40,21 @@ public class Viaje {
         this.conductorViaje = conductorViaje;
         this.fechaViaje = fechaViaje;
         this.horaSalidaViaje = horaSalidaViaje;
+        this.horaLlegadaViaje = horaLlegadaViaje;
         this.precioViaje = precioViaje;
         this.asientosDisponiblesViaje = asientosDisponiblesViaje;
         this.estadoViaje = estadoViaje;
+        this.viajeDirecto = viajeDirecto;
+        this.incluyeRefrigerio = incluyeRefrigerio;
+        this.tieneParadasIntermedias = tieneParadasIntermedias;
+        this.descripcionViaje = descripcionViaje;
+        this.notasAdicionalesViaje = notasAdicionalesViaje;
         this.nombreImagenPublicoViaje = nombreImagenPublicoViaje;
         this.nombreImagenPrivadoViaje = nombreImagenPrivadoViaje;
     }
 
-    // Getters y Setters
+    // ==================== GETTERS Y SETTERS ORIGINALES ====================
+    
     public Integer getIdViaje() {
         return idViaje;
     }
@@ -124,6 +141,56 @@ public class Viaje {
 
     public void setNombreImagenPrivadoViaje(String nombreImagenPrivadoViaje) {
         this.nombreImagenPrivadoViaje = nombreImagenPrivadoViaje;
+    }
+
+    // ==================== NUEVOS GETTERS Y SETTERS ====================
+    
+    public LocalTime getHoraLlegadaViaje() {
+        return horaLlegadaViaje;
+    }
+
+    public void setHoraLlegadaViaje(LocalTime horaLlegadaViaje) {
+        this.horaLlegadaViaje = horaLlegadaViaje;
+    }
+
+    public Boolean getViajeDirecto() {
+        return viajeDirecto;
+    }
+
+    public void setViajeDirecto(Boolean viajeDirecto) {
+        this.viajeDirecto = viajeDirecto;
+    }
+
+    public Boolean getIncluyeRefrigerio() {
+        return incluyeRefrigerio;
+    }
+
+    public void setIncluyeRefrigerio(Boolean incluyeRefrigerio) {
+        this.incluyeRefrigerio = incluyeRefrigerio;
+    }
+
+    public Boolean getTieneParadasIntermedias() {
+        return tieneParadasIntermedias;
+    }
+
+    public void setTieneParadasIntermedias(Boolean tieneParadasIntermedias) {
+        this.tieneParadasIntermedias = tieneParadasIntermedias;
+    }
+
+    public String getDescripcionViaje() {
+        return descripcionViaje;
+    }
+
+    public void setDescripcionViaje(String descripcionViaje) {
+        this.descripcionViaje = descripcionViaje;
+    }
+
+    public String getNotasAdicionalesViaje() {
+        return notasAdicionalesViaje;
+    }
+
+    public void setNotasAdicionalesViaje(String notasAdicionalesViaje) {
+        this.notasAdicionalesViaje = notasAdicionalesViaje;
     }
 
     @Override

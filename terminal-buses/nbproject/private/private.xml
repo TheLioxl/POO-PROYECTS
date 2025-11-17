@@ -2,6 +2,16 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/vista/gestor/VistaCabecera.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/servicio/DestinoServicio.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/servicio/EmpresaServicio.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/dto/EmpresaDto.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/vista/terminal/VistaTerminalCarrusel.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/vista/empresa/VistaEmpresaEditar.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/vista/empresa/VistaEmpresaAdministrar.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/controlador/empresa/EmpresaControladorVentana.java</file>
+            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/vista/empresa/VistaEmpresaCarrusel.java</file>
+        </group>
     </open-files>
 </project-private>

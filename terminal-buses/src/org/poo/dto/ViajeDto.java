@@ -11,9 +11,15 @@ public class ViajeDto {
     private ConductorDto conductorViaje;
     private LocalDate fechaViaje;
     private LocalTime horaSalidaViaje;
+    private LocalTime horaLlegadaViaje;
     private Double precioViaje;
     private Integer asientosDisponiblesViaje;
     private Boolean estadoViaje;
+    private Boolean viajeDirecto;
+    private Boolean incluyeRefrigerio;
+    private Boolean tieneParadasIntermedias;
+    private String descripcionViaje;
+    private String notasAdicionalesViaje;
     private String nombreImagenPublicoViaje;
     private String nombreImagenPrivadoViaje;
 
@@ -21,8 +27,10 @@ public class ViajeDto {
     }
 
     public ViajeDto(Integer idViaje, BusDto busViaje, RutaDto rutaViaje, ConductorDto conductorViaje,
-                   LocalDate fechaViaje, LocalTime horaSalidaViaje, Double precioViaje,
-                   Integer asientosDisponiblesViaje, Boolean estadoViaje,
+                   LocalDate fechaViaje, LocalTime horaSalidaViaje, LocalTime horaLlegadaViaje,
+                   Double precioViaje, Integer asientosDisponiblesViaje, Boolean estadoViaje,
+                   Boolean viajeDirecto, Boolean incluyeRefrigerio, Boolean tieneParadasIntermedias,
+                   String descripcionViaje, String notasAdicionalesViaje,
                    String nombreImagenPublicoViaje, String nombreImagenPrivadoViaje) {
         this.idViaje = idViaje;
         this.busViaje = busViaje;
@@ -30,14 +38,21 @@ public class ViajeDto {
         this.conductorViaje = conductorViaje;
         this.fechaViaje = fechaViaje;
         this.horaSalidaViaje = horaSalidaViaje;
+        this.horaLlegadaViaje = horaLlegadaViaje;
         this.precioViaje = precioViaje;
         this.asientosDisponiblesViaje = asientosDisponiblesViaje;
         this.estadoViaje = estadoViaje;
+        this.viajeDirecto = viajeDirecto;
+        this.incluyeRefrigerio = incluyeRefrigerio;
+        this.tieneParadasIntermedias = tieneParadasIntermedias;
+        this.descripcionViaje = descripcionViaje;
+        this.notasAdicionalesViaje = notasAdicionalesViaje;
         this.nombreImagenPublicoViaje = nombreImagenPublicoViaje;
         this.nombreImagenPrivadoViaje = nombreImagenPrivadoViaje;
     }
 
-    // Getters y Setters
+    // ==================== GETTERS Y SETTERS ====================
+    
     public Integer getIdViaje() {
         return idViaje;
     }
@@ -86,6 +101,14 @@ public class ViajeDto {
         this.horaSalidaViaje = horaSalidaViaje;
     }
 
+    public LocalTime getHoraLlegadaViaje() {
+        return horaLlegadaViaje;
+    }
+
+    public void setHoraLlegadaViaje(LocalTime horaLlegadaViaje) {
+        this.horaLlegadaViaje = horaLlegadaViaje;
+    }
+
     public Double getPrecioViaje() {
         return precioViaje;
     }
@@ -108,6 +131,46 @@ public class ViajeDto {
 
     public void setEstadoViaje(Boolean estadoViaje) {
         this.estadoViaje = estadoViaje;
+    }
+
+    public Boolean getViajeDirecto() {
+        return viajeDirecto;
+    }
+
+    public void setViajeDirecto(Boolean viajeDirecto) {
+        this.viajeDirecto = viajeDirecto;
+    }
+
+    public Boolean getIncluyeRefrigerio() {
+        return incluyeRefrigerio;
+    }
+
+    public void setIncluyeRefrigerio(Boolean incluyeRefrigerio) {
+        this.incluyeRefrigerio = incluyeRefrigerio;
+    }
+
+    public Boolean getTieneParadasIntermedias() {
+        return tieneParadasIntermedias;
+    }
+
+    public void setTieneParadasIntermedias(Boolean tieneParadasIntermedias) {
+        this.tieneParadasIntermedias = tieneParadasIntermedias;
+    }
+
+    public String getDescripcionViaje() {
+        return descripcionViaje;
+    }
+
+    public void setDescripcionViaje(String descripcionViaje) {
+        this.descripcionViaje = descripcionViaje;
+    }
+
+    public String getNotasAdicionalesViaje() {
+        return notasAdicionalesViaje;
+    }
+
+    public void setNotasAdicionalesViaje(String notasAdicionalesViaje) {
+        this.notasAdicionalesViaje = notasAdicionalesViaje;
     }
 
     public String getNombreImagenPublicoViaje() {
