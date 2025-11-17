@@ -2,6 +2,9 @@ package org.poo.servicio;
 
 import com.poo.persistence.NioFile;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +16,6 @@ import org.poo.api.ApiOperacionBD;
 import org.poo.dto.EmpresaDto;
 import org.poo.dto.TerminalDto;
 import org.poo.modelo.Empresa;
-import org.poo.modelo.Terminal;
 import org.poo.recurso.constante.Persistencia;
 import org.poo.recurso.utilidad.GestorImagen;
 
@@ -69,7 +71,6 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
         return null;
     }
 
-    // Método para contar empresas por terminal
     public Map<Integer, Integer> empresasPorTerminal() {
         Map<Integer, Integer> arrCantidades = new HashMap<>();
         List<String> arregloDatos = miArchivo.obtenerDatos();
@@ -89,11 +90,9 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
 
     @Override
     public List<EmpresaDto> selectFrom() {
-        // Obtener terminales completos
         TerminalServicio terminalServicio = new TerminalServicio();
         List<TerminalDto> arrTerminales = terminalServicio.selectFrom();
 
-        // Obtener cantidad de buses por empresa
         BusServicio busServicio = new BusServicio();
         Map<Integer, Integer> arrCantBuses = busServicio.busesPorEmpresa();
 
@@ -124,7 +123,6 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
                 dto.setNombreImagenPublicoEmpresa(npub);
                 dto.setNombreImagenPrivadoEmpresa(nocu);
 
-                // Asignar terminal completo
                 dto.setTerminalEmpresa(obtenerTerminalCompleto(codTerminal, arrTerminales));
 
                 arregloEmpresa.add(dto);
@@ -209,6 +207,11 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
         try {
             List<String> arreglo = miArchivo.borrarFilaPosicion(codigo);
             if (!arreglo.isEmpty()) {
+                String nocu = arreglo.get(arreglo.size() - 1);
+                String nombreBorrar = Persistencia.RUTA_IMAGENES 
+                        + Persistencia.SEPARADOR_CARPETAS + nocu;
+                Path rutaBorrar = Paths.get(nombreBorrar);
+                Files.deleteIfExists(rutaBorrar);
                 correcto = true;
             }
         } catch (IOException ex) {
@@ -219,11 +222,55 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
 
     @Override
     public EmpresaDto getOne(Integer codigo) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        int contador = 0;
+        EmpresaDto objListo = new EmpresaDto();
+        List<EmpresaDto> arrEmpresas = selectFrom();
+
+        for (EmpresaDto objEmpresa : arrEmpresas) {
+            if (contador == codigo) {
+                objListo = objEmpresa;
+                break;
+            }
+            contador++;
+        }
+        return objListo;
     }
 
     @Override
     public EmpresaDto updateSet(Integer codigo, EmpresaDto objeto, String ruta) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            String cadena, nocu;
+            List<String> arregloDatos;
+
+            cadena = objeto.getIdEmpresa() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getNombreEmpresa() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getNitEmpresa() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getTerminalEmpresa().getIdTerminal() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getEstadoEmpresa() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getNombreImagenPublicoEmpresa() + Persistencia.SEPARADOR_COLUMNAS;
+
+            if (ruta.isBlank()) {
+                cadena = cadena + objeto.getNombreImagenPrivadoEmpresa();
+            } else {
+                nocu = GestorImagen.grabarLaImagen(ruta);
+                cadena = cadena + nocu;
+                
+                arregloDatos = miArchivo.borrarFilaPosicion(codigo);
+                if (!arregloDatos.isEmpty()) {
+                    String nomOculto = arregloDatos.get(arregloDatos.size() - 1);
+                    String nombreBorrar = Persistencia.RUTA_IMAGENES 
+                            + Persistencia.SEPARADOR_CARPETAS + nomOculto;
+                    Path rutaBorrar = Paths.get(nombreBorrar);
+                    Files.deleteIfExists(rutaBorrar);
+                }
+            }
+
+            if (miArchivo.actualizaFilaPosicion(codigo, cadena)) {
+                return objeto;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(EmpresaServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
