@@ -1,5 +1,7 @@
 package org.poo.modelo;
 
+import java.time.LocalDate;
+
 public class Empresa {
     
     private Integer idEmpresa;
@@ -10,13 +12,23 @@ public class Empresa {
     private Short cantidadBusesEmpresa;
     private String nombreImagenPublicoEmpresa;
     private String nombreImagenPrivadoEmpresa;
+    
+    // NUEVOS CAMPOS PARA 6 TIPOS DE OBJETOS
+    private LocalDate fechaFundacion;
+    private Integer cantidadEmpleados;
+    private Boolean servicio24Horas;
+    private Boolean tieneMantenimientoPropio;
+    private Boolean tieneServicioCliente;
+    private String descripcionEmpresa;
 
     public Empresa() {
     }
 
     public Empresa(Integer idEmpresa, String nombreEmpresa, String nitEmpresa, 
                   Terminal terminalEmpresa, Boolean estadoEmpresa, Short cantidadBusesEmpresa,
-                  String nombreImagenPublicoEmpresa, String nombreImagenPrivadoEmpresa) {
+                  String nombreImagenPublicoEmpresa, String nombreImagenPrivadoEmpresa,
+                  LocalDate fechaFundacion, Integer cantidadEmpleados, Boolean servicio24Horas,
+                  Boolean tieneMantenimientoPropio, Boolean tieneServicioCliente, String descripcionEmpresa) {
         this.idEmpresa = idEmpresa;
         this.nombreEmpresa = nombreEmpresa;
         this.nitEmpresa = nitEmpresa;
@@ -25,9 +37,16 @@ public class Empresa {
         this.cantidadBusesEmpresa = cantidadBusesEmpresa;
         this.nombreImagenPublicoEmpresa = nombreImagenPublicoEmpresa;
         this.nombreImagenPrivadoEmpresa = nombreImagenPrivadoEmpresa;
+        this.fechaFundacion = fechaFundacion;
+        this.cantidadEmpleados = cantidadEmpleados;
+        this.servicio24Horas = servicio24Horas;
+        this.tieneMantenimientoPropio = tieneMantenimientoPropio;
+        this.tieneServicioCliente = tieneServicioCliente;
+        this.descripcionEmpresa = descripcionEmpresa;
     }
 
-    // Getters y Setters
+    // ==================== GETTERS Y SETTERS EXISTENTES ====================
+    
     public Integer getIdEmpresa() {
         return idEmpresa;
     }
@@ -90,6 +109,56 @@ public class Empresa {
 
     public void setNombreImagenPrivadoEmpresa(String nombreImagenPrivadoEmpresa) {
         this.nombreImagenPrivadoEmpresa = nombreImagenPrivadoEmpresa;
+    }
+
+    // ==================== NUEVOS GETTERS Y SETTERS ====================
+    
+    public LocalDate getFechaFundacion() {
+        return fechaFundacion;
+    }
+
+    public void setFechaFundacion(LocalDate fechaFundacion) {
+        this.fechaFundacion = fechaFundacion;
+    }
+
+    public Integer getCantidadEmpleados() {
+        return cantidadEmpleados;
+    }
+
+    public void setCantidadEmpleados(Integer cantidadEmpleados) {
+        this.cantidadEmpleados = cantidadEmpleados;
+    }
+
+    public Boolean getServicio24Horas() {
+        return servicio24Horas;
+    }
+
+    public void setServicio24Horas(Boolean servicio24Horas) {
+        this.servicio24Horas = servicio24Horas;
+    }
+
+    public Boolean getTieneMantenimientoPropio() {
+        return tieneMantenimientoPropio;
+    }
+
+    public void setTieneMantenimientoPropio(Boolean tieneMantenimientoPropio) {
+        this.tieneMantenimientoPropio = tieneMantenimientoPropio;
+    }
+
+    public Boolean getTieneServicioCliente() {
+        return tieneServicioCliente;
+    }
+
+    public void setTieneServicioCliente(Boolean tieneServicioCliente) {
+        this.tieneServicioCliente = tieneServicioCliente;
+    }
+
+    public String getDescripcionEmpresa() {
+        return descripcionEmpresa;
+    }
+
+    public void setDescripcionEmpresa(String descripcionEmpresa) {
+        this.descripcionEmpresa = descripcionEmpresa;
     }
 
     @Override

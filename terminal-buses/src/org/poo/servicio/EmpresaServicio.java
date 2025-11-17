@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,12 +55,26 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
         objEmpresa.setEstadoEmpresa(dto.getEstadoEmpresa());
         objEmpresa.setNombreImagenPublicoEmpresa(dto.getNombreImagenPublicoEmpresa());
         objEmpresa.setNombreImagenPrivadoEmpresa(GestorImagen.grabarLaImagen(ruta));
+        
+        // NUEVOS CAMPOS
+        objEmpresa.setFechaFundacion(dto.getFechaFundacion());
+        objEmpresa.setCantidadEmpleados(dto.getCantidadEmpleados());
+        objEmpresa.setServicio24Horas(dto.getServicio24Horas());
+        objEmpresa.setTieneMantenimientoPropio(dto.getTieneMantenimientoPropio());
+        objEmpresa.setTieneServicioCliente(dto.getTieneServicioCliente());
+        objEmpresa.setDescripcionEmpresa(dto.getDescripcionEmpresa());
 
         String filaGrabar = objEmpresa.getIdEmpresa() + Persistencia.SEPARADOR_COLUMNAS
                 + objEmpresa.getNombreEmpresa() + Persistencia.SEPARADOR_COLUMNAS
                 + objEmpresa.getNitEmpresa() + Persistencia.SEPARADOR_COLUMNAS
                 + dto.getTerminalEmpresa().getIdTerminal() + Persistencia.SEPARADOR_COLUMNAS
                 + objEmpresa.getEstadoEmpresa() + Persistencia.SEPARADOR_COLUMNAS
+                + objEmpresa.getFechaFundacion().toString() + Persistencia.SEPARADOR_COLUMNAS
+                + objEmpresa.getCantidadEmpleados() + Persistencia.SEPARADOR_COLUMNAS
+                + objEmpresa.getServicio24Horas() + Persistencia.SEPARADOR_COLUMNAS
+                + objEmpresa.getTieneMantenimientoPropio() + Persistencia.SEPARADOR_COLUMNAS
+                + objEmpresa.getTieneServicioCliente() + Persistencia.SEPARADOR_COLUMNAS
+                + objEmpresa.getDescripcionEmpresa() + Persistencia.SEPARADOR_COLUMNAS
                 + objEmpresa.getNombreImagenPublicoEmpresa() + Persistencia.SEPARADOR_COLUMNAS
                 + objEmpresa.getNombreImagenPrivadoEmpresa();
 
@@ -109,8 +124,14 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
                 String nitEmpresa = columnas[2].trim();
                 int codTerminal = Integer.parseInt(columnas[3].trim());
                 Boolean estEmpresa = Boolean.valueOf(columnas[4].trim());
-                String npub = columnas[5].trim();
-                String nocu = columnas[6].trim();
+                LocalDate fechaFund = LocalDate.parse(columnas[5].trim());
+                Integer cantEmpleados = Integer.parseInt(columnas[6].trim());
+                Boolean servicio24 = Boolean.valueOf(columnas[7].trim());
+                Boolean tieneMantenimiento = Boolean.valueOf(columnas[8].trim());
+                Boolean tieneServCliente = Boolean.valueOf(columnas[9].trim());
+                String descripcion = columnas[10].trim();
+                String npub = columnas[11].trim();
+                String nocu = columnas[12].trim();
 
                 Short cantBuses = arrCantBuses.getOrDefault(codEmpresa, 0).shortValue();
 
@@ -120,6 +141,12 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
                 dto.setNitEmpresa(nitEmpresa);
                 dto.setEstadoEmpresa(estEmpresa);
                 dto.setCantidadBusesEmpresa(cantBuses);
+                dto.setFechaFundacion(fechaFund);
+                dto.setCantidadEmpleados(cantEmpleados);
+                dto.setServicio24Horas(servicio24);
+                dto.setTieneMantenimientoPropio(tieneMantenimiento);
+                dto.setTieneServicioCliente(tieneServCliente);
+                dto.setDescripcionEmpresa(descripcion);
                 dto.setNombreImagenPublicoEmpresa(npub);
                 dto.setNombreImagenPrivadoEmpresa(nocu);
 
@@ -127,7 +154,7 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
 
                 arregloEmpresa.add(dto);
 
-            } catch (NumberFormatException error) {
+            } catch (Exception error) {
                 Logger.getLogger(EmpresaServicio.class.getName()).log(Level.SEVERE, null, error);
             }
         }
@@ -164,8 +191,14 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
                 String nitEmpresa = columnas[2].trim();
                 int codTerminal = Integer.parseInt(columnas[3].trim());
                 Boolean estEmpresa = Boolean.valueOf(columnas[4].trim());
-                String npub = columnas[5].trim();
-                String nocu = columnas[6].trim();
+                LocalDate fechaFund = LocalDate.parse(columnas[5].trim());
+                Integer cantEmpleados = Integer.parseInt(columnas[6].trim());
+                Boolean servicio24 = Boolean.valueOf(columnas[7].trim());
+                Boolean tieneMantenimiento = Boolean.valueOf(columnas[8].trim());
+                Boolean tieneServCliente = Boolean.valueOf(columnas[9].trim());
+                String descripcion = columnas[10].trim();
+                String npub = columnas[11].trim();
+                String nocu = columnas[12].trim();
 
                 if (Boolean.TRUE.equals(estEmpresa)) {
                     Short cantBuses = arrCantBuses.getOrDefault(codEmpresa, 0).shortValue();
@@ -176,6 +209,12 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
                     dto.setNitEmpresa(nitEmpresa);
                     dto.setEstadoEmpresa(estEmpresa);
                     dto.setCantidadBusesEmpresa(cantBuses);
+                    dto.setFechaFundacion(fechaFund);
+                    dto.setCantidadEmpleados(cantEmpleados);
+                    dto.setServicio24Horas(servicio24);
+                    dto.setTieneMantenimientoPropio(tieneMantenimiento);
+                    dto.setTieneServicioCliente(tieneServCliente);
+                    dto.setDescripcionEmpresa(descripcion);
                     dto.setNombreImagenPublicoEmpresa(npub);
                     dto.setNombreImagenPrivadoEmpresa(nocu);
 
@@ -183,7 +222,7 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
 
                     arregloEmpresa.add(dto);
                 }
-            } catch (NumberFormatException error) {
+            } catch (Exception error) {
                 Logger.getLogger(EmpresaServicio.class.getName()).log(Level.SEVERE, null, error);
             }
         }
@@ -247,6 +286,12 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
                     + objeto.getNitEmpresa() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getTerminalEmpresa().getIdTerminal() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getEstadoEmpresa() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getFechaFundacion().toString() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getCantidadEmpleados() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getServicio24Horas() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getTieneMantenimientoPropio() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getTieneServicioCliente() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getDescripcionEmpresa() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getNombreImagenPublicoEmpresa() + Persistencia.SEPARADOR_COLUMNAS;
 
             if (ruta.isBlank()) {

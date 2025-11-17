@@ -132,22 +132,52 @@ public class VistaCabecera extends HBox {
         agregarMenu(menuButton);
     }
 
-    // ====================== MENÚ EMPRESA ======================
+    // ====================== MENÚ EMPRESA (ACTUALIZADO) ======================
     private void menuEmpresa() {
         MenuItem opcion1 = new MenuItem("Crear Empresa");
         MenuItem opcion2 = new MenuItem("Listar Empresas");
         MenuItem opcion3 = new MenuItem("Administrar Empresas");
+        MenuItem opcion4 = new MenuItem("Carrusel");
 
         opcion1.setOnAction(e -> {
-            System.out.println("Abrir formulario Crear Empresa");
+            miPanelCuerpo = org.poo.controlador.empresa.EmpresaControladorVentana.crear(
+                    miEscenario,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         opcion2.setOnAction(e -> {
-            System.out.println("Abrir formulario Listar Empresas");
+            miPanelCuerpo = org.poo.controlador.empresa.EmpresaControladorVentana.listar(
+                    miEscenario,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         opcion3.setOnAction(e -> {
-            System.out.println("Abrir formulario Administrar Empresas");
+            miPanelCuerpo = org.poo.controlador.empresa.EmpresaControladorVentana.administrar(
+                    miEscenario,
+                    miPanelPrincipal,
+                    miPanelCuerpo,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
+        });
+
+        opcion4.setOnAction(e -> {
+            miPanelCuerpo = org.poo.controlador.empresa.EmpresaControladorVentana.carrusel(
+                    miEscenario,
+                    miPanelPrincipal,
+                    miPanelCuerpo,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO,
+                    0);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         MenuButton menuButton = new MenuButton("Empresas");
@@ -156,7 +186,7 @@ public class VistaCabecera extends HBox {
         } catch (Exception ex) {
             System.out.println("No se pudo cargar ícono de Empresa");
         }
-        menuButton.getItems().addAll(opcion1, opcion2, opcion3);
+        menuButton.getItems().addAll(opcion1, opcion2, opcion3, opcion4);
         agregarMenu(menuButton);
     }
 

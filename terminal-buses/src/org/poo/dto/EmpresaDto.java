@@ -1,5 +1,7 @@
 package org.poo.dto;
 
+import java.time.LocalDate;
+
 public class EmpresaDto {
 
     private Integer idEmpresa;
@@ -10,21 +12,37 @@ public class EmpresaDto {
     private Short cantidadBusesEmpresa;
     private String nombreImagenPublicoEmpresa;
     private String nombreImagenPrivadoEmpresa;
+    
+    // NUEVOS CAMPOS PARA CUMPLIR CON 6 TIPOS DE OBJETOS
+    private LocalDate fechaFundacion;           // DatePicker
+    private Integer cantidadEmpleados;           // Spinner
+    private Boolean servicio24Horas;             // CheckBox
+    private Boolean tieneMantenimientoPropio;    // CheckBox
+    private Boolean tieneServicioCliente;        // CheckBox
+    private String descripcionEmpresa;           // TextArea
 
     public EmpresaDto() {
     }
 
     public EmpresaDto(Integer idEmpresa, String nombreEmpresa, String nitEmpresa,
-                     TerminalDto terminalEmpresa, Boolean estadoEmpresa, Short cantidadBusesEmpresa) {
+                     TerminalDto terminalEmpresa, Boolean estadoEmpresa, Short cantidadBusesEmpresa,
+                     LocalDate fechaFundacion, Integer cantidadEmpleados, Boolean servicio24Horas,
+                     Boolean tieneMantenimientoPropio, Boolean tieneServicioCliente, String descripcionEmpresa) {
         this.idEmpresa = idEmpresa;
         this.nombreEmpresa = nombreEmpresa;
         this.nitEmpresa = nitEmpresa;
         this.terminalEmpresa = terminalEmpresa;
         this.estadoEmpresa = estadoEmpresa;
         this.cantidadBusesEmpresa = cantidadBusesEmpresa;
+        this.fechaFundacion = fechaFundacion;
+        this.cantidadEmpleados = cantidadEmpleados;
+        this.servicio24Horas = servicio24Horas;
+        this.tieneMantenimientoPropio = tieneMantenimientoPropio;
+        this.tieneServicioCliente = tieneServicioCliente;
+        this.descripcionEmpresa = descripcionEmpresa;
     }
 
-    // Getters y Setters
+    // Getters y Setters existentes
     public Integer getIdEmpresa() {
         return idEmpresa;
     }
@@ -87,6 +105,55 @@ public class EmpresaDto {
 
     public void setNombreImagenPrivadoEmpresa(String nombreImagenPrivadoEmpresa) {
         this.nombreImagenPrivadoEmpresa = nombreImagenPrivadoEmpresa;
+    }
+
+    // NUEVOS GETTERS Y SETTERS
+    public LocalDate getFechaFundacion() {
+        return fechaFundacion;
+    }
+
+    public void setFechaFundacion(LocalDate fechaFundacion) {
+        this.fechaFundacion = fechaFundacion;
+    }
+
+    public Integer getCantidadEmpleados() {
+        return cantidadEmpleados;
+    }
+
+    public void setCantidadEmpleados(Integer cantidadEmpleados) {
+        this.cantidadEmpleados = cantidadEmpleados;
+    }
+
+    public Boolean getServicio24Horas() {
+        return servicio24Horas;
+    }
+
+    public void setServicio24Horas(Boolean servicio24Horas) {
+        this.servicio24Horas = servicio24Horas;
+    }
+
+    public Boolean getTieneMantenimientoPropio() {
+        return tieneMantenimientoPropio;
+    }
+
+    public void setTieneMantenimientoPropio(Boolean tieneMantenimientoPropio) {
+        this.tieneMantenimientoPropio = tieneMantenimientoPropio;
+    }
+
+    public Boolean getTieneServicioCliente() {
+        return tieneServicioCliente;
+    }
+
+    public void setTieneServicioCliente(Boolean tieneServicioCliente) {
+        this.tieneServicioCliente = tieneServicioCliente;
+    }
+
+    public String getDescripcionEmpresa() {
+        return descripcionEmpresa;
+    }
+
+    public void setDescripcionEmpresa(String descripcionEmpresa) {
+        this.descripcionEmpresa = descripcionEmpresa;
     }
 
     @Override
