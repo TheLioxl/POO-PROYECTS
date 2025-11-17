@@ -33,18 +33,17 @@ public class VistaEmpresaCrear extends StackPane {
     private final Rectangle miMarco;
     private final Stage miEscenario;
 
-    // Componentes del formulario
-    private TextField txtNombreEmpresa;
-    private TextField txtNitEmpresa;
-    private TextField txtTelefonoEmpresa;
-    private TextField txtEmailEmpresa;
-    private ComboBox<TerminalDto> cmbTerminalEmpresa;
-    private ComboBox<String> cmbEstadoEmpresa;
-    private Button btnSeleccionarImagen;
-    private Button btnGrabar;
+    // 6 TIPOS DE OBJETOS DIFERENTES
+    private TextField txtNombreEmpresa;      // 1. TextField
+    private TextField txtNitEmpresa;         // 2. TextField  
+    private TextField txtTelefonoEmpresa;    // 3. TextField
+    private TextField txtEmailEmpresa;       // 4. TextField
+    private ComboBox<TerminalDto> cmbTerminalEmpresa;  // 5. ComboBox
+    private ComboBox<String> cmbEstadoEmpresa;         // 6. ComboBox
+    
+    private TextField txtImagen;
     private ImageView imgPorDefecto;
     private ImageView imgPrevisualizar;
-    private TextField txtImagen;
     private String rutaImagenSeleccionada;
 
     public VistaEmpresaCrear(Stage escenario, double ancho, double alto) {
@@ -111,7 +110,7 @@ public class VistaEmpresaCrear extends StackPane {
         int primeraColumna = 0;
         int segundaColumna = 1;
 
-        // NOMBRE EMPRESA
+        // 1. NOMBRE EMPRESA - TextField
         fila++;
         Label lblNombre = new Label("Nombre Empresa:");
         lblNombre.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -124,7 +123,7 @@ public class VistaEmpresaCrear extends StackPane {
         Formulario.cantidadCaracteres(txtNombreEmpresa, 50);
         miGrilla.add(txtNombreEmpresa, segundaColumna, fila);
 
-        // NIT
+        // 2. NIT - TextField
         fila++;
         Label lblNit = new Label("NIT:");
         lblNit.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -137,7 +136,7 @@ public class VistaEmpresaCrear extends StackPane {
         Formulario.cantidadCaracteres(txtNitEmpresa, 20);
         miGrilla.add(txtNitEmpresa, segundaColumna, fila);
 
-        // TELÉFONO
+        // 3. TELÉFONO - TextField
         fila++;
         Label lblTelefono = new Label("Teléfono:");
         lblTelefono.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -150,7 +149,7 @@ public class VistaEmpresaCrear extends StackPane {
         Formulario.soloTelefono(txtTelefonoEmpresa);
         miGrilla.add(txtTelefonoEmpresa, segundaColumna, fila);
 
-        // EMAIL
+        // 4. EMAIL - TextField
         fila++;
         Label lblEmail = new Label("Email:");
         lblEmail.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -163,7 +162,7 @@ public class VistaEmpresaCrear extends StackPane {
         Formulario.cantidadCaracteres(txtEmailEmpresa, 50);
         miGrilla.add(txtEmailEmpresa, segundaColumna, fila);
 
-        // TERMINAL (ComboBox)
+        // 5. TERMINAL - ComboBox
         fila++;
         Label lblTerminal = new Label("Terminal:");
         lblTerminal.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -174,7 +173,11 @@ public class VistaEmpresaCrear extends StackPane {
         cmbTerminalEmpresa.setPrefHeight(ALTO_CAJA);
         
         List<TerminalDto> terminales = TerminalControladorListar.obtenerTerminalesActivos();
-        cmbTerminalEmpresa.getItems().add(new TerminalDto(0, "Seleccione terminal", "", "", false, (short)0, 0, false, false, false));
+        TerminalDto opcionDefault = new TerminalDto();
+        opcionDefault.setIdTerminal(0);
+        opcionDefault.setNombreTerminal("Seleccione terminal");
+        
+        cmbTerminalEmpresa.getItems().add(opcionDefault);
         cmbTerminalEmpresa.getItems().addAll(terminales);
         cmbTerminalEmpresa.getSelectionModel().select(0);
         
@@ -192,7 +195,7 @@ public class VistaEmpresaCrear extends StackPane {
         
         miGrilla.add(cmbTerminalEmpresa, segundaColumna, fila);
 
-        // ESTADO
+        // 6. ESTADO - ComboBox
         fila++;
         Label lblEstado = new Label("Estado:");
         lblEstado.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -219,7 +222,7 @@ public class VistaEmpresaCrear extends StackPane {
         FileChooser selector = Formulario.selectorImagen(
                 "Seleccionar imagen", "Imágenes", extensiones);
 
-        btnSeleccionarImagen = new Button("+");
+        Button btnSeleccionarImagen = new Button("+");
         btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
         btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         
@@ -242,18 +245,17 @@ public class VistaEmpresaCrear extends StackPane {
         HBox panelImagen = new HBox(5, txtImagen, btnSeleccionarImagen);
         miGrilla.add(panelImagen, segundaColumna, fila);
 
-        // PREVISUALIZACIÓN DE IMAGEN
+        // PREVISUALIZACIÓN
         fila++;
         imgPorDefecto = Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         miGrilla.add(imgPorDefecto, segundaColumna, fila);
 
-        // ESPACIO ADICIONAL
         fila++;
 
         // BOTÓN GRABAR
         fila++;
-        btnGrabar = new Button("Crear Empresa");
+        Button btnGrabar = new Button("Crear Empresa");
         btnGrabar.setPrefHeight(ALTO_CAJA);
         btnGrabar.setMaxWidth(Double.MAX_VALUE);
         btnGrabar.setTextFill(Color.web("#FFFFFF"));
@@ -353,8 +355,7 @@ public class VistaEmpresaCrear extends StackPane {
 
         miGrilla.getChildren().remove(imgPrevisualizar);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        int filaImagen = 10;
-        miGrilla.add(imgPorDefecto, 1, filaImagen);
+        miGrilla.add(imgPorDefecto, 1, 10);
 
         txtNombreEmpresa.requestFocus();
     }
