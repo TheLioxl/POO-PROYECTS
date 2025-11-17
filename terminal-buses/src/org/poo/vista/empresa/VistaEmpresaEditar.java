@@ -56,9 +56,10 @@ public class VistaEmpresaEditar extends StackPane {
     private final EmpresaDto objEmpresa;
     private Pane panelCuerpo;
     private final BorderPane panelPrincipal;
+    private final boolean origenCarrusel; // NUEVO: para saber desde dónde se llamó
 
     public VistaEmpresaEditar(Stage ventanaPadre, BorderPane princ, Pane pane,
-            double ancho, double alto, EmpresaDto objEmpresaExterno, int posicionArchivo) {
+            double ancho, double alto, EmpresaDto objEmpresaExterno, int posicionArchivo, boolean origenCarrusel) {
 
         miEscenario = ventanaPadre;
         miFormulario = this;
@@ -68,6 +69,7 @@ public class VistaEmpresaEditar extends StackPane {
         objEmpresa = objEmpresaExterno;
         panelPrincipal = princ;
         panelCuerpo = pane;
+        this.origenCarrusel = origenCarrusel; // Guardar el origen
         rutaImagenSeleccionada = "";
 
         miGrilla = new GridPane();
@@ -339,16 +341,25 @@ public class VistaEmpresaEditar extends StackPane {
         btnActualizar.setOnAction(e -> actualizarEmpresa());
         miGrilla.add(btnActualizar, segundaColumna, fila);
 
-        // BOTÓN REGRESAR
+        // BOTÓN REGRESAR - CORREGIDO
         fila++;
         Button btnRegresar = new Button("Regresar");
         btnRegresar.setPrefHeight(ALTO_CAJA);
         btnRegresar.setMaxWidth(Double.MAX_VALUE);
         btnRegresar.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
         btnRegresar.setOnAction(e -> {
-            panelCuerpo = EmpresaControladorVentana.administrar(
-                    miEscenario, panelPrincipal, panelCuerpo,
-                    Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO);
+            // MODIFICADO: Regresar al lugar correcto según el origen
+            if (origenCarrusel) {
+                // Si venimos del carrusel, volver al carrusel en la misma posición
+                panelCuerpo = EmpresaControladorVentana.carrusel(
+                        miEscenario, panelPrincipal, panelCuerpo,
+                        Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO, posicion);
+            } else {
+                // Si venimos de administrar, volver a administrar
+                panelCuerpo = EmpresaControladorVentana.administrar(
+                        miEscenario, panelPrincipal, panelCuerpo,
+                        Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO);
+            }
             panelPrincipal.setCenter(null);
             panelPrincipal.setCenter(panelCuerpo);
         });

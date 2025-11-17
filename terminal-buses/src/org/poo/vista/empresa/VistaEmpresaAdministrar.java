@@ -263,7 +263,8 @@ public class VistaEmpresaAdministrar extends StackPane {
                         Configuracion.ANCHO_APP,
                         Configuracion.ALTO_CUERPO,
                         objEmpresa,
-                        posi);
+                        posi,
+                        false);
                         
                 panelPrincipal.setCenter(null);
                 panelPrincipal.setCenter(panelCuerpo);

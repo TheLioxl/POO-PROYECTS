@@ -222,7 +222,8 @@ public class VistaEmpresaCarrusel extends BorderPane {
                     Configuracion.ANCHO_APP,
                     Configuracion.ALTO_CUERPO,
                     objCargado,
-                    indiceActual);
+                    indiceActual,
+                    true);
                     
             panelPrincipal.setCenter(null);
             panelPrincipal.setCenter(panelCuerpo);

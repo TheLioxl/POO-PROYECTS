@@ -74,14 +74,12 @@ public class EmpresaControladorVentana {
         return vista;
     }
     
-    /**
-     * Crea la vista de edición de empresas
-     */
+    
     public static StackPane editar(Stage miEscenario, BorderPane princ, Pane pane,
-            double anchoFrm, double altoFrm, EmpresaDto objEmpresa, int posicion) {
+            double anchoFrm, double altoFrm, EmpresaDto objEmpresa, int posicion, boolean origenCarrusel) {
         
         VistaEmpresaEditar vista = new VistaEmpresaEditar(
-                miEscenario, princ, pane, anchoFrm, altoFrm, objEmpresa, posicion);
+                miEscenario, princ, pane, anchoFrm, altoFrm, objEmpresa, posicion, origenCarrusel);
         StackPane contenedor = vista.getMiFormulario();
         
         // Aplicar efecto al abrir

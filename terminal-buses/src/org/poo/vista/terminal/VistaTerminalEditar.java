@@ -47,9 +47,11 @@ public class VistaTerminalEditar extends StackPane {
     private final TerminalDto objTerminal;
     private Pane panelCuerpo;
     private final BorderPane panelPrincipal;
+    private final boolean desdeCarrusel; // NUEVO: Para saber de dónde viene
 
     public VistaTerminalEditar(Stage ventanaPadre, BorderPane princ, Pane pane,
-            double ancho, double alto, TerminalDto objTerminalExterno, int posicionArchivo) {
+            double ancho, double alto, TerminalDto objTerminalExterno, int posicionArchivo,
+            boolean vieneDeCarrusel) { // NUEVO PARÁMETRO
 
         miEscenario = ventanaPadre;
         miFormulario = this;
@@ -60,6 +62,7 @@ public class VistaTerminalEditar extends StackPane {
         panelPrincipal = princ;
         panelCuerpo = pane;
         rutaImagenSeleccionada = "";
+        desdeCarrusel = vieneDeCarrusel; // GUARDAR ORIGEN
 
         miGrilla = new GridPane();
         miMarco = Marco.crear(
@@ -278,16 +281,25 @@ public class VistaTerminalEditar extends StackPane {
         btnActualizar.setOnAction(e -> actualizarTerminal());
         miGrilla.add(btnActualizar, segundaColumna, fila);
 
-        // BOTÓN REGRESAR
+        // BOTÓN REGRESAR - MODIFICADO PARA DETECTAR ORIGEN
         fila++;
         Button btnRegresar = new Button("Regresar");
         btnRegresar.setPrefHeight(ALTO_CAJA);
         btnRegresar.setMaxWidth(Double.MAX_VALUE);
         btnRegresar.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
         btnRegresar.setOnAction(e -> {
-            panelCuerpo = TerminalControladorVentana.administrar(
-                    miEscenario, panelPrincipal, panelCuerpo,
-                    Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO);
+            // VERIFICAR SI VIENE DEL CARRUSEL
+            if (desdeCarrusel) {
+                // Regresar al carrusel en la misma posición
+                panelCuerpo = TerminalControladorVentana.carrusel(
+                        miEscenario, panelPrincipal, panelCuerpo,
+                        Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO, posicion);
+            } else {
+                // Regresar a administrar
+                panelCuerpo = TerminalControladorVentana.administrar(
+                        miEscenario, panelPrincipal, panelCuerpo,
+                        Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO);
+            }
             panelPrincipal.setCenter(null);
             panelPrincipal.setCenter(panelCuerpo);
         });

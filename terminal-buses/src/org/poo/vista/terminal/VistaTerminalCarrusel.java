@@ -249,15 +249,16 @@ public class VistaTerminalCarrusel extends BorderPane {
         btnActualizar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_EDITAR, tamanioIcono));
 
         btnActualizar.setOnAction(e -> {
-            panelCuerpo = TerminalControladorVentana.editar(
-                    miEscenario,
-                    panelPrincipal,
-                    panelCuerpo,
-                    Configuracion.ANCHO_APP,
-                    Configuracion.ALTO_CUERPO,
-                    objCargado,
-                    indiceActual);
-                    
+    panelCuerpo = TerminalControladorVentana.editar(
+            miEscenario,
+            panelPrincipal,
+            panelCuerpo,
+            Configuracion.ANCHO_APP,
+            Configuracion.ALTO_CUERPO,
+            objCargado,
+            indiceActual,
+            true); // ✨ PASAR TRUE PORQUE VIENE DEL CARRUSEL
+            
             panelPrincipal.setCenter(null);
             panelPrincipal.setCenter(panelCuerpo);
         });

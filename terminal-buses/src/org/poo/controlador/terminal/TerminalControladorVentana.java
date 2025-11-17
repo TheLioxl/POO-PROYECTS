@@ -61,7 +61,6 @@ public class TerminalControladorVentana {
 
     /**
      * Crea la vista de carrusel de terminales
-     * CORREGIDO: Ahora retorna BorderPane como se espera
      */
     public static BorderPane carrusel(Stage miEscenario, BorderPane princ, Pane pane,
             double anchoFrm, double altoFrm, int indice) {
@@ -77,17 +76,27 @@ public class TerminalControladorVentana {
     
     /**
      * Crea la vista de edición de terminales
+     * @param desdeCarrusel indica si la llamada viene desde el carrusel (true) o desde administrar (false)
      */
     public static StackPane editar(Stage miEscenario, BorderPane princ, Pane pane,
-            double anchoFrm, double altoFrm, TerminalDto objTerminal, int posicion) {
+            double anchoFrm, double altoFrm, TerminalDto objTerminal, int posicion, boolean desdeCarrusel) {
         
         VistaTerminalEditar vista = new VistaTerminalEditar(
-                miEscenario, princ, pane, anchoFrm, altoFrm, objTerminal, posicion);
+                miEscenario, princ, pane, anchoFrm, altoFrm, objTerminal, posicion, desdeCarrusel);
         StackPane contenedor = vista.getMiFormulario();
         
         // Aplicar efecto al abrir
         ControladorEfecto.aplicarEfecto(contenedor, anchoFrm, altoFrm);
         
         return contenedor;
+    }
+    
+    /**
+     * Sobrecarga del método editar para mantener compatibilidad con código existente
+     * Por defecto asume que NO viene del carrusel
+     */
+    public static StackPane editar(Stage miEscenario, BorderPane princ, Pane pane,
+            double anchoFrm, double altoFrm, TerminalDto objTerminal, int posicion) {
+        return editar(miEscenario, princ, pane, anchoFrm, altoFrm, objTerminal, posicion, false);
     }
 }
