@@ -55,6 +55,7 @@ public class VistaTerminalCarrusel extends BorderPane {
     private Pane panelCuerpo;
     private final VBox organizadorVertical;
 
+    private static int indiceActualEstatico = 0; // Variable estática para mantener la posición
     private int indiceActual;
     private int totalTerminales;
     private TerminalDto objCargado;
@@ -75,7 +76,14 @@ public class VistaTerminalCarrusel extends BorderPane {
         miEscenario = ventanaPadre;
         panelPrincipal = princ;
         panelCuerpo = pane;
-        indiceActual = indice;
+        
+        // Usar el índice estático si viene como 0, sino usar el proporcionado
+        if (indice == 0 && indiceActualEstatico > 0) {
+            indiceActual = indiceActualEstatico;
+        } else {
+            indiceActual = indice;
+            indiceActualEstatico = indice;
+        }
 
         // INICIALIZAR organizadorVertical ANTES de cualquier validación
         organizadorVertical = new VBox();
@@ -90,13 +98,19 @@ public class VistaTerminalCarrusel extends BorderPane {
             return;
         }
         
+        // Validar que el índice esté dentro del rango
+        if (indiceActual >= totalTerminales) {
+            indiceActual = 0;
+            indiceActualEstatico = 0;
+        }
+        
         objCargado = TerminalControladorUna.obtenerTerminal(indiceActual);
 
         configurarOrganizadorVertical();
 
         crearTitulo();
-        construirPanelIzquierdo(0.14);
-        construirPanelDerecho(0.14);
+        construirPanelIzquierdo(0.08); // REDUCIDO de 0.14 a 0.08
+        construirPanelDerecho(0.08);   // REDUCIDO de 0.14 a 0.08
         construirPanelCentro();
     }
 
@@ -124,12 +138,13 @@ public class VistaTerminalCarrusel extends BorderPane {
 
     private void construirPanelIzquierdo(double porcentaje) {
         Button btnAnterior = new Button();
-        btnAnterior.setGraphic(Icono.obtenerIcono("btnAtras.png", 80));
+        btnAnterior.setGraphic(Icono.obtenerIcono("btnAtras.png", 60)); // REDUCIDO de 80 a 60
         btnAnterior.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         btnAnterior.setCursor(Cursor.HAND);
 
         btnAnterior.setOnAction(e -> {
             indiceActual = obtenerIndice("Anterior", indiceActual, totalTerminales);
+            indiceActualEstatico = indiceActual; // Guardar posición
             actualizarContenido();
         });
 
@@ -141,12 +156,13 @@ public class VistaTerminalCarrusel extends BorderPane {
 
     private void construirPanelDerecho(double porcentaje) {
         Button btnSiguiente = new Button();
-        btnSiguiente.setGraphic(Icono.obtenerIcono("btnSiguiente.png", 80));
+        btnSiguiente.setGraphic(Icono.obtenerIcono("btnSiguiente.png", 60)); // REDUCIDO de 80 a 60
         btnSiguiente.setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
         btnSiguiente.setCursor(Cursor.HAND);
 
         btnSiguiente.setOnAction(e -> {
             indiceActual = obtenerIndice("Siguiente", indiceActual, totalTerminales);
+            indiceActualEstatico = indiceActual; // Guardar posición
             actualizarContenido();
         });
 
@@ -160,7 +176,7 @@ public class VistaTerminalCarrusel extends BorderPane {
         StackPane centerPane = new StackPane();
 
         // Marco
-        Rectangle miMarco = Marco.crear(miEscenario, 0.70, 0.80,
+        Rectangle miMarco = Marco.crear(miEscenario, 0.70, 0.80, // AJUSTADO para mejor visualización
                 Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE);
         centerPane.getChildren().addAll(miMarco, organizadorVertical);
@@ -201,6 +217,7 @@ public class VistaTerminalCarrusel extends BorderPane {
                         if (totalTerminales > 0) {
                             if (indiceActual >= totalTerminales) {
                                 indiceActual = totalTerminales - 1;
+                                indiceActualEstatico = indiceActual;
                             }
                             actualizarContenido();
                             Mensaje.mostrar(Alert.AlertType.INFORMATION,
@@ -208,7 +225,7 @@ public class VistaTerminalCarrusel extends BorderPane {
                         } else {
                             Mensaje.mostrar(Alert.AlertType.INFORMATION,
                                     miEscenario, "Sin terminales", "No quedan terminales registradas");
-                            // Volver a la vista de administrar
+                            indiceActualEstatico = 0; // Resetear índice estático
                             panelCuerpo = TerminalControladorVentana.administrar(
                                     miEscenario, panelPrincipal, panelCuerpo,
                                     Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO);
@@ -282,7 +299,6 @@ public class VistaTerminalCarrusel extends BorderPane {
             organizadorVertical.getChildren().add(imgMostrar);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(VistaTerminalCarrusel.class.getName()).log(Level.SEVERE, null, ex);
-            // Mostrar imagen por defecto
             ImageView imgDefault = Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 200);
             organizadorVertical.getChildren().add(imgDefault);
         }
@@ -363,7 +379,7 @@ public class VistaTerminalCarrusel extends BorderPane {
     private void actualizarContenido() {
         objCargado = TerminalControladorUna.obtenerTerminal(indiceActual);
 
-        terminalTitulo.set("Detalle de la Terminal (" + (indiceActual + 1) + " / " + totalTerminales + ")");
+        terminalTitulo.set("Carrusel de Terminales (" + (indiceActual + 1) + " / " + totalTerminales + ")");
         terminalNombre.set(objCargado.getNombreTerminal());
         terminalCiudad.set(objCargado.getCiudadTerminal());
         terminalDireccion.set(objCargado.getDireccionTerminal());
@@ -405,5 +421,12 @@ public class VistaTerminalCarrusel extends BorderPane {
             }
         }
         return nuevoIndice;
+    }
+    
+    /**
+     * Método público para resetear la posición del carrusel cuando sea necesario
+     */
+    public static void resetearPosicion() {
+        indiceActualEstatico = 0;
     }
 }

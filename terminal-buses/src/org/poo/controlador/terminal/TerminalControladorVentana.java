@@ -61,14 +61,15 @@ public class TerminalControladorVentana {
 
     /**
      * Crea la vista de carrusel de terminales
+     * CORREGIDO: Ahora retorna BorderPane como se espera
      */
-    public static Pane carrusel(Stage miEscenario, BorderPane princ, Pane pane,
+    public static BorderPane carrusel(Stage miEscenario, BorderPane princ, Pane pane,
             double anchoFrm, double altoFrm, int indice) {
         
         VistaTerminalCarrusel vista = new VistaTerminalCarrusel(
                 miEscenario, princ, pane, anchoFrm, altoFrm, indice);
         
-        // BorderPane también es un Pane, así que podemos aplicar efectos
+        // VistaTerminalCarrusel extiende de BorderPane, así que podemos aplicar efectos directamente
         ControladorEfecto.aplicarEfecto(vista, anchoFrm, altoFrm);
         
         return vista;

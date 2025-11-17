@@ -111,16 +111,15 @@ public class VistaCabecera extends HBox {
         });
 
         opcion4.setOnAction(e -> {
-            int posicionInicial = 0;
             miPanelCuerpo = org.poo.controlador.terminal.TerminalControladorVentana.carrusel(
-                    miEscenario,
-                    miPanelPrincipal,
-                    miPanelCuerpo,
-                    Configuracion.ANCHO_APP,
-                    Configuracion.ALTO_CUERPO,
-                    posicionInicial);
-            miPanelPrincipal.setCenter(null);
-            miPanelPrincipal.setCenter(miPanelCuerpo);
+                miEscenario,
+                miPanelPrincipal,
+                miPanelCuerpo,
+                Configuracion.ANCHO_APP,
+                Configuracion.ALTO_CUERPO,
+                0);
+        miPanelPrincipal.setCenter(null);
+        miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         MenuButton menuButton = new MenuButton("Terminales");
