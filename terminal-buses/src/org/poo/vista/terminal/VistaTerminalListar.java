@@ -40,12 +40,9 @@ public class VistaTerminalListar extends StackPane {
 
     public VistaTerminalListar(Stage ventanaPadre, double ancho, double alto) {
         setAlignment(Pos.CENTER);
-        
-        // Aplicar fondo
-        setBackground(Fondo.asignarAleatorio(Configuracion.FONDOS));
-        
+
         miEscenario = ventanaPadre;
-        
+
         marco = Marco.crear(
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
@@ -53,7 +50,7 @@ public class VistaTerminalListar extends StackPane {
                 Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
-        
+
         miTabla = new TableView<>();
         cajaVertical = new VBox(20);
         getChildren().add(marco);
@@ -120,7 +117,7 @@ public class VistaTerminalListar extends StackPane {
             String estado = obj.getValue().getEstadoTerminal() ? "Activo" : "Inactivo";
             return new SimpleStringProperty(estado);
         });
-        
+
         columna.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(String estadoTXT, boolean empty) {
@@ -134,7 +131,7 @@ public class VistaTerminalListar extends StackPane {
                 }
             }
         });
-        
+
         columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
         return columna;
     }
@@ -146,7 +143,7 @@ public class VistaTerminalListar extends StackPane {
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
     }
-    
+
     private TableColumn<TerminalDto, String> crearColumnaImagen() {
         TableColumn<TerminalDto, String> columna = new TableColumn<>("Imagen");
         columna.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPrivadoTerminal"));
@@ -196,9 +193,9 @@ public class VistaTerminalListar extends StackPane {
         miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.75));
         miTabla.maxHeightProperty().bind(miEscenario.heightProperty().multiply(0.60));
 
-        miEscenario.heightProperty().addListener((o, oldVal, newVal) -> 
-                miTabla.setPrefHeight(newVal.doubleValue()));
-        
+        miEscenario.heightProperty().addListener((o, oldVal, newVal)
+                -> miTabla.setPrefHeight(newVal.doubleValue()));
+
         VBox.setVgrow(miTabla, Priority.ALWAYS);
 
         cajaVertical.getChildren().add(miTabla);

@@ -77,6 +77,9 @@ public class VistaTerminalCarrusel extends BorderPane {
         panelCuerpo = pane;
         indiceActual = indice;
 
+        // INICIALIZAR organizadorVertical ANTES de cualquier validación
+        organizadorVertical = new VBox();
+
         totalTerminales = TerminalControladorListar.obtenerCantidadTerminales();
         
         // Validar que haya terminales
@@ -89,7 +92,6 @@ public class VistaTerminalCarrusel extends BorderPane {
         
         objCargado = TerminalControladorUna.obtenerTerminal(indiceActual);
 
-        organizadorVertical = new VBox();
         configurarOrganizadorVertical();
 
         crearTitulo();

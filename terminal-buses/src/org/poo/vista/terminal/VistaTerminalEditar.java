@@ -53,7 +53,6 @@ public class VistaTerminalEditar extends StackPane {
 
         miEscenario = ventanaPadre;
         miFormulario = this;
-        miFormulario.setBackground(Fondo.asignarAleatorio(Configuracion.FONDOS));
         miFormulario.setAlignment(Pos.CENTER);
 
         posicion = posicionArchivo;

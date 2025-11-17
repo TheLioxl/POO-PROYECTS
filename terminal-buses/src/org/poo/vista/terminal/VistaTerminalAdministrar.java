@@ -63,9 +63,6 @@ public class VistaTerminalAdministrar extends StackPane {
             double ancho, double alto) {
         setAlignment(Pos.CENTER);
         
-        // Aplicar fondo
-        setBackground(Fondo.asignarAleatorio(Configuracion.FONDOS));
-        
         miEscenario = ventanaPadre;
         panelPrincipal = princ;
         panelCuerpo = pane;
