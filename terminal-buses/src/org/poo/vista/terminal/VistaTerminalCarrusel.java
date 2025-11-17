@@ -18,6 +18,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -39,6 +40,7 @@ import org.poo.controlador.terminal.TerminalControladorVentana;
 import org.poo.dto.TerminalDto;
 import org.poo.recurso.constante.Configuracion;
 import org.poo.recurso.constante.Persistencia;
+import org.poo.recurso.utilidad.Fondo;
 import org.poo.recurso.utilidad.Icono;
 import org.poo.recurso.utilidad.Marco;
 import org.poo.recurso.utilidad.Mensaje;
@@ -64,6 +66,8 @@ public class VistaTerminalCarrusel extends BorderPane {
     private ObjectProperty<Image> terminalImagen;
     private BooleanProperty terminalEstado;
     private IntegerProperty terminalCantEmpresas;
+    private IntegerProperty terminalPlataformas;
+    private StringProperty terminalServicios;
 
     public VistaTerminalCarrusel(Stage ventanaPadre, BorderPane princ, Pane pane,
             double anchoPanel, double altoPanel, int indice) {
@@ -74,11 +78,19 @@ public class VistaTerminalCarrusel extends BorderPane {
         indiceActual = indice;
 
         totalTerminales = TerminalControladorListar.obtenerCantidadTerminales();
+        
+        // Validar que haya terminales
+        if (totalTerminales == 0) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, 
+                    miEscenario, "Sin terminales", 
+                    "No hay terminales registradas para mostrar en el carrusel");
+            return;
+        }
+        
         objCargado = TerminalControladorUna.obtenerTerminal(indiceActual);
 
         organizadorVertical = new VBox();
         configurarOrganizadorVertical();
-
 
         crearTitulo();
         construirPanelIzquierdo(0.14);
@@ -101,9 +113,9 @@ public class VistaTerminalCarrusel extends BorderPane {
         terminalTitulo = new SimpleStringProperty(
                 "Detalle de la Terminal (" + (indiceActual + 1) + " / " + totalTerminales + ")");
 
-        Text lblTitulo = new Text();
+        Label lblTitulo = new Label();
         lblTitulo.textProperty().bind(terminalTitulo);
-        lblTitulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        lblTitulo.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         lblTitulo.setFont(Font.font("Arial", FontWeight.BOLD, 26));
         organizadorVertical.getChildren().add(lblTitulo);
     }
@@ -240,14 +252,14 @@ public class VistaTerminalCarrusel extends BorderPane {
     }
     
     private void mostrarDatos() {
-        int tamanioFuente = 22;
+        int tamanioFuente = 20;
 
         // Nombre
         terminalNombre = new SimpleStringProperty(objCargado.getNombreTerminal());
-        Text lblNombre = new Text();
+        Label lblNombre = new Label();
         lblNombre.textProperty().bind(terminalNombre);
-        lblNombre.setFont(Font.font("Arial", FontWeight.BOLD, tamanioFuente));
-        lblNombre.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        lblNombre.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        lblNombre.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblNombre);
 
         // Imagen
@@ -268,30 +280,50 @@ public class VistaTerminalCarrusel extends BorderPane {
             organizadorVertical.getChildren().add(imgMostrar);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(VistaTerminalCarrusel.class.getName()).log(Level.SEVERE, null, ex);
+            // Mostrar imagen por defecto
+            ImageView imgDefault = Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 200);
+            organizadorVertical.getChildren().add(imgDefault);
         }
 
         // Ciudad
         terminalCiudad = new SimpleStringProperty(objCargado.getCiudadTerminal());
-        Text lblCiudad = new Text();
-        lblCiudad.textProperty().bind(Bindings.concat("Ciudad: ", terminalCiudad));
-        lblCiudad.setFont(Font.font("Arial", 18));
-        lblCiudad.setFill(Color.web(Configuracion.AZUL_MEDIO));
+        Label lblCiudad = new Label();
+        lblCiudad.textProperty().bind(Bindings.concat("📍 Ciudad: ", terminalCiudad));
+        lblCiudad.setFont(Font.font("Arial", tamanioFuente));
+        lblCiudad.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
         organizadorVertical.getChildren().add(lblCiudad);
 
         // Dirección
         terminalDireccion = new SimpleStringProperty(objCargado.getDireccionTerminal());
-        Text lblDireccion = new Text();
-        lblDireccion.textProperty().bind(Bindings.concat("Dirección: ", terminalDireccion));
-        lblDireccion.setFont(Font.font("Arial", 18));
-        lblDireccion.setFill(Color.web(Configuracion.AZUL_MEDIO));
+        Label lblDireccion = new Label();
+        lblDireccion.textProperty().bind(Bindings.concat("📌 Dirección: ", terminalDireccion));
+        lblDireccion.setFont(Font.font("Arial", tamanioFuente));
+        lblDireccion.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
         organizadorVertical.getChildren().add(lblDireccion);
+
+        // Plataformas
+        terminalPlataformas = new SimpleIntegerProperty(
+            objCargado.getNumeroPlataformas() != null ? objCargado.getNumeroPlataformas() : 0);
+        Label lblPlataformas = new Label();
+        lblPlataformas.textProperty().bind(Bindings.concat("🚌 Plataformas: ", terminalPlataformas.asString()));
+        lblPlataformas.setFont(Font.font("Arial", tamanioFuente));
+        lblPlataformas.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        organizadorVertical.getChildren().add(lblPlataformas);
+
+        // Servicios
+        terminalServicios = new SimpleStringProperty(construirTextoServicios());
+        Label lblServicios = new Label();
+        lblServicios.textProperty().bind(Bindings.concat("✨ Servicios: ", terminalServicios));
+        lblServicios.setFont(Font.font("Arial", tamanioFuente));
+        lblServicios.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        organizadorVertical.getChildren().add(lblServicios);
 
         // Estado
         terminalEstado = new SimpleBooleanProperty(objCargado.getEstadoTerminal());
-        Text lblEstado = new Text();
-        lblEstado.textProperty().bind(Bindings.when(terminalEstado).then("ACTIVO").otherwise("INACTIVO"));
-        lblEstado.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-        lblEstado.fillProperty().bind(
+        Label lblEstado = new Label();
+        lblEstado.textProperty().bind(Bindings.when(terminalEstado).then("✅ ACTIVO").otherwise("❌ INACTIVO"));
+        lblEstado.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        lblEstado.textFillProperty().bind(
                 terminalEstado.map(dato -> dato ? Color.web(Configuracion.VERDE_EXITO) 
                         : Color.web(Configuracion.ROJO_ERROR))
         );
@@ -299,11 +331,31 @@ public class VistaTerminalCarrusel extends BorderPane {
 
         // Cantidad de empresas
         terminalCantEmpresas = new SimpleIntegerProperty(objCargado.getCantidadEmpresasTerminal());
-        Text lblCantEmpresas = new Text();
-        lblCantEmpresas.textProperty().bind(Bindings.concat("Empresas: ", terminalCantEmpresas.asString()));
-        lblCantEmpresas.setFont(Font.font("Arial", 18));
-        lblCantEmpresas.setFill(Color.web(Configuracion.AZUL_MEDIO));
+        Label lblCantEmpresas = new Label();
+        lblCantEmpresas.textProperty().bind(Bindings.concat("🏢 Empresas asociadas: ", terminalCantEmpresas.asString()));
+        lblCantEmpresas.setFont(Font.font("Arial", tamanioFuente));
+        lblCantEmpresas.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
         organizadorVertical.getChildren().add(lblCantEmpresas);
+    }
+
+    private String construirTextoServicios() {
+        StringBuilder servicios = new StringBuilder();
+        
+        if (objCargado.getTieneWifi() != null && objCargado.getTieneWifi()) {
+            servicios.append("WiFi");
+        }
+        
+        if (objCargado.getTieneCafeteria() != null && objCargado.getTieneCafeteria()) {
+            if (servicios.length() > 0) servicios.append(", ");
+            servicios.append("Cafetería");
+        }
+        
+        if (objCargado.getTieneBanos() != null && objCargado.getTieneBanos()) {
+            if (servicios.length() > 0) servicios.append(", ");
+            servicios.append("Baños");
+        }
+        
+        return servicios.length() > 0 ? servicios.toString() : "Ninguno";
     }
 
     private void actualizarContenido() {
@@ -315,6 +367,8 @@ public class VistaTerminalCarrusel extends BorderPane {
         terminalDireccion.set(objCargado.getDireccionTerminal());
         terminalEstado.set(objCargado.getEstadoTerminal());
         terminalCantEmpresas.set(objCargado.getCantidadEmpresasTerminal());
+        terminalPlataformas.set(objCargado.getNumeroPlataformas() != null ? objCargado.getNumeroPlataformas() : 0);
+        terminalServicios.set(construirTextoServicios());
 
         // Actualizar imagen
         try {

@@ -1,7 +1,6 @@
 package org.poo.vista.terminal;
 
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -29,6 +28,7 @@ import javafx.stage.Stage;
 import org.poo.controlador.terminal.TerminalControladorGrabar;
 import org.poo.dto.TerminalDto;
 import org.poo.recurso.constante.Configuracion;
+import org.poo.recurso.utilidad.Fondo;
 import org.poo.recurso.utilidad.Formulario;
 import org.poo.recurso.utilidad.GestorImagen;
 import org.poo.recurso.utilidad.Icono;
@@ -70,8 +70,8 @@ public class VistaTerminalCrear extends StackPane {
         miGrilla = new GridPane();
         miMarco = Marco.crear(
                 miEscenario,
-                Configuracion.MARCO_ALTO_PORCENTAJE,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
+                Configuracion.MARCO_ALTO_PORCENTAJE,
                 Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
@@ -90,7 +90,7 @@ public class VistaTerminalCrear extends StackPane {
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setAlignment(Pos.CENTER); // ✅ CENTRADO
+        miGrilla.setAlignment(Pos.TOP_CENTER);
         miGrilla.setPrefSize(anchoGrilla, alto);
         miGrilla.setMinSize(anchoGrilla, alto);
         miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -232,6 +232,10 @@ public class VistaTerminalCrear extends StackPane {
         btnSeleccionarImagen = new Button("+");
         btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
         btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        
+        // GUARDAR LA FILA DE LA IMAGEN ANTES DE LA LAMBDA
+        final int filaImagenPreview = fila + 1;
+        
         btnSeleccionarImagen.setOnAction(e -> {
             rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
             
@@ -241,7 +245,7 @@ public class VistaTerminalCrear extends StackPane {
                 
                 imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, segundaColumna, + 1);
+                miGrilla.add(imgPrevisualizar, segundaColumna, filaImagenPreview);
             }
         });
 
@@ -251,16 +255,12 @@ public class VistaTerminalCrear extends StackPane {
 
         // PREVISUALIZACIÓN DE IMAGEN
         fila++;
-        final int filaImagen = fila; // Variable final para usar en lambda
         imgPorDefecto = Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         miGrilla.add(imgPorDefecto, segundaColumna, fila);
 
-        // ESPACIO ADICIONAL antes del botón
+        // ESPACIO ADICIONAL antes del botón (saltamos la fila 7)
         fila++;
-        Region espacioAntes = new Region();
-        espacioAntes.setPrefHeight(15);
-        miGrilla.add(espacioAntes, segundaColumna, fila);
 
         // BOTÓN GRABAR
         fila++;
@@ -351,7 +351,7 @@ public class VistaTerminalCrear extends StackPane {
 
         miGrilla.getChildren().remove(imgPrevisualizar);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        int filaImagen = 9; // Ajustar según la fila donde está la imagen
+        int filaImagen = 9; // Fila donde está la previsualización
         miGrilla.add(imgPorDefecto, 1, filaImagen);
 
         txtNombreTerminal.requestFocus();

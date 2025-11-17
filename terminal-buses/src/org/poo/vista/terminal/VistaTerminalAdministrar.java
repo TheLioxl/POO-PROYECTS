@@ -62,14 +62,18 @@ public class VistaTerminalAdministrar extends StackPane {
     public VistaTerminalAdministrar(Stage ventanaPadre, BorderPane princ, Pane pane,
             double ancho, double alto) {
         setAlignment(Pos.CENTER);
+        
+        // Aplicar fondo
+        setBackground(Fondo.asignarAleatorio(Configuracion.FONDOS));
+        
         miEscenario = ventanaPadre;
         panelPrincipal = princ;
         panelCuerpo = pane;
         
         marco = Marco.crear(
                 miEscenario,
-                Configuracion.MARCO_ALTO_PORCENTAJE,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
+                Configuracion.MARCO_ALTO_PORCENTAJE,
                 Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
@@ -106,7 +110,7 @@ public class VistaTerminalAdministrar extends StackPane {
     private TableColumn<TerminalDto, Integer> crearColumnaCodigo() {
         TableColumn<TerminalDto, Integer> columna = new TableColumn<>("Código");
         columna.setCellValueFactory(new PropertyValueFactory<>("idTerminal"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
     }
@@ -114,7 +118,7 @@ public class VistaTerminalAdministrar extends StackPane {
     private TableColumn<TerminalDto, String> crearColumnaNombre() {
         TableColumn<TerminalDto, String> columna = new TableColumn<>("Nombre");
         columna.setCellValueFactory(new PropertyValueFactory<>("nombreTerminal"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.25));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         columna.setStyle(ESTILO_IZQUIERDA);
         return columna;
     }
@@ -122,7 +126,7 @@ public class VistaTerminalAdministrar extends StackPane {
     private TableColumn<TerminalDto, String> crearColumnaCiudad() {
         TableColumn<TerminalDto, String> columna = new TableColumn<>("Ciudad");
         columna.setCellValueFactory(new PropertyValueFactory<>("ciudadTerminal"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
     }
@@ -148,7 +152,7 @@ public class VistaTerminalAdministrar extends StackPane {
             }
         });
         
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
         return columna;
     }
 
@@ -167,14 +171,19 @@ public class VistaTerminalAdministrar extends StackPane {
             @Override
             protected void updateItem(String nombreImagen, boolean bandera) {
                 super.updateItem(nombreImagen, bandera);
-                if (bandera || nombreImagen == null) {
+                if (bandera || nombreImagen == null || nombreImagen.isEmpty()) {
                     setGraphic(null);
                 } else {
-                    setGraphic(Icono.obtenerFotosExternas(nombreImagen, 50));
+                    try {
+                        setGraphic(Icono.obtenerFotosExternas(nombreImagen, 50));
+                    } catch (Exception e) {
+                        // Si falla, mostrar imagen por defecto
+                        setGraphic(Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 50));
+                    }
                 }
             }
         });
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.18));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
     }
@@ -185,7 +194,8 @@ public class VistaTerminalAdministrar extends StackPane {
                 crearColumnaNombre(),
                 crearColumnaCiudad(),
                 crearColumnaEstado(),
-                crearColumnaCantidad()
+                crearColumnaCantidad(),
+                crearColumnaImagen()
         ));
     }
 
@@ -281,16 +291,15 @@ public class VistaTerminalAdministrar extends StackPane {
             } else {
                 TerminalDto objTerminal = miTabla.getSelectionModel().getSelectedItem();
                 int posi = miTabla.getSelectionModel().getSelectedIndex();
-                
 
                 panelCuerpo = TerminalControladorVentana.editar(
-                        miEscenario,                 // Stage
-                        panelPrincipal,              // BorderPane
-                        panelCuerpo,                 // Pane
-                        Configuracion.ANCHO_APP,     // double anchoFrm
-                        Configuracion.ALTO_CUERPO,   // double altoFrm
-                        objTerminal,                 // TerminalDto
-                        posi);             // int posicion
+                        miEscenario,
+                        panelPrincipal,
+                        panelCuerpo,
+                        Configuracion.ANCHO_APP,
+                        Configuracion.ALTO_CUERPO,
+                        objTerminal,
+                        posi);
                         
                 panelPrincipal.setCenter(null);
                 panelPrincipal.setCenter(panelCuerpo);

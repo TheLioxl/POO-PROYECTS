@@ -65,8 +65,8 @@ public class VistaTerminalEditar extends StackPane {
         miGrilla = new GridPane();
         miMarco = Marco.crear(
                 miEscenario,
-                Configuracion.MARCO_ALTO_PORCENTAJE,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
+                Configuracion.MARCO_ALTO_PORCENTAJE,
                 Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
@@ -88,7 +88,7 @@ public class VistaTerminalEditar extends StackPane {
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setAlignment(Pos.CENTER);
+        miGrilla.setAlignment(Pos.TOP_CENTER);
         miGrilla.setPrefSize(anchoGrilla, alto);
         miGrilla.setMinSize(anchoGrilla, alto);
         miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -181,6 +181,45 @@ public class VistaTerminalEditar extends StackPane {
         }
         miGrilla.add(cmbEstadoTerminal, segundaColumna, fila);
 
+        // PLATAFORMAS (Spinner)
+        fila++;
+        Label lblPlataformas = new Label("Plataformas/Muelles:");
+        lblPlataformas.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblPlataformas, primeraColumna, fila);
+
+        spinnerPlataformas = new Spinner<>();
+        SpinnerValueFactory<Integer> valueFactory = 
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50, 
+                objTerminal.getNumeroPlataformas() != null ? objTerminal.getNumeroPlataformas() : 10);
+        spinnerPlataformas.setValueFactory(valueFactory);
+        spinnerPlataformas.setPrefHeight(ALTO_CAJA);
+        spinnerPlataformas.setMaxWidth(Double.MAX_VALUE);
+        spinnerPlataformas.setEditable(true);
+        miGrilla.add(spinnerPlataformas, segundaColumna, fila);
+
+        // SERVICIOS (CheckBox)
+        fila++;
+        Label lblServicios = new Label("Servicios disponibles:");
+        lblServicios.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblServicios, primeraColumna, fila);
+
+        chkWifi = new CheckBox("WiFi Gratis");
+        chkCafeteria = new CheckBox("Cafetería");
+        chkBanos = new CheckBox("Baños");
+        
+        // Cargar valores del objeto
+        chkWifi.setSelected(objTerminal.getTieneWifi() != null ? objTerminal.getTieneWifi() : false);
+        chkCafeteria.setSelected(objTerminal.getTieneCafeteria() != null ? objTerminal.getTieneCafeteria() : false);
+        chkBanos.setSelected(objTerminal.getTieneBanos() != null ? objTerminal.getTieneBanos() : false);
+        
+        chkWifi.setFont(Font.font("Arial", 14));
+        chkCafeteria.setFont(Font.font("Arial", 14));
+        chkBanos.setFont(Font.font("Arial", 14));
+
+        VBox vboxServicios = new VBox(5);
+        vboxServicios.getChildren().addAll(chkWifi, chkCafeteria, chkBanos);
+        miGrilla.add(vboxServicios, segundaColumna, fila);
+
         // IMAGEN
         fila++;
         Label lblImagen = new Label("Imagen:");
@@ -200,7 +239,7 @@ public class VistaTerminalEditar extends StackPane {
         btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
         btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         
-        final int filaImagen = fila + 1; // Variable final para la fila de la imagen
+        final int filaImagenPreview = fila + 1;
         
         btnSeleccionarImagen.setOnAction(e -> {
             rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
@@ -211,7 +250,7 @@ public class VistaTerminalEditar extends StackPane {
                 
                 imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, segundaColumna, filaImagen);
+                miGrilla.add(imgPrevisualizar, segundaColumna, filaImagenPreview);
             }
         });
 
@@ -226,8 +265,11 @@ public class VistaTerminalEditar extends StackPane {
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         miGrilla.add(imgPorDefecto, segundaColumna, fila);
 
+        // ESPACIO ADICIONAL
+        fila++;
+
         // BOTÓN ACTUALIZAR
-        fila += 2;
+        fila++;
         Button btnActualizar = new Button("Actualizar Terminal");
         btnActualizar.setPrefHeight(ALTO_CAJA);
         btnActualizar.setMaxWidth(Double.MAX_VALUE);
@@ -292,6 +334,10 @@ public class VistaTerminalEditar extends StackPane {
             dtoActualizado.setCiudadTerminal(txtCiudadTerminal.getText());
             dtoActualizado.setDireccionTerminal(txtDireccionTerminal.getText());
             dtoActualizado.setEstadoTerminal(cmbEstadoTerminal.getValue().equals("Activo"));
+            dtoActualizado.setNumeroPlataformas(spinnerPlataformas.getValue());
+            dtoActualizado.setTieneWifi(chkWifi.isSelected());
+            dtoActualizado.setTieneCafeteria(chkCafeteria.isSelected());
+            dtoActualizado.setTieneBanos(chkBanos.isSelected());
             dtoActualizado.setNombreImagenPublicoTerminal(txtImagen.getText());
             dtoActualizado.setNombreImagenPrivadoTerminal(objTerminal.getNombreImagenPrivadoTerminal());
             dtoActualizado.setCantidadEmpresasTerminal(objTerminal.getCantidadEmpresasTerminal());
