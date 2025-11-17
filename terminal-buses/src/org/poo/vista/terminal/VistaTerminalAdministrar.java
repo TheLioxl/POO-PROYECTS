@@ -155,7 +155,26 @@ public class VistaTerminalAdministrar extends StackPane {
     private TableColumn<TerminalDto, Short> crearColumnaCantidad() {
         TableColumn<TerminalDto, Short> columna = new TableColumn<>("Empresas");
         columna.setCellValueFactory(new PropertyValueFactory<>("cantidadEmpresasTerminal"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.13));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        columna.setStyle(ESTILO_CENTRAR);
+        return columna;
+    }
+    
+    private TableColumn<TerminalDto, String> crearColumnaImagen() {
+        TableColumn<TerminalDto, String> columna = new TableColumn<>("Imagen");
+        columna.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPrivadoTerminal"));
+        columna.setCellFactory(column -> new TableCell<TerminalDto, String>() {
+            @Override
+            protected void updateItem(String nombreImagen, boolean bandera) {
+                super.updateItem(nombreImagen, bandera);
+                if (bandera || nombreImagen == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(Icono.obtenerFotosExternas(nombreImagen, 50));
+                }
+            }
+        });
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.18));
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
     }

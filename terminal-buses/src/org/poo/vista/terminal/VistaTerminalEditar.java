@@ -199,6 +199,9 @@ public class VistaTerminalEditar extends StackPane {
         Button btnSeleccionarImagen = new Button("+");
         btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
         btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        
+        final int filaImagen = fila + 1; // Variable final para la fila de la imagen
+        
         btnSeleccionarImagen.setOnAction(e -> {
             rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
             
@@ -208,7 +211,7 @@ public class VistaTerminalEditar extends StackPane {
                 
                 imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, segundaColumna, + 1);
+                miGrilla.add(imgPrevisualizar, segundaColumna, filaImagen);
             }
         });
 

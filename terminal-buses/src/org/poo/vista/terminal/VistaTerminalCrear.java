@@ -249,8 +249,9 @@ public class VistaTerminalCrear extends StackPane {
         HBox panelImagen = new HBox(5, txtImagen, btnSeleccionarImagen);
         miGrilla.add(panelImagen, segundaColumna, fila);
 
-        // PREVISUALIZACIÓN DE IMAGEN (con más espacio)
+        // PREVISUALIZACIÓN DE IMAGEN
         fila++;
+        final int filaImagen = fila; // Variable final para usar en lambda
         imgPorDefecto = Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         miGrilla.add(imgPorDefecto, segundaColumna, fila);
