@@ -35,9 +35,7 @@ public class Terminal {
         this.nombreImagenPublicoTerminal = nombreImagenPublicoTerminal;
         this.nombreImagenPrivadoTerminal = nombreImagenPrivadoTerminal;
     }
-
-    // Getters y Setters
-
+    
     public Integer getIdTerminal() {
         return idTerminal;
     }
@@ -134,7 +132,6 @@ public class Terminal {
         this.nombreImagenPrivadoTerminal = nombreImagenPrivadoTerminal;
     }
     
-
     @Override
     public String toString() {
         return nombreTerminal;

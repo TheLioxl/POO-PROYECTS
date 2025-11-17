@@ -13,17 +13,15 @@ public class Viaje {
     private LocalTime horaSalidaViaje;
     private Double precioViaje;
     private Integer asientosDisponiblesViaje;
-    private Boolean estadoViaje; // Activo/Inactivo
+    private Boolean estadoViaje; 
     private String nombreImagenPublicoViaje;
     private String nombreImagenPrivadoViaje;
-    
-    // NUEVOS CAMPOS PARA 6 TIPOS DE OBJETOS
-    private LocalTime horaLlegadaViaje;        // DatePicker (TimePicker)
-    private Boolean viajeDirecto;              // CheckBox
-    private Boolean incluyeRefrigerio;         // CheckBox
-    private Boolean tieneParadasIntermedias;   // CheckBox
-    private String descripcionViaje;           // TextField
-    private String notasAdicionalesViaje;      // TextArea
+    private LocalTime horaLlegadaViaje;        
+    private Boolean viajeDirecto;              
+    private Boolean incluyeRefrigerio;         
+    private Boolean tieneParadasIntermedias;   
+    private String descripcionViaje;           
+    private String notasAdicionalesViaje;      
 
     public Viaje() {
     }
@@ -52,8 +50,6 @@ public class Viaje {
         this.nombreImagenPublicoViaje = nombreImagenPublicoViaje;
         this.nombreImagenPrivadoViaje = nombreImagenPrivadoViaje;
     }
-
-    // ==================== GETTERS Y SETTERS ORIGINALES ====================
     
     public Integer getIdViaje() {
         return idViaje;
@@ -143,8 +139,6 @@ public class Viaje {
         this.nombreImagenPrivadoViaje = nombreImagenPrivadoViaje;
     }
 
-    // ==================== NUEVOS GETTERS Y SETTERS ====================
-    
     public LocalTime getHoraLlegadaViaje() {
         return horaLlegadaViaje;
     }

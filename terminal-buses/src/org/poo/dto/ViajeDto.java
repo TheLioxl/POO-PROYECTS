@@ -50,8 +50,6 @@ public class ViajeDto {
         this.nombreImagenPublicoViaje = nombreImagenPublicoViaje;
         this.nombreImagenPrivadoViaje = nombreImagenPrivadoViaje;
     }
-
-    // ==================== GETTERS Y SETTERS ====================
     
     public Integer getIdViaje() {
         return idViaje;

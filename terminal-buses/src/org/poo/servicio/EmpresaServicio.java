@@ -55,8 +55,6 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
         objEmpresa.setEstadoEmpresa(dto.getEstadoEmpresa());
         objEmpresa.setNombreImagenPublicoEmpresa(dto.getNombreImagenPublicoEmpresa());
         objEmpresa.setNombreImagenPrivadoEmpresa(GestorImagen.grabarLaImagen(ruta));
-        
-        // NUEVOS CAMPOS
         objEmpresa.setFechaFundacion(dto.getFechaFundacion());
         objEmpresa.setCantidadEmpleados(dto.getCantidadEmpleados());
         objEmpresa.setServicio24Horas(dto.getServicio24Horas());
@@ -121,24 +119,19 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
 
                 EmpresaDto dto = new EmpresaDto();
                 
-                // CAMPOS ORIGINALES (siempre deben existir)
                 int codEmpresa = Integer.parseInt(columnas[0].trim());
                 String nomEmpresa = columnas[1].trim();
                 String nitEmpresa = columnas[2].trim();
                 int codTerminal = Integer.parseInt(columnas[3].trim());
                 Boolean estEmpresa = Boolean.valueOf(columnas[4].trim());
-                
                 dto.setIdEmpresa(codEmpresa);
                 dto.setNombreEmpresa(nomEmpresa);
                 dto.setNitEmpresa(nitEmpresa);
                 dto.setEstadoEmpresa(estEmpresa);
-                
                 Short cantBuses = arrCantBuses.getOrDefault(codEmpresa, 0).shortValue();
                 dto.setCantidadBusesEmpresa(cantBuses);
                 
-                // NUEVOS CAMPOS (con validación por si no existen)
                 if (columnas.length >= 13) {
-                    // Formato nuevo con todos los campos
                     LocalDate fechaFund = LocalDate.parse(columnas[5].trim());
                     Integer cantEmpleados = Integer.parseInt(columnas[6].trim());
                     Boolean servicio24 = Boolean.valueOf(columnas[7].trim());
@@ -157,15 +150,13 @@ public class EmpresaServicio implements ApiOperacionBD<EmpresaDto, Integer> {
                     dto.setNombreImagenPublicoEmpresa(npub);
                     dto.setNombreImagenPrivadoEmpresa(nocu);
                 } else {
-                    // Formato antiguo - usar valores por defecto
                     dto.setFechaFundacion(LocalDate.now().minusYears(10));
                     dto.setCantidadEmpleados(50);
                     dto.setServicio24Horas(false);
                     dto.setTieneMantenimientoPropio(false);
                     dto.setTieneServicioCliente(false);
                     dto.setDescripcionEmpresa("Sin descripción");
-                    
-                    // Las imágenes están en las últimas 2 posiciones
+                 
                     String npub = columnas[columnas.length - 2].trim();
                     String nocu = columnas[columnas.length - 1].trim();
                     dto.setNombreImagenPublicoEmpresa(npub);

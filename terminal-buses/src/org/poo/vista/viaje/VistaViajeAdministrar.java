@@ -1,4 +1,4 @@
-package org.poo.vista.empresa;
+package org.poo.vista.viaje;
 
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,21 +15,21 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.poo.controlador.empresa.EmpresaControladorEliminar;
-import org.poo.controlador.empresa.EmpresaControladorListar;
-import org.poo.controlador.empresa.EmpresaControladorVentana;
-import org.poo.dto.EmpresaDto;
+import org.poo.controlador.viaje.ViajeControladorEliminar;
+import org.poo.controlador.viaje.ViajeControladorListar;
+import org.poo.controlador.viaje.ViajeControladorVentana;
+import org.poo.dto.ViajeDto;
 import org.poo.recurso.constante.Configuracion;
 import org.poo.recurso.utilidad.Icono;
 import org.poo.recurso.utilidad.Marco;
 import org.poo.recurso.utilidad.Mensaje;
 
-public class VistaEmpresaAdministrar extends StackPane {
+public class VistaViajeAdministrar extends StackPane {
 
     private final Rectangle marco;
     private final Stage miEscenario;
     private final VBox cajaVertical;
-    private final TableView<EmpresaDto> miTabla;
+    private final TableView<ViajeDto> miTabla;
 
     private static final String ESTILO_CENTRAR = "-fx-alignment: CENTER;";
     private static final String ESTILO_IZQUIERDA = "-fx-alignment: CENTER-LEFT;";
@@ -38,12 +38,12 @@ public class VistaEmpresaAdministrar extends StackPane {
 
     private Text titulo;
     private HBox cajaBotones;
-    private final ObservableList<EmpresaDto> datosTabla = FXCollections.observableArrayList();
+    private final ObservableList<ViajeDto> datosTabla = FXCollections.observableArrayList();
 
     private Pane panelCuerpo;
     private final BorderPane panelPrincipal;
 
-    public VistaEmpresaAdministrar(Stage ventanaPadre, BorderPane princ, Pane pane,
+    public VistaViajeAdministrar(Stage ventanaPadre, BorderPane princ, Pane pane,
             double ancho, double alto) {
         setAlignment(Pos.CENTER);
         
@@ -55,7 +55,7 @@ public class VistaEmpresaAdministrar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_EMPRESA,
+                Configuracion.DEGRADE_ARREGLO_VIAJE,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -80,8 +80,8 @@ public class VistaEmpresaAdministrar extends StackPane {
         bloqueSeparador.prefHeightProperty().bind(
                 miEscenario.heightProperty().multiply(0.05));
 
-        int cant = EmpresaControladorListar.obtenerCantidadEmpresas();
-        titulo = new Text("Administrar Empresas (" + cant + ")");
+        int cant = ViajeControladorListar.obtenerCantidadViajes();
+        titulo = new Text("Administrar Viajes (" + cant + ")");
         titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
         titulo.setFont(Font.font("Arial", FontWeight.BOLD, 28));
 
@@ -89,30 +89,57 @@ public class VistaEmpresaAdministrar extends StackPane {
     }
 
     private void crearTabla() {
-        TableColumn<EmpresaDto, Integer> colCodigo = new TableColumn<>("Código");
-        colCodigo.setCellValueFactory(new PropertyValueFactory<>("idEmpresa"));
-        colCodigo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        // Código
+        TableColumn<ViajeDto, Integer> colCodigo = new TableColumn<>("Código");
+        colCodigo.setCellValueFactory(new PropertyValueFactory<>("idViaje"));
+        colCodigo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.06));
         colCodigo.setStyle(ESTILO_CENTRAR);
 
-        TableColumn<EmpresaDto, String> colNombre = new TableColumn<>("Nombre");
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreEmpresa"));
-        colNombre.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
-        colNombre.setStyle(ESTILO_IZQUIERDA);
+        // Fecha
+        TableColumn<ViajeDto, String> colFecha = new TableColumn<>("Fecha");
+        colFecha.setCellValueFactory(obj -> 
+            new SimpleStringProperty(obj.getValue().getFechaViaje().toString()));
+        colFecha.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        colFecha.setStyle(ESTILO_CENTRAR);
 
-        TableColumn<EmpresaDto, String> colNit = new TableColumn<>("NIT");
-        colNit.setCellValueFactory(new PropertyValueFactory<>("nitEmpresa"));
-        colNit.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
-        colNit.setStyle(ESTILO_CENTRAR);
+        // Ruta
+        TableColumn<ViajeDto, String> colRuta = new TableColumn<>("Ruta");
+        colRuta.setCellValueFactory(obj -> 
+            new SimpleStringProperty(obj.getValue().getRutaViaje().toString()));
+        colRuta.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
+        colRuta.setStyle(ESTILO_IZQUIERDA);
 
-        TableColumn<EmpresaDto, String> colTerminal = new TableColumn<>("Terminal");
-        colTerminal.setCellValueFactory(obj -> 
-            new SimpleStringProperty(obj.getValue().getTerminalEmpresa().getNombreTerminal()));
-        colTerminal.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
-        colTerminal.setStyle(ESTILO_IZQUIERDA);
+        // Bus
+        TableColumn<ViajeDto, String> colBus = new TableColumn<>("Bus");
+        colBus.setCellValueFactory(obj -> 
+            new SimpleStringProperty(obj.getValue().getBusViaje().getPlacaBus()));
+        colBus.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        colBus.setStyle(ESTILO_CENTRAR);
 
-        TableColumn<EmpresaDto, String> colEstado = new TableColumn<>("Estado");
+        // Hora Salida
+        TableColumn<ViajeDto, String> colHoraSalida = new TableColumn<>("Salida");
+        colHoraSalida.setCellValueFactory(obj -> 
+            new SimpleStringProperty(obj.getValue().getHoraSalidaViaje().toString()));
+        colHoraSalida.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        colHoraSalida.setStyle(ESTILO_CENTRAR);
+
+        // Precio
+        TableColumn<ViajeDto, String> colPrecio = new TableColumn<>("Precio");
+        colPrecio.setCellValueFactory(obj -> 
+            new SimpleStringProperty("$" + String.format("%.2f", obj.getValue().getPrecioViaje())));
+        colPrecio.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        colPrecio.setStyle(ESTILO_CENTRAR);
+
+        // Asientos
+        TableColumn<ViajeDto, Integer> colAsientos = new TableColumn<>("Asientos");
+        colAsientos.setCellValueFactory(new PropertyValueFactory<>("asientosDisponiblesViaje"));
+        colAsientos.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        colAsientos.setStyle(ESTILO_CENTRAR);
+
+        // Estado
+        TableColumn<ViajeDto, String> colEstado = new TableColumn<>("Estado");
         colEstado.setCellValueFactory(obj -> {
-            String estado = obj.getValue().getEstadoEmpresa() ? "Activo" : "Inactivo";
+            String estado = obj.getValue().getEstadoViaje() ? "Activo" : "Inactivo";
             return new SimpleStringProperty(estado);
         });
         colEstado.setCellFactory(col -> new TableCell<>() {
@@ -128,16 +155,12 @@ public class VistaEmpresaAdministrar extends StackPane {
                 }
             }
         });
-        colEstado.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        colEstado.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
 
-        TableColumn<EmpresaDto, Short> colBuses = new TableColumn<>("Buses");
-        colBuses.setCellValueFactory(new PropertyValueFactory<>("cantidadBusesEmpresa"));
-        colBuses.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
-        colBuses.setStyle(ESTILO_CENTRAR);
-
-        TableColumn<EmpresaDto, String> colImagen = new TableColumn<>("Logo");
-        colImagen.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPrivadoEmpresa"));
-        colImagen.setCellFactory(column -> new TableCell<EmpresaDto, String>() {
+        // Imagen
+        TableColumn<ViajeDto, String> colImagen = new TableColumn<>("Imagen");
+        colImagen.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPrivadoViaje"));
+        colImagen.setCellFactory(column -> new TableCell<ViajeDto, String>() {
             @Override
             protected void updateItem(String nombreImagen, boolean bandera) {
                 super.updateItem(nombreImagen, bandera);
@@ -152,18 +175,19 @@ public class VistaEmpresaAdministrar extends StackPane {
                 }
             }
         });
-        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.17));
+        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
         colImagen.setStyle(ESTILO_CENTRAR);
 
         miTabla.getColumns().addAll(List.of(
-                colCodigo, colNombre, colNit, colTerminal, colEstado, colBuses, colImagen
+                colCodigo, colFecha, colRuta, colBus, colHoraSalida, 
+                colPrecio, colAsientos, colEstado, colImagen
         ));
 
-        List<EmpresaDto> arrEmpresas = EmpresaControladorListar.obtenerEmpresas();
-        datosTabla.setAll(arrEmpresas);
+        List<ViajeDto> arrViajes = ViajeControladorListar.obtenerViajes();
+        datosTabla.setAll(arrViajes);
 
         miTabla.setItems(datosTabla);
-        miTabla.setPlaceholder(new Text("No hay empresas registradas"));
+        miTabla.setPlaceholder(new Text("No hay viajes registrados"));
         miTabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.70));
@@ -182,6 +206,7 @@ public class VistaEmpresaAdministrar extends StackPane {
         int ancho = 40;
         int tamanioIconito = 16;
         
+        // Botón eliminar
         Button btnEliminar = new Button();
         btnEliminar.setPrefWidth(ancho);
         btnEliminar.setCursor(Cursor.HAND);
@@ -190,49 +215,44 @@ public class VistaEmpresaAdministrar extends StackPane {
         btnEliminar.setOnAction((e) -> {
             if (miTabla.getSelectionModel().getSelectedItem() == null) {
                 Mensaje.mostrar(Alert.AlertType.WARNING,
-                        miEscenario, "Advertencia", "Debe seleccionar una empresa");
+                        miEscenario, "Advertencia", "Debe seleccionar un viaje");
             } else {
-                EmpresaDto objEmpresa = miTabla.getSelectionModel().getSelectedItem();
+                ViajeDto objViaje = miTabla.getSelectionModel().getSelectedItem();
                 
-                if (objEmpresa.getCantidadBusesEmpresa() == 0) {
-                    String mensaje = "¿Está seguro de eliminar esta empresa?\n\n"
-                            + "Código: " + objEmpresa.getIdEmpresa() + "\n"
-                            + "Empresa: " + objEmpresa.getNombreEmpresa() + "\n"
-                            + "NIT: " + objEmpresa.getNitEmpresa() + "\n\n"
-                            + "Esta acción no se puede deshacer.";
+                String mensaje = "¿Está seguro de eliminar este viaje?\n\n"
+                        + "Código: " + objViaje.getIdViaje() + "\n"
+                        + "Fecha: " + objViaje.getFechaViaje() + "\n"
+                        + "Ruta: " + objViaje.getRutaViaje() + "\n\n"
+                        + "Esta acción no se puede deshacer.";
 
-                    Alert msg = new Alert(Alert.AlertType.CONFIRMATION);
-                    msg.setTitle("Confirmar Eliminación");
-                    msg.setHeaderText(null);
-                    msg.setContentText(mensaje);
-                    msg.initOwner(miEscenario);
-                    
-                    if (msg.showAndWait().get() == ButtonType.OK) {
-                        int posi = miTabla.getSelectionModel().getSelectedIndex();
-                        if (EmpresaControladorEliminar.borrar(posi)) {
-                            int canti = EmpresaControladorListar.obtenerCantidadEmpresas();
-                            titulo.setText("Administrar Empresas (" + canti + ")");
+                Alert msg = new Alert(Alert.AlertType.CONFIRMATION);
+                msg.setTitle("Confirmar Eliminación");
+                msg.setHeaderText(null);
+                msg.setContentText(mensaje);
+                msg.initOwner(miEscenario);
+                
+                if (msg.showAndWait().get() == ButtonType.OK) {
+                    int posi = miTabla.getSelectionModel().getSelectedIndex();
+                    if (ViajeControladorEliminar.borrar(posi)) {
+                        int canti = ViajeControladorListar.obtenerCantidadViajes();
+                        titulo.setText("Administrar Viajes (" + canti + ")");
 
-                            datosTabla.setAll(EmpresaControladorListar.obtenerEmpresas());
-                            miTabla.refresh();
+                        datosTabla.setAll(ViajeControladorListar.obtenerViajes());
+                        miTabla.refresh();
 
-                            Mensaje.mostrar(Alert.AlertType.INFORMATION,
-                                    miEscenario, "Éxito", "Empresa eliminada correctamente");
-                        } else {
-                            Mensaje.mostrar(Alert.AlertType.ERROR,
-                                    miEscenario, "Error", "No se pudo eliminar la empresa");
-                        }
+                        Mensaje.mostrar(Alert.AlertType.INFORMATION,
+                                miEscenario, "Éxito", "Viaje eliminado correctamente");
                     } else {
-                        miTabla.getSelectionModel().clearSelection();
+                        Mensaje.mostrar(Alert.AlertType.ERROR,
+                                miEscenario, "Error", "No se pudo eliminar el viaje");
                     }
                 } else {
-                    Mensaje.mostrar(Alert.AlertType.ERROR,
-                            miEscenario, "Error", 
-                            "No se puede eliminar una empresa con buses asociados");
+                    miTabla.getSelectionModel().clearSelection();
                 }
             }
         });
         
+        // Botón actualizar/editar
         Button btnActualizar = new Button();
         btnActualizar.setPrefWidth(ancho);
         btnActualizar.setCursor(Cursor.HAND);
@@ -242,18 +262,18 @@ public class VistaEmpresaAdministrar extends StackPane {
             if (miTabla.getSelectionModel().getSelectedItem() == null) {
                 Mensaje.mostrar(Alert.AlertType.WARNING,
                         miEscenario, "Advertencia", 
-                        "Debe seleccionar una empresa para editar");
+                        "Debe seleccionar un viaje para editar");
             } else {
-                EmpresaDto objEmpresa = miTabla.getSelectionModel().getSelectedItem();
+                ViajeDto objViaje = miTabla.getSelectionModel().getSelectedItem();
                 int posi = miTabla.getSelectionModel().getSelectedIndex();
 
-                panelCuerpo = EmpresaControladorVentana.editar(
+                panelCuerpo = ViajeControladorVentana.editar(
                         miEscenario,
                         panelPrincipal,
                         panelCuerpo,
                         Configuracion.ANCHO_APP,
                         Configuracion.ALTO_CUERPO,
-                        objEmpresa,
+                        objViaje,
                         posi,
                         false);
                         
@@ -262,6 +282,7 @@ public class VistaEmpresaAdministrar extends StackPane {
             }
         });
         
+        // Botón cancelar
         Button btnCancelar = new Button();
         btnCancelar.setPrefWidth(ancho);
         btnCancelar.setCursor(Cursor.HAND);

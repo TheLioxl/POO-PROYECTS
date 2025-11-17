@@ -12,8 +12,6 @@ public class Empresa {
     private Short cantidadBusesEmpresa;
     private String nombreImagenPublicoEmpresa;
     private String nombreImagenPrivadoEmpresa;
-    
-    // NUEVOS CAMPOS PARA 6 TIPOS DE OBJETOS
     private LocalDate fechaFundacion;
     private Integer cantidadEmpleados;
     private Boolean servicio24Horas;
@@ -45,8 +43,6 @@ public class Empresa {
         this.descripcionEmpresa = descripcionEmpresa;
     }
 
-    // ==================== GETTERS Y SETTERS EXISTENTES ====================
-    
     public Integer getIdEmpresa() {
         return idEmpresa;
     }
@@ -111,8 +107,6 @@ public class Empresa {
         this.nombreImagenPrivadoEmpresa = nombreImagenPrivadoEmpresa;
     }
 
-    // ==================== NUEVOS GETTERS Y SETTERS ====================
-    
     public LocalDate getFechaFundacion() {
         return fechaFundacion;
     }

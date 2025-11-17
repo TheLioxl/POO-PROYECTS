@@ -8,28 +8,20 @@ import org.poo.recurso.constante.Persistencia;
 
 public class Formulario {
 
-    /**
-     * Crea un selector de imágenes con filtros
-     */
     public static FileChooser selectorImagen(String tituloVentana, String tituloFiltros, String[] extensiones) {
         File rutaInicial = new File(System.getProperty("user.home"));
         if (!rutaInicial.exists()) {
             rutaInicial = new File(Persistencia.RUTA_PROYECTO);
         }
-        
         FileChooser objSeleccionar = new FileChooser();
         objSeleccionar.setTitle(tituloVentana);
         objSeleccionar.setInitialDirectory(rutaInicial);
         objSeleccionar.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter(tituloFiltros, extensiones)
-        );
-        
+        );      
         return objSeleccionar;
     }
 
-    /**
-     * Limita la cantidad de caracteres en un TextField
-     */
     public static void cantidadCaracteres(TextField caja, int limite) {
         caja.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && newValue.length() > limite) {
@@ -37,10 +29,7 @@ public class Formulario {
             }
         });
     }
-
-    /**
-     * Permite solo números enteros en un TextField
-     */
+    
     public static void soloNumeros(TextField caja) {
         caja.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.matches("\\d*")) {
@@ -49,9 +38,6 @@ public class Formulario {
         });
     }
 
-    /**
-     * Permite solo números decimales con hasta 2 decimales
-     */
     public static void soloDecimales(TextField caja) {
         caja.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.matches("\\d*(\\.\\d{0,2})?")) {
@@ -60,9 +46,6 @@ public class Formulario {
         });
     }
 
-    /**
-     * Permite solo letras y espacios
-     */
     public static void soloLetras(TextField caja) {
         caja.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]*")) {
@@ -71,9 +54,6 @@ public class Formulario {
         });
     }
 
-    /**
-     * Valida formato de correo electrónico
-     */
     public static boolean validarEmail(String email) {
         if (email == null || email.isEmpty()) {
             return false;
@@ -82,9 +62,6 @@ public class Formulario {
         return email.matches(regex);
     }
 
-    /**
-     * Valida formato de teléfono (10 dígitos)
-     */
     public static void soloTelefono(TextField caja) {
         caja.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.matches("\\d{0,10}")) {
@@ -93,9 +70,6 @@ public class Formulario {
         });
     }
 
-    /**
-     * Valida formato de cédula (números y guión)
-     */
     public static void formatoCedula(TextField caja) {
         caja.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !newValue.matches("\\d{0,10}[-]?\\d{0,1}")) {
@@ -104,9 +78,6 @@ public class Formulario {
         });
     }
 
-    /**
-     * Valida formato de placa de vehículo
-     */
     public static void formatoPlaca(TextField caja) {
         caja.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -121,9 +92,6 @@ public class Formulario {
         cantidadCaracteres(caja, 6);
     }
 
-    /**
-     * Deshabilita el DatePicker para fechas pasadas
-     */
     public static void deshabilitarFechasPasadas(DatePicker datePicker) {
         datePicker.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
             @Override
@@ -134,9 +102,6 @@ public class Formulario {
         });
     }
 
-    /**
-     * Deshabilita el DatePicker para fechas futuras
-     */
     public static void deshabilitarFechasFuturas(DatePicker datePicker) {
         datePicker.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
             @Override

@@ -26,25 +26,24 @@ import java.util.List;
 public class VistaEmpresaCrear extends StackPane {
 
     private static final int H_GAP = 10;
-    private static final int V_GAP = 12; // Reducido para que quepa todo
+    private static final int V_GAP = 12; 
     private static final int ALTO_CAJA = 35;
-    private static final int TAMANIO_FUENTE = 16; // Reducido
+    private static final int TAMANIO_FUENTE = 16; 
 
     private final GridPane miGrilla;
     private final Rectangle miMarco;
     private final Stage miEscenario;
 
-    // 6 TIPOS DE OBJETOS DIFERENTES
-    private TextField txtNombreEmpresa;           // 1. TextField
-    private TextField txtNitEmpresa;              // 1. TextField
-    private ComboBox<TerminalDto> cmbTerminalEmpresa;  // 2. ComboBox
-    private ComboBox<String> cmbEstadoEmpresa;         // 2. ComboBox
-    private DatePicker dateFechaFundacion;        // 3. DatePicker ✨
-    private Spinner<Integer> spinnerEmpleados;    // 4. Spinner ✨
-    private CheckBox chk24Horas;                  // 5. CheckBox ✨
-    private CheckBox chkMantenimiento;            // 5. CheckBox
-    private CheckBox chkServicioCliente;          // 5. CheckBox
-    private TextArea txtDescripcion;              // 6. TextArea ✨
+    private TextField txtNombreEmpresa;
+    private TextField txtNitEmpresa;
+    private ComboBox<TerminalDto> cmbTerminalEmpresa;
+    private ComboBox<String> cmbEstadoEmpresa;
+    private DatePicker dateFechaFundacion;
+    private Spinner<Integer> spinnerEmpleados;
+    private CheckBox chk24Horas;
+    private CheckBox chkMantenimiento;
+    private CheckBox chkServicioCliente;
+    private TextArea txtDescripcion;
     
     private TextField txtImagen;
     private ImageView imgPorDefecto;
@@ -85,7 +84,7 @@ public class VistaEmpresaCrear extends StackPane {
         miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         ColumnConstraints col0 = new ColumnConstraints();
-        col0.setPercentWidth(35); // Reducido para dar más espacio a los controles
+        col0.setPercentWidth(35);
         
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(65);
@@ -99,13 +98,13 @@ public class VistaEmpresaCrear extends StackPane {
 
         Region espacioSuperior = new Region();
         espacioSuperior.prefHeightProperty().bind(
-                miEscenario.heightProperty().multiply(0.02)); // Reducido
+                miEscenario.heightProperty().multiply(0.02)); 
         miGrilla.add(espacioSuperior, columna, fila, colSpan, rowSpan);
 
         fila = 1;
         Text titulo = new Text("Formulario Creación de Empresa");
         titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 24)); // Reducido
+        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 24)); 
         GridPane.setHalignment(titulo, HPos.CENTER);
         miGrilla.add(titulo, columna, fila, colSpan, rowSpan);
     }
@@ -114,8 +113,7 @@ public class VistaEmpresaCrear extends StackPane {
         int fila = 2;
         int primeraColumna = 0;
         int segundaColumna = 1;
-
-        // 1. NOMBRE EMPRESA - TextField
+        
         fila++;
         Label lblNombre = new Label("Nombre Empresa:");
         lblNombre.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -128,7 +126,6 @@ public class VistaEmpresaCrear extends StackPane {
         Formulario.cantidadCaracteres(txtNombreEmpresa, 50);
         miGrilla.add(txtNombreEmpresa, segundaColumna, fila);
 
-        // 1. NIT - TextField
         fila++;
         Label lblNit = new Label("NIT:");
         lblNit.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -141,7 +138,6 @@ public class VistaEmpresaCrear extends StackPane {
         Formulario.cantidadCaracteres(txtNitEmpresa, 20);
         miGrilla.add(txtNitEmpresa, segundaColumna, fila);
 
-        // 2. TERMINAL - ComboBox
         fila++;
         Label lblTerminal = new Label("Terminal:");
         lblTerminal.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -174,7 +170,6 @@ public class VistaEmpresaCrear extends StackPane {
         
         miGrilla.add(cmbTerminalEmpresa, segundaColumna, fila);
 
-        // 2. ESTADO - ComboBox
         fila++;
         Label lblEstado = new Label("Estado:");
         lblEstado.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -187,7 +182,6 @@ public class VistaEmpresaCrear extends StackPane {
         cmbEstadoEmpresa.getSelectionModel().select(0);
         miGrilla.add(cmbEstadoEmpresa, segundaColumna, fila);
 
-        // 3. FECHA FUNDACIÓN - DatePicker ✨
         fila++;
         Label lblFechaFundacion = new Label("Fecha Fundación:");
         lblFechaFundacion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -197,11 +191,10 @@ public class VistaEmpresaCrear extends StackPane {
         dateFechaFundacion.setMaxWidth(Double.MAX_VALUE);
         dateFechaFundacion.setPrefHeight(ALTO_CAJA);
         dateFechaFundacion.setPromptText("Seleccione fecha");
-        dateFechaFundacion.setValue(LocalDate.now().minusYears(10)); // Valor por defecto
+        dateFechaFundacion.setValue(LocalDate.now().minusYears(10));
         Formulario.deshabilitarFechasFuturas(dateFechaFundacion);
         miGrilla.add(dateFechaFundacion, segundaColumna, fila);
 
-        // 4. CANTIDAD EMPLEADOS - Spinner ✨
         fila++;
         Label lblEmpleados = new Label("Cant. Empleados:");
         lblEmpleados.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -216,7 +209,6 @@ public class VistaEmpresaCrear extends StackPane {
         spinnerEmpleados.setEditable(true);
         miGrilla.add(spinnerEmpleados, segundaColumna, fila);
 
-        // 5. SERVICIOS - CheckBox ✨
         fila++;
         Label lblServicios = new Label("Servicios:");
         lblServicios.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -234,7 +226,6 @@ public class VistaEmpresaCrear extends StackPane {
         vboxServicios.getChildren().addAll(chk24Horas, chkMantenimiento, chkServicioCliente);
         miGrilla.add(vboxServicios, segundaColumna, fila);
 
-        // 6. DESCRIPCIÓN - TextArea ✨
         fila++;
         Label lblDescripcion = new Label("Descripción:");
         lblDescripcion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -242,12 +233,11 @@ public class VistaEmpresaCrear extends StackPane {
 
         txtDescripcion = new TextArea();
         txtDescripcion.setPromptText("Breve descripción de la empresa...");
-        txtDescripcion.setPrefRowCount(2); // Reducido
+        txtDescripcion.setPrefRowCount(2);
         txtDescripcion.setWrapText(true);
         txtDescripcion.setMaxWidth(Double.MAX_VALUE);
         miGrilla.add(txtDescripcion, segundaColumna, fila);
 
-        // IMAGEN
         fila++;
         Label lblImagen = new Label("Logo:");
         lblImagen.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -284,13 +274,11 @@ public class VistaEmpresaCrear extends StackPane {
         HBox panelImagen = new HBox(5, txtImagen, btnSeleccionarImagen);
         miGrilla.add(panelImagen, segundaColumna, fila);
 
-        // PREVISUALIZACIÓN
         fila++;
         imgPorDefecto = Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 120);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         miGrilla.add(imgPorDefecto, segundaColumna, fila);
 
-        // BOTÓN GRABAR
         fila++;
         Button btnGrabar = new Button("Crear Empresa");
         btnGrabar.setPrefHeight(ALTO_CAJA);
@@ -361,7 +349,6 @@ public class VistaEmpresaCrear extends StackPane {
             dto.setCantidadBusesEmpresa((short) 0);
             dto.setNombreImagenPublicoEmpresa(txtImagen.getText());
             
-            // NUEVOS CAMPOS
             dto.setFechaFundacion(dateFechaFundacion.getValue());
             dto.setCantidadEmpleados(spinnerEmpleados.getValue());
             dto.setServicio24Horas(chk24Horas.isSelected());
@@ -396,7 +383,6 @@ public class VistaEmpresaCrear extends StackPane {
 
         miGrilla.getChildren().remove(imgPrevisualizar);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        // La fila de previsualización es la 12
         miGrilla.add(imgPorDefecto, 1, 12);
 
         txtNombreEmpresa.requestFocus();

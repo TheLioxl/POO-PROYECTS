@@ -129,8 +129,6 @@ public class TerminalDto {
         this.nombreImagenPrivadoTerminal = nombreImagenPrivadoTerminal;
     }
 
-    
-
     @Override
     public String toString() {
         return nombreTerminal;

@@ -50,9 +50,15 @@ public class ViajeServicio implements ApiOperacionBD<ViajeDto, Integer> {
         objViaje.setIdViaje(getSerial());
         objViaje.setFechaViaje(dto.getFechaViaje());
         objViaje.setHoraSalidaViaje(dto.getHoraSalidaViaje());
+        objViaje.setHoraLlegadaViaje(dto.getHoraLlegadaViaje());
         objViaje.setPrecioViaje(dto.getPrecioViaje());
         objViaje.setAsientosDisponiblesViaje(dto.getAsientosDisponiblesViaje());
         objViaje.setEstadoViaje(dto.getEstadoViaje());
+        objViaje.setViajeDirecto(dto.getViajeDirecto());
+        objViaje.setIncluyeRefrigerio(dto.getIncluyeRefrigerio());
+        objViaje.setTieneParadasIntermedias(dto.getTieneParadasIntermedias());
+        objViaje.setDescripcionViaje(dto.getDescripcionViaje());
+        objViaje.setNotasAdicionalesViaje(dto.getNotasAdicionalesViaje());
         objViaje.setNombreImagenPublicoViaje(dto.getNombreImagenPublicoViaje());
         objViaje.setNombreImagenPrivadoViaje(GestorImagen.grabarLaImagen(ruta));
 
@@ -62,9 +68,15 @@ public class ViajeServicio implements ApiOperacionBD<ViajeDto, Integer> {
                 + dto.getConductorViaje().getIdConductor() + Persistencia.SEPARADOR_COLUMNAS
                 + objViaje.getFechaViaje().toString() + Persistencia.SEPARADOR_COLUMNAS
                 + objViaje.getHoraSalidaViaje().toString() + Persistencia.SEPARADOR_COLUMNAS
+                + objViaje.getHoraLlegadaViaje().toString() + Persistencia.SEPARADOR_COLUMNAS
                 + objViaje.getPrecioViaje() + Persistencia.SEPARADOR_COLUMNAS
                 + objViaje.getAsientosDisponiblesViaje() + Persistencia.SEPARADOR_COLUMNAS
                 + objViaje.getEstadoViaje() + Persistencia.SEPARADOR_COLUMNAS
+                + objViaje.getViajeDirecto() + Persistencia.SEPARADOR_COLUMNAS
+                + objViaje.getIncluyeRefrigerio() + Persistencia.SEPARADOR_COLUMNAS
+                + objViaje.getTieneParadasIntermedias() + Persistencia.SEPARADOR_COLUMNAS
+                + objViaje.getDescripcionViaje() + Persistencia.SEPARADOR_COLUMNAS
+                + objViaje.getNotasAdicionalesViaje() + Persistencia.SEPARADOR_COLUMNAS
                 + objViaje.getNombreImagenPublicoViaje() + Persistencia.SEPARADOR_COLUMNAS
                 + objViaje.getNombreImagenPrivadoViaje();
 
@@ -95,27 +107,62 @@ public class ViajeServicio implements ApiOperacionBD<ViajeDto, Integer> {
                 cadena = cadena.replace("@", "");
                 String[] columnas = cadena.split(Persistencia.SEPARADOR_COLUMNAS);
 
+                ViajeDto dto = new ViajeDto();
+                
                 int codViaje = Integer.parseInt(columnas[0].trim());
                 int codBus = Integer.parseInt(columnas[1].trim());
                 int codRuta = Integer.parseInt(columnas[2].trim());
                 int codConductor = Integer.parseInt(columnas[3].trim());
                 LocalDate fecha = LocalDate.parse(columnas[4].trim());
-                LocalTime hora = LocalTime.parse(columnas[5].trim());
-                Double precio = Double.parseDouble(columnas[6].trim());
-                Integer asientos = Integer.parseInt(columnas[7].trim());
-                Boolean estado = Boolean.valueOf(columnas[8].trim());
-                String npub = columnas[9].trim();
-                String nocu = columnas[10].trim();
-
-                ViajeDto dto = new ViajeDto();
+                LocalTime horaSalida = LocalTime.parse(columnas[5].trim());
+                
                 dto.setIdViaje(codViaje);
                 dto.setFechaViaje(fecha);
-                dto.setHoraSalidaViaje(hora);
-                dto.setPrecioViaje(precio);
-                dto.setAsientosDisponiblesViaje(asientos);
-                dto.setEstadoViaje(estado);
-                dto.setNombreImagenPublicoViaje(npub);
-                dto.setNombreImagenPrivadoViaje(nocu);
+                dto.setHoraSalidaViaje(horaSalida);
+
+                if (columnas.length >= 17) {
+                    LocalTime horaLlegada = LocalTime.parse(columnas[6].trim());
+                    Double precio = Double.parseDouble(columnas[7].trim());
+                    Integer asientos = Integer.parseInt(columnas[8].trim());
+                    Boolean estado = Boolean.valueOf(columnas[9].trim());
+                    Boolean viajeDirecto = Boolean.valueOf(columnas[10].trim());
+                    Boolean incluyeRefrigerio = Boolean.valueOf(columnas[11].trim());
+                    Boolean tieneParadas = Boolean.valueOf(columnas[12].trim());
+                    String descripcion = columnas[13].trim();
+                    String notas = columnas[14].trim();
+                    String npub = columnas[15].trim();
+                    String nocu = columnas[16].trim();
+                    
+                    dto.setHoraLlegadaViaje(horaLlegada);
+                    dto.setPrecioViaje(precio);
+                    dto.setAsientosDisponiblesViaje(asientos);
+                    dto.setEstadoViaje(estado);
+                    dto.setViajeDirecto(viajeDirecto);
+                    dto.setIncluyeRefrigerio(incluyeRefrigerio);
+                    dto.setTieneParadasIntermedias(tieneParadas);
+                    dto.setDescripcionViaje(descripcion);
+                    dto.setNotasAdicionalesViaje(notas);
+                    dto.setNombreImagenPublicoViaje(npub);
+                    dto.setNombreImagenPrivadoViaje(nocu);
+                } else {
+                    Double precio = Double.parseDouble(columnas[6].trim());
+                    Integer asientos = Integer.parseInt(columnas[7].trim());
+                    Boolean estado = Boolean.valueOf(columnas[8].trim());
+                    String npub = columnas[9].trim();
+                    String nocu = columnas[10].trim();
+                    
+                    dto.setHoraLlegadaViaje(horaSalida.plusHours(4));
+                    dto.setPrecioViaje(precio);
+                    dto.setAsientosDisponiblesViaje(asientos);
+                    dto.setEstadoViaje(estado);
+                    dto.setViajeDirecto(true);
+                    dto.setIncluyeRefrigerio(false);
+                    dto.setTieneParadasIntermedias(false);
+                    dto.setDescripcionViaje("Viaje estándar");
+                    dto.setNotasAdicionalesViaje("Sin notas adicionales");
+                    dto.setNombreImagenPublicoViaje(npub);
+                    dto.setNombreImagenPrivadoViaje(nocu);
+                }
 
                 dto.setBusViaje(obtenerBusCompleto(codBus, arrBuses));
                 dto.setRutaViaje(obtenerRutaCompleta(codRuta, arrRutas));
@@ -159,57 +206,16 @@ public class ViajeServicio implements ApiOperacionBD<ViajeDto, Integer> {
 
     @Override
     public List<ViajeDto> selectFromWhereActivos() {
-        BusServicio busServicio = new BusServicio();
-        List<BusDto> arrBuses = busServicio.selectFrom();
-
-        RutaServicio rutaServicio = new RutaServicio();
-        List<RutaDto> arrRutas = rutaServicio.selectFrom();
-
-        ConductorServicio conductorServicio = new ConductorServicio();
-        List<ConductorDto> arrConductores = conductorServicio.selectFrom();
-
-        List<ViajeDto> arregloViaje = new ArrayList<>();
-        List<String> arregloDatos = miArchivo.obtenerDatos();
-
-        for (String cadena : arregloDatos) {
-            try {
-                cadena = cadena.replace("@", "");
-                String[] columnas = cadena.split(Persistencia.SEPARADOR_COLUMNAS);
-
-                int codViaje = Integer.parseInt(columnas[0].trim());
-                int codBus = Integer.parseInt(columnas[1].trim());
-                int codRuta = Integer.parseInt(columnas[2].trim());
-                int codConductor = Integer.parseInt(columnas[3].trim());
-                LocalDate fecha = LocalDate.parse(columnas[4].trim());
-                LocalTime hora = LocalTime.parse(columnas[5].trim());
-                Double precio = Double.parseDouble(columnas[6].trim());
-                Integer asientos = Integer.parseInt(columnas[7].trim());
-                Boolean estado = Boolean.valueOf(columnas[8].trim());
-                String npub = columnas[9].trim();
-                String nocu = columnas[10].trim();
-
-                if (Boolean.TRUE.equals(estado)) {
-                    ViajeDto dto = new ViajeDto();
-                    dto.setIdViaje(codViaje);
-                    dto.setFechaViaje(fecha);
-                    dto.setHoraSalidaViaje(hora);
-                    dto.setPrecioViaje(precio);
-                    dto.setAsientosDisponiblesViaje(asientos);
-                    dto.setEstadoViaje(estado);
-                    dto.setNombreImagenPublicoViaje(npub);
-                    dto.setNombreImagenPrivadoViaje(nocu);
-
-                    dto.setBusViaje(obtenerBusCompleto(codBus, arrBuses));
-                    dto.setRutaViaje(obtenerRutaCompleta(codRuta, arrRutas));
-                    dto.setConductorViaje(obtenerConductorCompleto(codConductor, arrConductores));
-
-                    arregloViaje.add(dto);
-                }
-            } catch (Exception error) {
-                Logger.getLogger(ViajeServicio.class.getName()).log(Level.SEVERE, null, error);
+        List<ViajeDto> todosLosViajes = selectFrom();
+        List<ViajeDto> viajesActivos = new ArrayList<>();
+        
+        for (ViajeDto viaje : todosLosViajes) {
+            if (Boolean.TRUE.equals(viaje.getEstadoViaje())) {
+                viajesActivos.add(viaje);
             }
         }
-        return arregloViaje;
+        
+        return viajesActivos;
     }
 
     @Override
@@ -239,11 +245,65 @@ public class ViajeServicio implements ApiOperacionBD<ViajeDto, Integer> {
 
     @Override
     public ViajeDto getOne(Integer codigo) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        int contador = 0;
+        ViajeDto objListo = new ViajeDto();
+        List<ViajeDto> arrViajes = selectFrom();
+
+        for (ViajeDto objViaje : arrViajes) {
+            if (contador == codigo) {
+                objListo = objViaje;
+                break;
+            }
+            contador++;
+        }
+        return objListo;
     }
 
     @Override
     public ViajeDto updateSet(Integer codigo, ViajeDto objeto, String ruta) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            String cadena, nocu;
+            List<String> arregloDatos;
+
+            cadena = objeto.getIdViaje() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getBusViaje().getIdBus() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getRutaViaje().getIdRuta() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getConductorViaje().getIdConductor() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getFechaViaje().toString() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getHoraSalidaViaje().toString() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getHoraLlegadaViaje().toString() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getPrecioViaje() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getAsientosDisponiblesViaje() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getEstadoViaje() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getViajeDirecto() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getIncluyeRefrigerio() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getTieneParadasIntermedias() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getDescripcionViaje() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getNotasAdicionalesViaje() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getNombreImagenPublicoViaje() + Persistencia.SEPARADOR_COLUMNAS;
+
+            if (ruta.isBlank()) {
+                cadena = cadena + objeto.getNombreImagenPrivadoViaje();
+            } else {
+                nocu = GestorImagen.grabarLaImagen(ruta);
+                cadena = cadena + nocu;
+                
+                arregloDatos = miArchivo.borrarFilaPosicion(codigo);
+                if (!arregloDatos.isEmpty()) {
+                    String nomOculto = arregloDatos.get(arregloDatos.size() - 1);
+                    String nombreBorrar = Persistencia.RUTA_IMAGENES 
+                            + Persistencia.SEPARADOR_CARPETAS + nomOculto;
+                    java.nio.file.Path rutaBorrar = java.nio.file.Paths.get(nombreBorrar);
+                    java.nio.file.Files.deleteIfExists(rutaBorrar);
+                }
+            }
+
+            if (miArchivo.actualizaFilaPosicion(codigo, cadena)) {
+                return objeto;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ViajeServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

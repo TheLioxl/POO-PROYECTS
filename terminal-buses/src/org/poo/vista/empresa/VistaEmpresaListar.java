@@ -79,32 +79,27 @@ public class VistaEmpresaListar extends StackPane {
     }
 
     private void crearTabla() {
-        // Código
         TableColumn<EmpresaDto, Integer> colCodigo = new TableColumn<>("Código");
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("idEmpresa"));
         colCodigo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
         colCodigo.setStyle(ESTILO_CENTRAR);
 
-        // Nombre
         TableColumn<EmpresaDto, String> colNombre = new TableColumn<>("Nombre Empresa");
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreEmpresa"));
         colNombre.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colNombre.setStyle(ESTILO_IZQUIERDA);
 
-        // NIT
         TableColumn<EmpresaDto, String> colNit = new TableColumn<>("NIT");
         colNit.setCellValueFactory(new PropertyValueFactory<>("nitEmpresa"));
         colNit.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
         colNit.setStyle(ESTILO_CENTRAR);
 
-        // Terminal
         TableColumn<EmpresaDto, String> colTerminal = new TableColumn<>("Terminal");
         colTerminal.setCellValueFactory(obj -> 
             new SimpleStringProperty(obj.getValue().getTerminalEmpresa().getNombreTerminal()));
         colTerminal.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
         colTerminal.setStyle(ESTILO_IZQUIERDA);
 
-        // Estado
         TableColumn<EmpresaDto, String> colEstado = new TableColumn<>("Estado");
         colEstado.setCellValueFactory(obj -> {
             String estado = obj.getValue().getEstadoEmpresa() ? "Activo" : "Inactivo";
@@ -125,13 +120,11 @@ public class VistaEmpresaListar extends StackPane {
         });
         colEstado.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
 
-        // Cantidad Buses
         TableColumn<EmpresaDto, Short> colBuses = new TableColumn<>("Buses");
         colBuses.setCellValueFactory(new PropertyValueFactory<>("cantidadBusesEmpresa"));
         colBuses.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
         colBuses.setStyle(ESTILO_CENTRAR);
 
-        // Imagen
         TableColumn<EmpresaDto, String> colImagen = new TableColumn<>("Logo");
         colImagen.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPrivadoEmpresa"));
         colImagen.setCellFactory(column -> new TableCell<EmpresaDto, String>() {

@@ -8,12 +8,6 @@ import org.poo.recurso.constante.Persistencia;
 
 public class Icono {
 
-    /**
-     * Obtiene un ícono desde los recursos internos del proyecto
-     * @param nombreIcono Nombre del archivo de imagen
-     * @param alto Altura deseada (0 para mantener tamaño original)
-     * @return ImageView con el ícono cargado
-     */
     public static ImageView obtenerIcono(String nombreIcono, int alto) {
         String rutaIcono = Persistencia.NOMBRE_CARPETA_IMAGENES_INTERNAS + nombreIcono;
         Image iconito = new Image(rutaIcono);
@@ -27,12 +21,6 @@ public class Icono {
         return vistaIconito;
     }
 
-    /**
-     * Obtiene imágenes de la carpeta externa (imágenes subidas por usuarios)
-     * @param nombreImagen Nombre del archivo
-     * @param alto Altura deseada
-     * @return ImageView con la imagen
-     */
     public static ImageView obtenerFotosExternas(String nombreImagen, int alto) {
         ImageView imgMostrar = null;
         String rutaImagen = Persistencia.RUTA_IMAGENES + Persistencia.SEPARADOR_CARPETAS + nombreImagen;
@@ -49,19 +37,12 @@ public class Icono {
             
         } catch (IOException miError) {
             System.out.println("Error al cargar la foto externa: " + miError.getMessage());
-            // Retornar imagen por defecto si falla
             return obtenerIcono("imgNoDisponible.png", alto);
         }
 
         return imgMostrar;
     }
-
-    /**
-     * Previsualiza una imagen antes de ser guardada
-     * @param rutaImagen Ruta completa de la imagen
-     * @param dimensionMaxima Dimensión máxima (ancho o alto)
-     * @return ImageView con la imagen
-     */
+    
     public static ImageView previsualizar(String rutaImagen, int dimensionMaxima) {
         ImageView imgMostrar = null;
 
@@ -71,8 +52,6 @@ public class Icono {
 
             double ancho = imgBasica.getWidth();
             double alto = imgBasica.getHeight();
-
-            // Ajustar según la dimensión mayor
             if (ancho > alto) {
                 imgMostrar.setFitWidth(dimensionMaxima);
             } else {

@@ -12,14 +12,12 @@ public class EmpresaDto {
     private Short cantidadBusesEmpresa;
     private String nombreImagenPublicoEmpresa;
     private String nombreImagenPrivadoEmpresa;
-    
-    // NUEVOS CAMPOS PARA CUMPLIR CON 6 TIPOS DE OBJETOS
-    private LocalDate fechaFundacion;           // DatePicker
-    private Integer cantidadEmpleados;           // Spinner
-    private Boolean servicio24Horas;             // CheckBox
-    private Boolean tieneMantenimientoPropio;    // CheckBox
-    private Boolean tieneServicioCliente;        // CheckBox
-    private String descripcionEmpresa;           // TextArea
+    private LocalDate fechaFundacion;           
+    private Integer cantidadEmpleados;           
+    private Boolean servicio24Horas;             
+    private Boolean tieneMantenimientoPropio;    
+    private Boolean tieneServicioCliente;        
+    private String descripcionEmpresa;          
 
     public EmpresaDto() {
     }
@@ -42,7 +40,6 @@ public class EmpresaDto {
         this.descripcionEmpresa = descripcionEmpresa;
     }
 
-    // Getters y Setters existentes
     public Integer getIdEmpresa() {
         return idEmpresa;
     }
@@ -106,8 +103,7 @@ public class EmpresaDto {
     public void setNombreImagenPrivadoEmpresa(String nombreImagenPrivadoEmpresa) {
         this.nombreImagenPrivadoEmpresa = nombreImagenPrivadoEmpresa;
     }
-
-    // NUEVOS GETTERS Y SETTERS
+    
     public LocalDate getFechaFundacion() {
         return fechaFundacion;
     }

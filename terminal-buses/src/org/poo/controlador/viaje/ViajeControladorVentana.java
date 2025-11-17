@@ -1,21 +1,21 @@
-package org.poo.controlador.terminal;
+package org.poo.controlador.viaje;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.poo.controlador.ControladorEfecto;
-import org.poo.dto.TerminalDto;
-import org.poo.vista.terminal.VistaTerminalAdministrar;
-import org.poo.vista.terminal.VistaTerminalCarrusel;
-import org.poo.vista.terminal.VistaTerminalCrear;
-import org.poo.vista.terminal.VistaTerminalEditar;
-import org.poo.vista.terminal.VistaTerminalListar;
+import org.poo.dto.ViajeDto;
+import org.poo.vista.viaje.VistaViajeAdministrar;
+import org.poo.vista.viaje.VistaViajeCarrusel;
+import org.poo.vista.viaje.VistaViajeCrear;
+import org.poo.vista.viaje.VistaViajeEditar;
+import org.poo.vista.viaje.VistaViajeListar;
 
-public class TerminalControladorVentana {
+public class ViajeControladorVentana {
 
     public static StackPane crear(Stage miEscenario, double anchoFrm, double altoFrm) {
-        VistaTerminalCrear vista = new VistaTerminalCrear(miEscenario, anchoFrm, altoFrm);
+        VistaViajeCrear vista = new VistaViajeCrear(miEscenario, anchoFrm, altoFrm);
         StackPane contenedor = vista;
         
         ControladorEfecto.aplicarEfecto(contenedor, anchoFrm, altoFrm);
@@ -24,7 +24,7 @@ public class TerminalControladorVentana {
     }
 
     public static StackPane listar(Stage miEscenario, double anchoFrm, double altoFrm) {
-        VistaTerminalListar vista = new VistaTerminalListar(miEscenario, anchoFrm, altoFrm);
+        VistaViajeListar vista = new VistaViajeListar(miEscenario, anchoFrm, altoFrm);
         StackPane contenedor = vista;
         
         ControladorEfecto.aplicarEfecto(contenedor, anchoFrm, altoFrm);
@@ -35,7 +35,7 @@ public class TerminalControladorVentana {
     public static StackPane administrar(Stage miEscenario, BorderPane princ, Pane pane,
             double anchoFrm, double altoFrm) {
         
-        VistaTerminalAdministrar vista = new VistaTerminalAdministrar(
+        VistaViajeAdministrar vista = new VistaViajeAdministrar(
                 miEscenario, princ, pane, anchoFrm, altoFrm);
         StackPane contenedor = vista;
         
@@ -47,28 +47,23 @@ public class TerminalControladorVentana {
     public static BorderPane carrusel(Stage miEscenario, BorderPane princ, Pane pane,
             double anchoFrm, double altoFrm, int indice) {
         
-        VistaTerminalCarrusel vista = new VistaTerminalCarrusel(
+        VistaViajeCarrusel vista = new VistaViajeCarrusel(
                 miEscenario, princ, pane, anchoFrm, altoFrm, indice);
         
         ControladorEfecto.aplicarEfecto(vista, anchoFrm, altoFrm);
         
         return vista;
     }
-    
+
     public static StackPane editar(Stage miEscenario, BorderPane princ, Pane pane,
-            double anchoFrm, double altoFrm, TerminalDto objTerminal, int posicion, boolean desdeCarrusel) {
+            double anchoFrm, double altoFrm, ViajeDto objViaje, int posicion, boolean origenCarrusel) {
         
-        VistaTerminalEditar vista = new VistaTerminalEditar(
-                miEscenario, princ, pane, anchoFrm, altoFrm, objTerminal, posicion, desdeCarrusel);
+        VistaViajeEditar vista = new VistaViajeEditar(
+                miEscenario, princ, pane, anchoFrm, altoFrm, objViaje, posicion, origenCarrusel);
         StackPane contenedor = vista.getMiFormulario();
-        
+
         ControladorEfecto.aplicarEfecto(contenedor, anchoFrm, altoFrm);
         
         return contenedor;
-    }
-    
-    public static StackPane editar(Stage miEscenario, BorderPane princ, Pane pane,
-            double anchoFrm, double altoFrm, TerminalDto objTerminal, int posicion) {
-        return editar(miEscenario, princ, pane, anchoFrm, altoFrm, objTerminal, posicion, false);
     }
 }

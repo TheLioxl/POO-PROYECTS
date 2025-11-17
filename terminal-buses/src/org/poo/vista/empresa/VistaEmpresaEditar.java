@@ -35,7 +35,6 @@ public class VistaEmpresaEditar extends StackPane {
     private final Rectangle miMarco;
     private final Stage miEscenario;
 
-    // 6 TIPOS DE OBJETOS DIFERENTES
     private TextField txtNombreEmpresa;
     private TextField txtNitEmpresa;
     private ComboBox<TerminalDto> cmbTerminalEmpresa;
@@ -56,7 +55,7 @@ public class VistaEmpresaEditar extends StackPane {
     private final EmpresaDto objEmpresa;
     private Pane panelCuerpo;
     private final BorderPane panelPrincipal;
-    private final boolean origenCarrusel; // NUEVO: para saber desde dónde se llamó
+    private final boolean origenCarrusel;
 
     public VistaEmpresaEditar(Stage ventanaPadre, BorderPane princ, Pane pane,
             double ancho, double alto, EmpresaDto objEmpresaExterno, int posicionArchivo, boolean origenCarrusel) {
@@ -69,7 +68,7 @@ public class VistaEmpresaEditar extends StackPane {
         objEmpresa = objEmpresaExterno;
         panelPrincipal = princ;
         panelCuerpo = pane;
-        this.origenCarrusel = origenCarrusel; // Guardar el origen
+        this.origenCarrusel = origenCarrusel;
         rutaImagenSeleccionada = "";
 
         miGrilla = new GridPane();
@@ -133,7 +132,6 @@ public class VistaEmpresaEditar extends StackPane {
         int primeraColumna = 0;
         int segundaColumna = 1;
 
-        // 1. NOMBRE - TextField
         fila++;
         Label lblNombre = new Label("Nombre Empresa:");
         lblNombre.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -146,7 +144,6 @@ public class VistaEmpresaEditar extends StackPane {
         Formulario.cantidadCaracteres(txtNombreEmpresa, 50);
         miGrilla.add(txtNombreEmpresa, segundaColumna, fila);
 
-        // 1. NIT - TextField
         fila++;
         Label lblNit = new Label("NIT:");
         lblNit.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -159,7 +156,6 @@ public class VistaEmpresaEditar extends StackPane {
         Formulario.cantidadCaracteres(txtNitEmpresa, 20);
         miGrilla.add(txtNitEmpresa, segundaColumna, fila);
 
-        // 2. TERMINAL - ComboBox
         fila++;
         Label lblTerminal = new Label("Terminal:");
         lblTerminal.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -177,7 +173,6 @@ public class VistaEmpresaEditar extends StackPane {
         cmbTerminalEmpresa.getItems().add(opcionDefault);
         cmbTerminalEmpresa.getItems().addAll(terminales);
         
-        // Seleccionar el terminal actual
         int indiceSeleccionado = 0;
         for (int i = 0; i < cmbTerminalEmpresa.getItems().size(); i++) {
             if (cmbTerminalEmpresa.getItems().get(i).getIdTerminal().equals(
@@ -202,7 +197,6 @@ public class VistaEmpresaEditar extends StackPane {
         
         miGrilla.add(cmbTerminalEmpresa, segundaColumna, fila);
 
-        // 2. ESTADO - ComboBox
         fila++;
         Label lblEstado = new Label("Estado:");
         lblEstado.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -220,7 +214,6 @@ public class VistaEmpresaEditar extends StackPane {
         }
         miGrilla.add(cmbEstadoEmpresa, segundaColumna, fila);
 
-        // 3. FECHA FUNDACIÓN - DatePicker
         fila++;
         Label lblFechaFundacion = new Label("Fecha de Fundación:");
         lblFechaFundacion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -233,7 +226,6 @@ public class VistaEmpresaEditar extends StackPane {
         Formulario.deshabilitarFechasFuturas(dateFechaFundacion);
         miGrilla.add(dateFechaFundacion, segundaColumna, fila);
 
-        // 4. CANTIDAD EMPLEADOS - Spinner
         fila++;
         Label lblEmpleados = new Label("Cantidad de Empleados:");
         lblEmpleados.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -249,7 +241,6 @@ public class VistaEmpresaEditar extends StackPane {
         spinnerEmpleados.setEditable(true);
         miGrilla.add(spinnerEmpleados, segundaColumna, fila);
 
-        // 5. SERVICIOS - CheckBox
         fila++;
         Label lblServicios = new Label("Servicios de la Empresa:");
         lblServicios.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -259,7 +250,6 @@ public class VistaEmpresaEditar extends StackPane {
         chkMantenimiento = new CheckBox("Mantenimiento Propio");
         chkServicioCliente = new CheckBox("Servicio al Cliente");
         
-        // Cargar valores del objeto
         chk24Horas.setSelected(objEmpresa.getServicio24Horas() != null ? objEmpresa.getServicio24Horas() : false);
         chkMantenimiento.setSelected(objEmpresa.getTieneMantenimientoPropio() != null ? objEmpresa.getTieneMantenimientoPropio() : false);
         chkServicioCliente.setSelected(objEmpresa.getTieneServicioCliente() != null ? objEmpresa.getTieneServicioCliente() : false);
@@ -272,7 +262,6 @@ public class VistaEmpresaEditar extends StackPane {
         vboxServicios.getChildren().addAll(chk24Horas, chkMantenimiento, chkServicioCliente);
         miGrilla.add(vboxServicios, segundaColumna, fila);
 
-        // 6. DESCRIPCIÓN - TextArea
         fila++;
         Label lblDescripcion = new Label("Descripción:");
         lblDescripcion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -285,7 +274,6 @@ public class VistaEmpresaEditar extends StackPane {
         txtDescripcion.setMaxWidth(Double.MAX_VALUE);
         miGrilla.add(txtDescripcion, segundaColumna, fila);
 
-        // IMAGEN
         fila++;
         Label lblImagen = new Label("Imagen:");
         lblImagen.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
@@ -323,14 +311,12 @@ public class VistaEmpresaEditar extends StackPane {
         HBox panelImagen = new HBox(5, txtImagen, btnSeleccionarImagen);
         miGrilla.add(panelImagen, segundaColumna, fila);
 
-        // PREVISUALIZACIÓN
         fila++;
         imgPorDefecto = Icono.obtenerFotosExternas(
                 objEmpresa.getNombreImagenPrivadoEmpresa(), 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         miGrilla.add(imgPorDefecto, segundaColumna, fila);
 
-        // BOTÓN ACTUALIZAR
         fila++;
         Button btnActualizar = new Button("Actualizar Empresa");
         btnActualizar.setPrefHeight(ALTO_CAJA);
@@ -341,21 +327,17 @@ public class VistaEmpresaEditar extends StackPane {
         btnActualizar.setOnAction(e -> actualizarEmpresa());
         miGrilla.add(btnActualizar, segundaColumna, fila);
 
-        // BOTÓN REGRESAR - CORREGIDO
         fila++;
         Button btnRegresar = new Button("Regresar");
         btnRegresar.setPrefHeight(ALTO_CAJA);
         btnRegresar.setMaxWidth(Double.MAX_VALUE);
         btnRegresar.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
         btnRegresar.setOnAction(e -> {
-            // MODIFICADO: Regresar al lugar correcto según el origen
             if (origenCarrusel) {
-                // Si venimos del carrusel, volver al carrusel en la misma posición
                 panelCuerpo = EmpresaControladorVentana.carrusel(
                         miEscenario, panelPrincipal, panelCuerpo,
                         Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO, posicion);
             } else {
-                // Si venimos de administrar, volver a administrar
                 panelCuerpo = EmpresaControladorVentana.administrar(
                         miEscenario, panelPrincipal, panelCuerpo,
                         Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO);
@@ -420,8 +402,6 @@ public class VistaEmpresaEditar extends StackPane {
             dtoActualizado.setNombreImagenPublicoEmpresa(txtImagen.getText());
             dtoActualizado.setNombreImagenPrivadoEmpresa(objEmpresa.getNombreImagenPrivadoEmpresa());
             dtoActualizado.setCantidadBusesEmpresa(objEmpresa.getCantidadBusesEmpresa());
-            
-            // NUEVOS CAMPOS
             dtoActualizado.setFechaFundacion(dateFechaFundacion.getValue());
             dtoActualizado.setCantidadEmpleados(spinnerEmpleados.getValue());
             dtoActualizado.setServicio24Horas(chk24Horas.isSelected());

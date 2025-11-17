@@ -12,12 +12,10 @@ public class SalidaControlador {
         msg.setTitle("Salir del Sistema");
         msg.initOwner(stage);
         msg.setHeaderText(null);
-        
-        // Añadir ícono personalizado si está disponible
+
         try {
             msg.getDialogPane().setGraphic(Icono.obtenerIcono("iconoTerminal.png", 40));
         } catch (Exception e) {
-            // Si no se encuentra el ícono, continuar sin él
         }
         
         msg.setContentText("¿Está seguro de que desea salir del sistema?");

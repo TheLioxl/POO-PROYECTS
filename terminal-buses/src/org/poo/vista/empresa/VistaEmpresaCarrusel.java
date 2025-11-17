@@ -239,7 +239,6 @@ public class VistaEmpresaCarrusel extends BorderPane {
     private void mostrarDatos() {
         int tamanioFuente = 20;
 
-        // Nombre
         empresaNombre = new SimpleStringProperty(objCargado.getNombreEmpresa());
         Label lblNombre = new Label();
         lblNombre.textProperty().bind(empresaNombre);
@@ -247,7 +246,6 @@ public class VistaEmpresaCarrusel extends BorderPane {
         lblNombre.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblNombre);
 
-        // Imagen
         empresaImagen = new SimpleObjectProperty<>();
         try {
             String rutaImagen = Persistencia.RUTA_IMAGENES + Persistencia.SEPARADOR_CARPETAS
@@ -269,7 +267,6 @@ public class VistaEmpresaCarrusel extends BorderPane {
             organizadorVertical.getChildren().add(imgDefault);
         }
 
-        // NIT
         empresaNit = new SimpleStringProperty(objCargado.getNitEmpresa());
         Label lblNit = new Label();
         lblNit.textProperty().bind(Bindings.concat("🆔 NIT: ", empresaNit));
@@ -277,7 +274,6 @@ public class VistaEmpresaCarrusel extends BorderPane {
         lblNit.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
         organizadorVertical.getChildren().add(lblNit);
 
-        // Terminal
         empresaTerminal = new SimpleStringProperty(
             objCargado.getTerminalEmpresa().getNombreTerminal());
         Label lblTerminal = new Label();
@@ -286,7 +282,6 @@ public class VistaEmpresaCarrusel extends BorderPane {
         lblTerminal.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
         organizadorVertical.getChildren().add(lblTerminal);
 
-        // Estado
         empresaEstado = new SimpleBooleanProperty(objCargado.getEstadoEmpresa());
         Label lblEstado = new Label();
         lblEstado.textProperty().bind(Bindings.when(empresaEstado).then("✅ ACTIVO").otherwise("❌ INACTIVO"));
@@ -297,7 +292,6 @@ public class VistaEmpresaCarrusel extends BorderPane {
         );
         organizadorVertical.getChildren().add(lblEstado);
 
-        // Cantidad de buses
         empresaCantBuses = new SimpleIntegerProperty(objCargado.getCantidadBusesEmpresa());
         Label lblCantBuses = new Label();
         lblCantBuses.textProperty().bind(Bindings.concat("🚌 Buses en flota: ", empresaCantBuses.asString()));
@@ -316,7 +310,6 @@ public class VistaEmpresaCarrusel extends BorderPane {
         empresaEstado.set(objCargado.getEstadoEmpresa());
         empresaCantBuses.set(objCargado.getCantidadBusesEmpresa());
 
-        // Actualizar imagen
         try {
             String rutaImagen = Persistencia.RUTA_IMAGENES + Persistencia.SEPARADOR_CARPETAS
                     + objCargado.getNombreImagenPrivadoEmpresa();

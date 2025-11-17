@@ -5,7 +5,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import org.poo.recurso.constante.Configuracion;
 import org.poo.recurso.constante.Persistencia;
 
 public class Efecto {

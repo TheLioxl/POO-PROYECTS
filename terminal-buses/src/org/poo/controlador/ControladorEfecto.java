@@ -4,17 +4,8 @@ import javafx.scene.layout.Pane;
 import org.poo.recurso.utilidad.Aleatorio;
 import org.poo.recurso.utilidad.Efecto;
 
-/**
- * Controlador para aplicar efectos visuales aleatorios a los contenedores
- */
 public class ControladorEfecto {
 
-    /**
-     * Aplica un efecto visual aleatorio al contenedor
-     * @param contenedor Panel al que se aplicará el efecto
-     * @param anchoFrm Ancho del formulario
-     * @param altoFrm Alto del formulario
-     */
     public static void aplicarEfecto(Pane contenedor, double anchoFrm, double altoFrm) {
         int opcion = Aleatorio.entero(1, 7);
         

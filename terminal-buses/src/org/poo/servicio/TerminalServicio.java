@@ -177,7 +177,6 @@ public class TerminalServicio implements ApiOperacionBD<TerminalDto, Integer> {
         try {
             List<String> arreglo = miArchivo.borrarFilaPosicion(codigo);
             if (!arreglo.isEmpty()) {
-                // Eliminar la imagen asociada
                 String nocu = arreglo.get(arreglo.size() - 1);
                 String nombreBorrar = Persistencia.RUTA_IMAGENES 
                         + Persistencia.SEPARADOR_CARPETAS + nocu;
@@ -224,15 +223,12 @@ public class TerminalServicio implements ApiOperacionBD<TerminalDto, Integer> {
                     + objeto.getTieneBanos() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getNombreImagenPublicoTerminal() + Persistencia.SEPARADOR_COLUMNAS;
 
-            // Si no hay nueva imagen, mantener la actual
             if (ruta.isBlank()) {
                 cadena = cadena + objeto.getNombreImagenPrivadoTerminal();
             } else {
-                // Grabar nueva imagen
                 nocu = GestorImagen.grabarLaImagen(ruta);
                 cadena = cadena + nocu;
                 
-                // Eliminar imagen anterior
                 arregloDatos = miArchivo.borrarFilaPosicion(codigo);
                 if (!arregloDatos.isEmpty()) {
                     String nomOculto = arregloDatos.get(arregloDatos.size() - 1);
