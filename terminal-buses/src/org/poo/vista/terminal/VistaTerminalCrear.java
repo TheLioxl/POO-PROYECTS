@@ -28,7 +28,6 @@ import javafx.stage.Stage;
 import org.poo.controlador.terminal.TerminalControladorGrabar;
 import org.poo.dto.TerminalDto;
 import org.poo.recurso.constante.Configuracion;
-import org.poo.recurso.utilidad.Fondo;
 import org.poo.recurso.utilidad.Formulario;
 import org.poo.recurso.utilidad.GestorImagen;
 import org.poo.recurso.utilidad.Icono;

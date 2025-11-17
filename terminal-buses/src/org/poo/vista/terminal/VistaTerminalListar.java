@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 import org.poo.controlador.terminal.TerminalControladorListar;
 import org.poo.dto.TerminalDto;
 import org.poo.recurso.constante.Configuracion;
-import org.poo.recurso.utilidad.Fondo;
 import org.poo.recurso.utilidad.Icono;
 import org.poo.recurso.utilidad.Marco;
 
