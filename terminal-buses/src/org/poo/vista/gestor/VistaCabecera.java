@@ -250,17 +250,47 @@ public class VistaCabecera extends HBox {
         MenuItem opcion1 = new MenuItem("Crear Ruta");
         MenuItem opcion2 = new MenuItem("Listar Rutas");
         MenuItem opcion3 = new MenuItem("Administrar Rutas");
+        MenuItem opcion4 = new MenuItem("Carrusel");
 
         opcion1.setOnAction(e -> {
-            System.out.println("Abrir formulario Crear Ruta");
+            miPanelCuerpo = org.poo.controlador.ruta.RutaControladorVentana.crear(
+                    miEscenario,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         opcion2.setOnAction(e -> {
-            System.out.println("Abrir formulario Listar Rutas");
+            miPanelCuerpo = org.poo.controlador.ruta.RutaControladorVentana.listar(
+                    miEscenario,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         opcion3.setOnAction(e -> {
-            System.out.println("Abrir formulario Administrar Rutas");
+            miPanelCuerpo = org.poo.controlador.ruta.RutaControladorVentana.administrar(
+                    miEscenario,
+                    miPanelPrincipal,
+                    miPanelCuerpo,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
+        });
+
+        opcion4.setOnAction(e -> {
+            miPanelCuerpo = org.poo.controlador.ruta.RutaControladorVentana.carrusel(
+                    miEscenario,
+                    miPanelPrincipal,
+                    miPanelCuerpo,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO,
+                    0);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         MenuButton menuButton = new MenuButton("Rutas");
@@ -269,7 +299,7 @@ public class VistaCabecera extends HBox {
         } catch (Exception ex) {
             System.out.println("No se pudo cargar ícono de Ruta");
         }
-        menuButton.getItems().addAll(opcion1, opcion2, opcion3);
+        menuButton.getItems().addAll(opcion1, opcion2, opcion3, opcion4);
         agregarMenu(menuButton);
     }
 

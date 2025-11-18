@@ -2,7 +2,9 @@ package org.poo.controlador.ruta;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.poo.controlador.ControladorEfecto;
 import org.poo.dto.RutaDto;
 import org.poo.vista.ruta.VistaRutaAdministrar;
 import org.poo.vista.ruta.VistaRutaCarrusel;
@@ -12,28 +14,56 @@ import org.poo.vista.ruta.VistaRutaListar;
 
 public class RutaControladorVentana {
 
-    public static Pane crear(Stage escenario, double ancho, double alto) {
-        return new VistaRutaCrear(escenario, ancho, alto);
+    public static StackPane crear(Stage miEscenario, double anchoFrm, double altoFrm) {
+        VistaRutaCrear vista = new VistaRutaCrear(miEscenario, anchoFrm, altoFrm);
+        StackPane contenedor = vista;
+
+        ControladorEfecto.aplicarEfecto(contenedor, anchoFrm, altoFrm);
+
+        return contenedor;
     }
 
-    public static Pane listar(Stage escenario, double ancho, double alto) {
-        return new VistaRutaListar(escenario, ancho, alto);
+    public static StackPane listar(Stage miEscenario, double anchoFrm, double altoFrm) {
+        VistaRutaListar vista = new VistaRutaListar(miEscenario, anchoFrm, altoFrm);
+        StackPane contenedor = vista;
+
+        ControladorEfecto.aplicarEfecto(contenedor, anchoFrm, altoFrm);
+
+        return contenedor;
     }
 
-    public static Pane administrar(Stage escenario, BorderPane panelPrinc,
-            Pane panelCuerpo, double ancho, double alto) {
-        return new VistaRutaAdministrar(escenario, panelPrinc, panelCuerpo, ancho, alto);
+    public static StackPane administrar(Stage miEscenario, BorderPane princ, Pane pane,
+            double anchoFrm, double altoFrm) {
+
+        VistaRutaAdministrar vista = new VistaRutaAdministrar(
+                miEscenario, princ, pane, anchoFrm, altoFrm);
+        StackPane contenedor = vista;
+
+        ControladorEfecto.aplicarEfecto(contenedor, anchoFrm, altoFrm);
+
+        return contenedor;
     }
 
-    public static Pane carrusel(Stage escenario, BorderPane panelPrinc,
-            Pane panelCuerpo, double ancho, double alto, int indice) {
-        return new VistaRutaCarrusel(escenario, panelPrinc, panelCuerpo, ancho, alto, indice);
+    public static BorderPane carrusel(Stage miEscenario, BorderPane princ, Pane pane,
+            double anchoFrm, double altoFrm, int indice) {
+
+        VistaRutaCarrusel vista = new VistaRutaCarrusel(
+                miEscenario, princ, pane, anchoFrm, altoFrm, indice);
+
+        ControladorEfecto.aplicarEfecto(vista, anchoFrm, altoFrm);
+
+        return vista;
     }
 
-    public static Pane editar(Stage escenario, BorderPane panelPrinc,
-            Pane panelCuerpo, double ancho, double alto, RutaDto rutaDto,
-            int indice, boolean desdeCarrusel) {
-        return new VistaRutaEditar(escenario, panelPrinc, panelCuerpo, ancho, alto,
-                rutaDto, indice, desdeCarrusel);
+    public static StackPane editar(Stage miEscenario, BorderPane princ, Pane pane,
+            double anchoFrm, double altoFrm, RutaDto objRuta, int posicion, boolean origenCarrusel) {
+
+        VistaRutaEditar vista = new VistaRutaEditar(
+                miEscenario, princ, pane, anchoFrm, altoFrm, objRuta, posicion, origenCarrusel);
+        StackPane contenedor = vista.getMiFormulario();
+
+        ControladorEfecto.aplicarEfecto(contenedor, anchoFrm, altoFrm);
+
+        return contenedor;
     }
 }

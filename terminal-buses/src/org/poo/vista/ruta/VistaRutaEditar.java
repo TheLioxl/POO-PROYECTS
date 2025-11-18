@@ -1,8 +1,7 @@
 package org.poo.vista.ruta;
 
-import javafx.geometry.Insets;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -19,29 +18,37 @@ import org.poo.dto.RutaDto;
 import org.poo.recurso.constante.Configuracion;
 import org.poo.recurso.utilidad.*;
 
-import java.io.File;
 import java.time.LocalDate;
 
 public class VistaRutaEditar extends StackPane {
 
-    private final Rectangle marco;
+    private static final int H_GAP = 10;
+    private static final int V_GAP = 15;
+    private static final int ALTO_CAJA = 35;
+    private static final int TAMANIO_FUENTE = 18;
+
+    private final GridPane miGrilla;
+    private final StackPane miFormulario;
+    private final Rectangle miMarco;
     private final Stage miEscenario;
-    private final VBox cajaVertical;
 
     private TextField txtNombreRuta;
     private TextField txtCiudadOrigen;
     private TextField txtCiudadDestino;
     private Spinner<Double> spinnerDistancia;
     private Spinner<Integer> spinnerDuracion;
-    private ComboBox<String> cmbEstado;
+    private ComboBox<String> cmbEstadoRuta;
     private DatePicker dateFechaCreacion;
-    private CheckBox chkPeaje;
-    private CheckBox chkCarretera;
+    private CheckBox chkPeajes;
+    private CheckBox chkCarreteraPrincipal;
+    private CheckBox chkPavimentada;
     private TextArea txtDescripcion;
-    private TextField txtNombreImagen;
+    
+    private TextField txtImagen;
+    private ImageView imgPorDefecto;
     private ImageView imgPrevisualizar;
+    private String rutaImagenSeleccionada;
 
-    private String rutaImagenSeleccionada = "";
     private final int posicion;
     private final RutaDto objRuta;
     private Pane panelCuerpo;
@@ -52,15 +59,18 @@ public class VistaRutaEditar extends StackPane {
             double ancho, double alto, RutaDto objRutaExterno, int posicionArchivo, boolean origenCarrusel) {
 
         miEscenario = ventanaPadre;
+        miFormulario = this;
+        miFormulario.setAlignment(Pos.CENTER);
+
         posicion = posicionArchivo;
         objRuta = objRutaExterno;
         panelPrincipal = princ;
         panelCuerpo = pane;
         this.origenCarrusel = origenCarrusel;
+        rutaImagenSeleccionada = "";
 
-        setAlignment(Pos.CENTER);
-        
-        marco = Marco.crear(
+        miGrilla = new GridPane();
+        miMarco = Marco.crear(
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
@@ -68,234 +78,306 @@ public class VistaRutaEditar extends StackPane {
                 Configuracion.DEGRADE_BORDE
         );
 
-        cajaVertical = new VBox(15);
-        getChildren().add(marco);
+        getChildren().add(miMarco);
 
-        configurarCajaVertical();
+        configurarGrilla(ancho, alto);
         crearTitulo();
         crearFormulario();
-        cargarDatos();
-        crearBotones();
+        getChildren().add(miGrilla);
     }
 
-    private void configurarCajaVertical() {
-        cajaVertical.setAlignment(Pos.TOP_CENTER);
-        cajaVertical.prefWidthProperty().bind(miEscenario.widthProperty());
-        cajaVertical.prefHeightProperty().bind(miEscenario.heightProperty());
-        cajaVertical.setPadding(new Insets(20));
+    public StackPane getMiFormulario() {
+        return miFormulario;
+    }
+
+    private void configurarGrilla(double ancho, double alto) {
+        double anchoGrilla = ancho * Configuracion.GRILLA_ANCHO_PORCENTAJE;
+
+        miGrilla.setHgap(H_GAP);
+        miGrilla.setVgap(V_GAP);
+        miGrilla.setAlignment(Pos.TOP_CENTER);
+        miGrilla.setPrefSize(anchoGrilla, alto);
+        miGrilla.setMinSize(anchoGrilla, alto);
+        miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+
+        ColumnConstraints col0 = new ColumnConstraints();
+        col0.setPercentWidth(40);
+        
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(60);
+        col1.setHgrow(Priority.ALWAYS);
+        
+        miGrilla.getColumnConstraints().addAll(col0, col1);
     }
 
     private void crearTitulo() {
-        Text titulo = new Text("Editar Ruta #" + objRuta.getIdRuta());
+        int columna = 0, fila = 0, colSpan = 2, rowSpan = 1;
+
+        Region espacioSuperior = new Region();
+        espacioSuperior.prefHeightProperty().bind(miEscenario.heightProperty().multiply(0.03));
+        miGrilla.add(espacioSuperior, columna, fila, colSpan, rowSpan);
+
+        fila = 1;
+        Text titulo = new Text("Formulario Actualización de Ruta");
         titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 28));
-        cajaVertical.getChildren().add(titulo);
+        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 26));
+        GridPane.setHalignment(titulo, HPos.CENTER);
+        miGrilla.add(titulo, columna, fila, colSpan, rowSpan);
     }
 
     private void crearFormulario() {
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(15);
-        grid.setVgap(12);
-        grid.setPadding(new Insets(20));
-        grid.setMaxWidth(700);
+        int fila = 2;
+        int primeraColumna = 0;
+        int segundaColumna = 1;
 
-        // Nombre de la Ruta
-        Label lblNombre = Formulario.crearEtiqueta("Nombre de la Ruta:");
+        fila++;
+        Label lblNombre = new Label("Nombre de la Ruta:");
+        lblNombre.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblNombre, primeraColumna, fila);
+
         txtNombreRuta = new TextField();
-        txtNombreRuta.setPrefWidth(300);
-        grid.add(lblNombre, 0, 0);
-        grid.add(txtNombreRuta, 1, 0);
+        txtNombreRuta.setText(objRuta.getNombreRuta());
+        txtNombreRuta.setPrefHeight(ALTO_CAJA);
+        GridPane.setHgrow(txtNombreRuta, Priority.ALWAYS);
+        Formulario.cantidadCaracteres(txtNombreRuta, 100);
+        miGrilla.add(txtNombreRuta, segundaColumna, fila);
 
-        // Ciudad Origen
-        Label lblOrigen = Formulario.crearEtiqueta("Ciudad de Origen:");
+        fila++;
+        Label lblOrigen = new Label("Ciudad de Origen:");
+        lblOrigen.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblOrigen, primeraColumna, fila);
+
         txtCiudadOrigen = new TextField();
-        txtCiudadOrigen.setPrefWidth(300);
-        grid.add(lblOrigen, 0, 1);
-        grid.add(txtCiudadOrigen, 1, 1);
+        txtCiudadOrigen.setText(objRuta.getCiudadOrigenRuta());
+        txtCiudadOrigen.setPrefHeight(ALTO_CAJA);
+        GridPane.setHgrow(txtCiudadOrigen, Priority.ALWAYS);
+        Formulario.cantidadCaracteres(txtCiudadOrigen, 50);
+        miGrilla.add(txtCiudadOrigen, segundaColumna, fila);
 
-        // Ciudad Destino
-        Label lblDestino = Formulario.crearEtiqueta("Ciudad de Destino:");
+        fila++;
+        Label lblDestino = new Label("Ciudad de Destino:");
+        lblDestino.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblDestino, primeraColumna, fila);
+
         txtCiudadDestino = new TextField();
-        txtCiudadDestino.setPrefWidth(300);
-        grid.add(lblDestino, 0, 2);
-        grid.add(txtCiudadDestino, 1, 2);
+        txtCiudadDestino.setText(objRuta.getCiudadDestinoRuta());
+        txtCiudadDestino.setPrefHeight(ALTO_CAJA);
+        GridPane.setHgrow(txtCiudadDestino, Priority.ALWAYS);
+        Formulario.cantidadCaracteres(txtCiudadDestino, 50);
+        miGrilla.add(txtCiudadDestino, segundaColumna, fila);
 
-        // Distancia
-        Label lblDistancia = Formulario.crearEtiqueta("Distancia (Km):");
-        SpinnerValueFactory<Double> factoryDistancia = 
-            new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 10000.0, 100.0, 10.0);
-        spinnerDistancia = new Spinner<>(factoryDistancia);
+        fila++;
+        Label lblDistancia = new Label("Distancia (Km):");
+        lblDistancia.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblDistancia, primeraColumna, fila);
+
+        spinnerDistancia = new Spinner<>();
+        SpinnerValueFactory<Double> valueFactoryDistancia = 
+            new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 5000.0, 
+                objRuta.getDistanciaKmRuta() != null ? objRuta.getDistanciaKmRuta() : 100.0, 10.0);
+        spinnerDistancia.setValueFactory(valueFactoryDistancia);
+        spinnerDistancia.setPrefHeight(ALTO_CAJA);
+        spinnerDistancia.setMaxWidth(Double.MAX_VALUE);
         spinnerDistancia.setEditable(true);
-        spinnerDistancia.setPrefWidth(150);
-        grid.add(lblDistancia, 0, 3);
-        grid.add(spinnerDistancia, 1, 3);
+        miGrilla.add(spinnerDistancia, segundaColumna, fila);
 
-        // Duración
-        Label lblDuracion = Formulario.crearEtiqueta("Duración (Horas):");
-        SpinnerValueFactory<Integer> factoryDuracion = 
-            new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 48, 4, 1);
-        spinnerDuracion = new Spinner<>(factoryDuracion);
+        fila++;
+        Label lblDuracion = new Label("Duración (Horas):");
+        lblDuracion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblDuracion, primeraColumna, fila);
+
+        spinnerDuracion = new Spinner<>();
+        SpinnerValueFactory<Integer> valueFactoryDuracion = 
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 48, 
+                objRuta.getDuracionHorasRuta() != null ? objRuta.getDuracionHorasRuta() : 4, 1);
+        spinnerDuracion.setValueFactory(valueFactoryDuracion);
+        spinnerDuracion.setPrefHeight(ALTO_CAJA);
+        spinnerDuracion.setMaxWidth(Double.MAX_VALUE);
         spinnerDuracion.setEditable(true);
-        spinnerDuracion.setPrefWidth(150);
-        grid.add(lblDuracion, 0, 4);
-        grid.add(spinnerDuracion, 1, 4);
+        miGrilla.add(spinnerDuracion, segundaColumna, fila);
 
-        // Estado
-        Label lblEstado = Formulario.crearEtiqueta("Estado:");
-        cmbEstado = new ComboBox<>();
-        cmbEstado.getItems().addAll("Activa", "Inactiva");
-        cmbEstado.setValue("Activa");
-        cmbEstado.setPrefWidth(150);
-        grid.add(lblEstado, 0, 5);
-        grid.add(cmbEstado, 1, 5);
+        fila++;
+        Label lblFechaCreacion = new Label("Fecha de Creación:");
+        lblFechaCreacion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblFechaCreacion, primeraColumna, fila);
 
-        // Fecha
-        Label lblFecha = Formulario.crearEtiqueta("Fecha de Creación:");
-        dateFechaCreacion = new DatePicker(LocalDate.now());
-        dateFechaCreacion.setPrefWidth(200);
-        grid.add(lblFecha, 0, 6);
-        grid.add(dateFechaCreacion, 1, 6);
+        dateFechaCreacion = new DatePicker();
+        dateFechaCreacion.setMaxWidth(Double.MAX_VALUE);
+        dateFechaCreacion.setPrefHeight(ALTO_CAJA);
+        dateFechaCreacion.setValue(LocalDate.now().minusMonths(6));
+        Formulario.deshabilitarFechasFuturas(dateFechaCreacion);
+        miGrilla.add(dateFechaCreacion, segundaColumna, fila);
 
-        // CheckBoxes
-        Label lblCaracteristicas = Formulario.crearEtiqueta("Características:");
-        HBox cajaCheques = new HBox(15);
-        chkPeaje = new CheckBox("Tiene Peajes");
-        chkCarretera = new CheckBox("Carretera Principal");
-        cajaCheques.getChildren().addAll(chkPeaje, chkCarretera);
-        grid.add(lblCaracteristicas, 0, 7);
-        grid.add(cajaCheques, 1, 7);
+        fila++;
+        Label lblCaracteristicas = new Label("Características:");
+        lblCaracteristicas.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblCaracteristicas, primeraColumna, fila);
 
-        // Descripción
-        Label lblDescripcion = Formulario.crearEtiqueta("Descripción:");
+        chkPeajes = new CheckBox("Tiene Peajes");
+        chkCarreteraPrincipal = new CheckBox("Carretera Principal");
+        chkPavimentada = new CheckBox("Pavimentada");
+        
+        chkPeajes.setFont(Font.font("Arial", 14));
+        chkCarreteraPrincipal.setFont(Font.font("Arial", 14));
+        chkPavimentada.setFont(Font.font("Arial", 14));
+
+        VBox vboxCaracteristicas = new VBox(5);
+        vboxCaracteristicas.getChildren().addAll(chkPeajes, chkCarreteraPrincipal, chkPavimentada);
+        miGrilla.add(vboxCaracteristicas, segundaColumna, fila);
+
+        fila++;
+        Label lblDescripcion = new Label("Descripción:");
+        lblDescripcion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblDescripcion, primeraColumna, fila);
+
         txtDescripcion = new TextArea();
         txtDescripcion.setPrefRowCount(3);
-        txtDescripcion.setPrefWidth(300);
         txtDescripcion.setWrapText(true);
-        grid.add(lblDescripcion, 0, 8);
-        grid.add(txtDescripcion, 1, 8);
+        txtDescripcion.setMaxWidth(Double.MAX_VALUE);
+        miGrilla.add(txtDescripcion, segundaColumna, fila);
 
-        // Imagen
-        Label lblImagen = Formulario.crearEtiqueta("Imagen:");
-        txtNombreImagen = new TextField();
-        txtNombreImagen.setPrefWidth(180);
+        fila++;
+        Label lblEstado = new Label("Estado:");
+        lblEstado.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblEstado, primeraColumna, fila);
+
+        cmbEstadoRuta = new ComboBox<>();
+        cmbEstadoRuta.setMaxWidth(Double.MAX_VALUE);
+        cmbEstadoRuta.setPrefHeight(ALTO_CAJA);
+        cmbEstadoRuta.getItems().addAll("Seleccione estado", "Activa", "Inactiva");
         
-        Button btnBuscarImagen = new Button("Cambiar");
-        btnBuscarImagen.setCursor(Cursor.HAND);
-        btnBuscarImagen.setOnAction(e -> buscarImagen());
+        if (objRuta.getEstadoRuta()) {
+            cmbEstadoRuta.getSelectionModel().select(1);
+        } else {
+            cmbEstadoRuta.getSelectionModel().select(2);
+        }
+        miGrilla.add(cmbEstadoRuta, segundaColumna, fila);
+
+        fila++;
+        Label lblImagen = new Label("Imagen:");
+        lblImagen.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblImagen, primeraColumna, fila);
+
+        txtImagen = new TextField();
+        txtImagen.setText(objRuta.getNombreImagenPublicoRuta());
+        txtImagen.setDisable(true);
+        txtImagen.setPrefHeight(ALTO_CAJA);
+
+        String[] extensiones = {"*.png", "*.jpg", "*.jpeg"};
+        FileChooser selector = Formulario.selectorImagen(
+                "Seleccionar imagen", "Imágenes", extensiones);
+
+        Button btnSeleccionarImagen = new Button("+");
+        btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
+        btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         
-        HBox cajaImagen = new HBox(10);
-        cajaImagen.getChildren().addAll(txtNombreImagen, btnBuscarImagen);
-        grid.add(lblImagen, 0, 9);
-        grid.add(cajaImagen, 1, 9);
-
-        // Previsualización de imagen
-        imgPrevisualizar = new ImageView();
-        imgPrevisualizar.setFitHeight(100);
-        imgPrevisualizar.setFitWidth(150);
-        imgPrevisualizar.setPreserveRatio(true);
-        grid.add(imgPrevisualizar, 1, 10);
-
-        cajaVertical.getChildren().add(grid);
-    }
-
-    private void buscarImagen() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Seleccionar Imagen de la Ruta");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg", "*.gif")
-        );
-        File archivoSeleccionado = fileChooser.showOpenDialog(miEscenario);
+        final int filaImagenPreview = fila + 1;
         
-        if (archivoSeleccionado != null) {
-            rutaImagenSeleccionada = archivoSeleccionado.getAbsolutePath();
-            txtNombreImagen.setText(archivoSeleccionado.getName());
-            try {
-                imgPrevisualizar.setImage(new javafx.scene.image.Image("file:" + rutaImagenSeleccionada));
-            } catch (Exception e) {
-                System.out.println("Error al cargar imagen: " + e.getMessage());
+        btnSeleccionarImagen.setOnAction(e -> {
+            rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
+            
+            if (!rutaImagenSeleccionada.isEmpty()) {
+                miGrilla.getChildren().remove(imgPorDefecto);
+                miGrilla.getChildren().remove(imgPrevisualizar);
+                
+                imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
+                GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
+                miGrilla.add(imgPrevisualizar, segundaColumna, filaImagenPreview);
             }
-        }
-    }
+        });
 
-    private void cargarDatos() {
-        txtNombreRuta.setText(objRuta.getNombreRuta());
-        txtCiudadOrigen.setText(objRuta.getCiudadOrigenRuta());
-        txtCiudadDestino.setText(objRuta.getCiudadDestinoRuta());
-        spinnerDistancia.getValueFactory().setValue(objRuta.getDistanciaKmRuta());
-        spinnerDuracion.getValueFactory().setValue(objRuta.getDuracionHorasRuta());
-        cmbEstado.setValue(objRuta.getEstadoRuta() ? "Activa" : "Inactiva");
-        txtNombreImagen.setText(objRuta.getNombreImagenPublicoRuta());
+        HBox.setHgrow(txtImagen, Priority.ALWAYS);
+        HBox panelImagen = new HBox(5, txtImagen, btnSeleccionarImagen);
+        miGrilla.add(panelImagen, segundaColumna, fila);
 
-        try {
-            imgPrevisualizar.setImage(Icono.obtenerFotosExternas(objRuta.getNombreImagenPrivadoRuta(), 100).getImage());
-        } catch (Exception e) {
-            imgPrevisualizar.setImage(Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 100).getImage());
-        }
-    }
+        fila++;
+        imgPorDefecto = Icono.obtenerFotosExternas(
+                objRuta.getNombreImagenPrivadoRuta(), 150);
+        GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
+        miGrilla.add(imgPorDefecto, segundaColumna, fila);
 
-    private void crearBotones() {
-        HBox cajaBotones = new HBox(15);
-        cajaBotones.setAlignment(Pos.CENTER);
-        cajaBotones.setPadding(new Insets(10));
-
-        Button btnActualizar = new Button("Actualizar");
-        btnActualizar.setCursor(Cursor.HAND);
-        btnActualizar.setPrefWidth(150);
-        btnActualizar.setStyle("-fx-background-color: " + Configuracion.VERDE_EXITO + "; -fx-text-fill: white;");
-        btnActualizar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_GUARDAR, 16));
+        fila++;
+        Button btnActualizar = new Button("Actualizar Ruta");
+        btnActualizar.setPrefHeight(ALTO_CAJA);
+        btnActualizar.setMaxWidth(Double.MAX_VALUE);
+        btnActualizar.setTextFill(Color.web("#FFFFFF"));
+        btnActualizar.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        btnActualizar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + ";");
         btnActualizar.setOnAction(e -> actualizarRuta());
+        miGrilla.add(btnActualizar, segundaColumna, fila);
 
-        Button btnCancelar = new Button("Cancelar");
-        btnCancelar.setCursor(Cursor.HAND);
-        btnCancelar.setPrefWidth(120);
-        btnCancelar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_CANCELAR, 16));
-        btnCancelar.setOnAction(e -> cancelar());
+        fila++;
+        Button btnRegresar = new Button("Regresar");
+        btnRegresar.setPrefHeight(ALTO_CAJA);
+        btnRegresar.setMaxWidth(Double.MAX_VALUE);
+        btnRegresar.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        btnRegresar.setOnAction(e -> {
+            if (origenCarrusel) {
+                panelCuerpo = RutaControladorVentana.carrusel(
+                        miEscenario, panelPrincipal, panelCuerpo,
+                        Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO, posicion);
+            } else {
+                panelCuerpo = RutaControladorVentana.administrar(
+                        miEscenario, panelPrincipal, panelCuerpo,
+                        Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO);
+            }
+            panelPrincipal.setCenter(null);
+            panelPrincipal.setCenter(panelCuerpo);
+        });
+        miGrilla.add(btnRegresar, segundaColumna, fila);
+    }
 
-        cajaBotones.getChildren().addAll(btnActualizar, btnCancelar);
-        cajaVertical.getChildren().add(cajaBotones);
+    private Boolean formularioCompleto() {
+        if (txtNombreRuta.getText().isBlank()) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
+                    "Campo vacío", "Debe ingresar el nombre de la ruta");
+            txtNombreRuta.requestFocus();
+            return false;
+        }
 
-        getChildren().add(cajaVertical);
+        if (txtCiudadOrigen.getText().isBlank()) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
+                    "Campo vacío", "Debe ingresar la ciudad de origen");
+            txtCiudadOrigen.requestFocus();
+            return false;
+        }
+
+        if (txtCiudadDestino.getText().isBlank()) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
+                    "Campo vacío", "Debe ingresar la ciudad de destino");
+            txtCiudadDestino.requestFocus();
+            return false;
+        }
+
+        if (cmbEstadoRuta.getSelectionModel().getSelectedIndex() == 0) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
+                    "Estado no seleccionado", "Debe seleccionar un estado");
+            return false;
+        }
+
+        return true;
     }
 
     private void actualizarRuta() {
-        if (txtNombreRuta.getText().trim().isEmpty()) {
-            Mensaje.mostrar(Alert.AlertType.WARNING, miEscenario,
-                "Advertencia", "Debe ingresar el nombre de la ruta");
-            return;
+        if (formularioCompleto()) {
+            RutaDto dtoActualizado = new RutaDto();
+            dtoActualizado.setIdRuta(objRuta.getIdRuta());
+            dtoActualizado.setNombreRuta(txtNombreRuta.getText());
+            dtoActualizado.setCiudadOrigenRuta(txtCiudadOrigen.getText());
+            dtoActualizado.setCiudadDestinoRuta(txtCiudadDestino.getText());
+            dtoActualizado.setDistanciaKmRuta(spinnerDistancia.getValue());
+            dtoActualizado.setDuracionHorasRuta(spinnerDuracion.getValue());
+            dtoActualizado.setEstadoRuta(cmbEstadoRuta.getValue().equals("Activa"));
+            dtoActualizado.setNombreImagenPublicoRuta(txtImagen.getText());
+            dtoActualizado.setNombreImagenPrivadoRuta(objRuta.getNombreImagenPrivadoRuta());
+
+            if (RutaControladorEditar.actualizarRuta(posicion, dtoActualizado, rutaImagenSeleccionada)) {
+                Mensaje.mostrar(Alert.AlertType.INFORMATION, this.getScene().getWindow(),
+                        "Éxito", "Ruta actualizada correctamente");
+            } else {
+                Mensaje.mostrar(Alert.AlertType.ERROR, this.getScene().getWindow(),
+                        "Error", "No se pudo actualizar la ruta");
+            }
         }
-
-        objRuta.setNombreRuta(txtNombreRuta.getText().trim());
-        objRuta.setCiudadOrigenRuta(txtCiudadOrigen.getText().trim());
-        objRuta.setCiudadDestinoRuta(txtCiudadDestino.getText().trim());
-        objRuta.setDistanciaKmRuta(spinnerDistancia.getValue());
-        objRuta.setDuracionHorasRuta(spinnerDuracion.getValue());
-        objRuta.setEstadoRuta(cmbEstado.getValue().equals("Activa"));
-        objRuta.setNombreImagenPublicoRuta(txtNombreImagen.getText().trim());
-
-        Boolean resultado = RutaControladorEditar.actualizarRuta(posicion, objRuta, rutaImagenSeleccionada);
-
-        if (resultado) {
-            Mensaje.mostrar(Alert.AlertType.INFORMATION, miEscenario,
-                "Éxito", "Ruta actualizada correctamente");
-            cancelar();
-        } else {
-            Mensaje.mostrar(Alert.AlertType.ERROR, miEscenario,
-                "Error", "No se pudo actualizar la ruta");
-        }
-    }
-
-    private void cancelar() {
-        if (origenCarrusel) {
-            panelCuerpo = RutaControladorVentana.carrusel(
-                    miEscenario, panelPrincipal, panelCuerpo,
-                    Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO, posicion);
-        } else {
-            panelCuerpo = RutaControladorVentana.administrar(
-                    miEscenario, panelPrincipal, panelCuerpo,
-                    Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO);
-        }
-        panelPrincipal.setCenter(null);
-        panelPrincipal.setCenter(panelCuerpo);
     }
 }

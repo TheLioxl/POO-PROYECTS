@@ -196,39 +196,37 @@ public class RutaServicio implements ApiOperacionBD<RutaDto, Integer> {
     @Override
     public RutaDto updateSet(Integer codigo, RutaDto objeto, String ruta) {
         try {
-            List<String> arregloDatos = miArchivo.obtenerDatos();
+            String cadena, nocu;
+            List<String> arregloDatos;
 
-            if (codigo < 0 || codigo >= arregloDatos.size()) {
-                return null;
-            }
-
-            String lineaVieja = arregloDatos.get(codigo);
-            lineaVieja = lineaVieja.replace("@", "");
-            String[] columnasViejas = lineaVieja.split(Persistencia.SEPARADOR_COLUMNAS);
-
-            String nombreImagenNuevo;
-            if (ruta == null || ruta.isEmpty()) {
-                nombreImagenNuevo = columnasViejas[8].trim();
-            } else {
-                nombreImagenNuevo = GestorImagen.grabarLaImagen(ruta);
-            }
-
-            String lineaNueva = objeto.getIdRuta() + Persistencia.SEPARADOR_COLUMNAS
+            cadena = objeto.getIdRuta() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getNombreRuta() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getCiudadOrigenRuta() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getCiudadDestinoRuta() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getDistanciaKmRuta() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getDuracionHorasRuta() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getEstadoRuta() + Persistencia.SEPARADOR_COLUMNAS
-                    + objeto.getNombreImagenPublicoRuta() + Persistencia.SEPARADOR_COLUMNAS
-                    + nombreImagenNuevo;
+                    + objeto.getNombreImagenPublicoRuta() + Persistencia.SEPARADOR_COLUMNAS;
 
-            arregloDatos.set(codigo, lineaNueva);
-            miArchivo.escribirLineas(arregloDatos);
+            if (ruta.isBlank()) {
+                cadena = cadena + objeto.getNombreImagenPrivadoRuta();
+            } else {
+                nocu = GestorImagen.grabarLaImagen(ruta);
+                cadena = cadena + nocu;
+                
+                arregloDatos = miArchivo.borrarFilaPosicion(codigo);
+                if (!arregloDatos.isEmpty()) {
+                    String nomOculto = arregloDatos.get(arregloDatos.size() - 1);
+                    String nombreBorrar = Persistencia.RUTA_IMAGENES 
+                            + Persistencia.SEPARADOR_CARPETAS + nomOculto;
+                    java.nio.file.Path rutaBorrar = java.nio.file.Paths.get(nombreBorrar);
+                    java.nio.file.Files.deleteIfExists(rutaBorrar);
+                }
+            }
 
-            objeto.setNombreImagenPrivadoRuta(nombreImagenNuevo);
-            return objeto;
-
+            if (miArchivo.actualizaFilaPosicion(codigo, cadena)) {
+                return objeto;
+            }
         } catch (IOException ex) {
             Logger.getLogger(RutaServicio.class.getName()).log(Level.SEVERE, null, ex);
         }
