@@ -2,20 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/controlador/bus/BusControladorVentana.java</file>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/servicio/BusServicio.java</file>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/servicio/EmpresaServicio.java</file>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/servicio/TerminalServicio.java</file>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/vista/gestor/VistaCabecera.java</file>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/servicio/RutaServicio.java</file>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/recurso/utilidad/Formulario.java</file>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/recurso/utilidad/Icono.java</file>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/controlador/ruta/RutaControladorVentana.java</file>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/vista/ruta/VistaRutaCarrusel.java</file>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/vista/bus/VistaBusCrear.java</file>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/vista/ruta/VistaRutaCrear.java</file>
-            <file>file:/C:/Users/TheLioxl/Documents/GitHub/POO-PROYECTS/terminal-buses/src/org/poo/vista/ruta/VistaRutaEditar.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
