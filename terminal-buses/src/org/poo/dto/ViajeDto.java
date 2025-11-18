@@ -51,6 +51,7 @@ public class ViajeDto {
         this.nombreImagenPrivadoViaje = nombreImagenPrivadoViaje;
     }
     
+    // Getters y Setters
     public Integer getIdViaje() {
         return idViaje;
     }

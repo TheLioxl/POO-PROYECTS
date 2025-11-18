@@ -47,7 +47,6 @@ public class VistaCabecera extends HBox {
     }
 
     private void crearOpciones() {
-        // MENÚS DE GESTIÓN (9 persistencias)
         menuTerminal();
         menuEmpresa();
         menuBus();
@@ -58,12 +57,10 @@ public class VistaCabecera extends HBox {
         menuTiquete();
         menuDestino();
 
-        // Espacio flexible antes del botón salir
         Region espacio = new Region();
         HBox.setHgrow(espacio, Priority.ALWAYS);
         getChildren().add(espacio);
 
-        // Botón salir al final
         btnSalir();
     }
 
@@ -132,7 +129,7 @@ public class VistaCabecera extends HBox {
         agregarMenu(menuButton);
     }
 
-    // ====================== MENÚ EMPRESA (ACTUALIZADO) ======================
+    // ====================== MENÚ EMPRESA ======================
     private void menuEmpresa() {
         MenuItem opcion1 = new MenuItem("Crear Empresa");
         MenuItem opcion2 = new MenuItem("Listar Empresas");
@@ -195,17 +192,47 @@ public class VistaCabecera extends HBox {
         MenuItem opcion1 = new MenuItem("Crear Bus");
         MenuItem opcion2 = new MenuItem("Listar Buses");
         MenuItem opcion3 = new MenuItem("Administrar Buses");
+        MenuItem opcion4 = new MenuItem("Carrusel");
 
         opcion1.setOnAction(e -> {
-            System.out.println("Abrir formulario Crear Bus");
+            miPanelCuerpo = org.poo.controlador.bus.BusControladorVentana.crear(
+                    miEscenario,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         opcion2.setOnAction(e -> {
-            System.out.println("Abrir formulario Listar Buses");
+            miPanelCuerpo = org.poo.controlador.bus.BusControladorVentana.listar(
+                    miEscenario,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         opcion3.setOnAction(e -> {
-            System.out.println("Abrir formulario Administrar Buses");
+            miPanelCuerpo = org.poo.controlador.bus.BusControladorVentana.administrar(
+                    miEscenario,
+                    miPanelPrincipal,
+                    miPanelCuerpo,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
+        });
+
+        opcion4.setOnAction(e -> {
+            miPanelCuerpo = org.poo.controlador.bus.BusControladorVentana.carrusel(
+                    miEscenario,
+                    miPanelPrincipal,
+                    miPanelCuerpo,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO,
+                    0);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         MenuButton menuButton = new MenuButton("Buses");
@@ -214,7 +241,7 @@ public class VistaCabecera extends HBox {
         } catch (Exception ex) {
             System.out.println("No se pudo cargar ícono de Bus");
         }
-        menuButton.getItems().addAll(opcion1, opcion2, opcion3);
+        menuButton.getItems().addAll(opcion1, opcion2, opcion3, opcion4);
         agregarMenu(menuButton);
     }
 
@@ -302,22 +329,52 @@ public class VistaCabecera extends HBox {
         agregarMenu(menuButton);
     }
 
-    // ====================== MENÚ VIAJE ======================
+    // ====================== MENÚ VIAJE (COMPLETO Y FUNCIONAL) ======================
     private void menuViaje() {
         MenuItem opcion1 = new MenuItem("Programar Viaje");
         MenuItem opcion2 = new MenuItem("Listar Viajes");
         MenuItem opcion3 = new MenuItem("Administrar Viajes");
+        MenuItem opcion4 = new MenuItem("Carrusel");
 
         opcion1.setOnAction(e -> {
-            System.out.println("Abrir formulario Crear Viaje");
+            miPanelCuerpo = org.poo.controlador.viaje.ViajeControladorVentana.crear(
+                    miEscenario,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         opcion2.setOnAction(e -> {
-            System.out.println("Abrir formulario Listar Viajes");
+            miPanelCuerpo = org.poo.controlador.viaje.ViajeControladorVentana.listar(
+                    miEscenario,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         opcion3.setOnAction(e -> {
-            System.out.println("Abrir formulario Administrar Viajes");
+            miPanelCuerpo = org.poo.controlador.viaje.ViajeControladorVentana.administrar(
+                    miEscenario,
+                    miPanelPrincipal,
+                    miPanelCuerpo,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
+        });
+
+        opcion4.setOnAction(e -> {
+            miPanelCuerpo = org.poo.controlador.viaje.ViajeControladorVentana.carrusel(
+                    miEscenario,
+                    miPanelPrincipal,
+                    miPanelCuerpo,
+                    Configuracion.ANCHO_APP,
+                    Configuracion.ALTO_CUERPO,
+                    0);
+            miPanelPrincipal.setCenter(null);
+            miPanelPrincipal.setCenter(miPanelCuerpo);
         });
 
         MenuButton menuButton = new MenuButton("Viajes");
@@ -326,7 +383,7 @@ public class VistaCabecera extends HBox {
         } catch (Exception ex) {
             System.out.println("No se pudo cargar ícono de Viaje");
         }
-        menuButton.getItems().addAll(opcion1, opcion2, opcion3);
+        menuButton.getItems().addAll(opcion1, opcion2, opcion3, opcion4);
         agregarMenu(menuButton);
     }
 

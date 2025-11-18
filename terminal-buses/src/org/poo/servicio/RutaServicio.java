@@ -161,11 +161,77 @@ public class RutaServicio implements ApiOperacionBD<RutaDto, Integer> {
 
     @Override
     public RutaDto getOne(Integer codigo) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        RutaDto dto = null;
+        List<String> arregloDatos = miArchivo.obtenerDatos();
+
+        if (codigo < 0 || codigo >= arregloDatos.size()) {
+            return null;
+        }
+
+        try {
+            String cadena = arregloDatos.get(codigo);
+            cadena = cadena.replace("@", "");
+            String[] columnas = cadena.split(Persistencia.SEPARADOR_COLUMNAS);
+
+            int codRuta = Integer.parseInt(columnas[0].trim());
+            String nomRuta = columnas[1].trim();
+            String ciudadOrigen = columnas[2].trim();
+            String ciudadDestino = columnas[3].trim();
+            Double distancia = Double.parseDouble(columnas[4].trim());
+            Integer duracion = Integer.parseInt(columnas[5].trim());
+            Boolean estado = Boolean.valueOf(columnas[6].trim());
+            String npub = columnas[7].trim();
+            String nocu = columnas[8].trim();
+
+            dto = new RutaDto(codRuta, nomRuta, ciudadOrigen, ciudadDestino,
+                    distancia, duracion, estado, npub, nocu);
+
+        } catch (NumberFormatException error) {
+            Logger.getLogger(RutaServicio.class.getName()).log(Level.SEVERE, null, error);
+        }
+
+        return dto;
     }
 
     @Override
     public RutaDto updateSet(Integer codigo, RutaDto objeto, String ruta) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            List<String> arregloDatos = miArchivo.obtenerDatos();
+
+            if (codigo < 0 || codigo >= arregloDatos.size()) {
+                return null;
+            }
+
+            String lineaVieja = arregloDatos.get(codigo);
+            lineaVieja = lineaVieja.replace("@", "");
+            String[] columnasViejas = lineaVieja.split(Persistencia.SEPARADOR_COLUMNAS);
+
+            String nombreImagenNuevo;
+            if (ruta == null || ruta.isEmpty()) {
+                nombreImagenNuevo = columnasViejas[8].trim();
+            } else {
+                nombreImagenNuevo = GestorImagen.grabarLaImagen(ruta);
+            }
+
+            String lineaNueva = objeto.getIdRuta() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getNombreRuta() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getCiudadOrigenRuta() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getCiudadDestinoRuta() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getDistanciaKmRuta() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getDuracionHorasRuta() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getEstadoRuta() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getNombreImagenPublicoRuta() + Persistencia.SEPARADOR_COLUMNAS
+                    + nombreImagenNuevo;
+
+            arregloDatos.set(codigo, lineaNueva);
+            miArchivo.escribirLineas(arregloDatos);
+
+            objeto.setNombreImagenPrivadoRuta(nombreImagenNuevo);
+            return objeto;
+
+        } catch (IOException ex) {
+            Logger.getLogger(RutaServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

@@ -92,6 +92,7 @@ public class BusServicio implements ApiOperacionBD<BusDto, Integer> {
 
     @Override
     public List<BusDto> selectFrom() {
+        // OBTENER LISTA DE EMPRESAS AL INICIO
         EmpresaServicio empresaServicio = new EmpresaServicio();
         List<EmpresaDto> arrEmpresas = empresaServicio.selectFrom();
 
@@ -123,6 +124,7 @@ public class BusServicio implements ApiOperacionBD<BusDto, Integer> {
                 dto.setNombreImagenPublicoBus(npub);
                 dto.setNombreImagenPrivadoBus(nocu);
 
+                // AQUÍ SE USA LA LISTA DE EMPRESAS
                 dto.setEmpresaBus(obtenerEmpresaCompleta(codEmpresa, arrEmpresas));
 
                 arregloBus.add(dto);
@@ -134,6 +136,7 @@ public class BusServicio implements ApiOperacionBD<BusDto, Integer> {
         return arregloBus;
     }
 
+    // MÉTODO AUXILIAR PARA OBTENER LA EMPRESA COMPLETA
     private EmpresaDto obtenerEmpresaCompleta(Integer codigoEmpresa, List<EmpresaDto> arrEmpresas) {
         for (EmpresaDto empresaExterna : arrEmpresas) {
             if (Objects.equals(codigoEmpresa, empresaExterna.getIdEmpresa())) {
@@ -145,6 +148,7 @@ public class BusServicio implements ApiOperacionBD<BusDto, Integer> {
 
     @Override
     public List<BusDto> selectFromWhereActivos() {
+        // OBTENER LISTA DE EMPRESAS AL INICIO
         EmpresaServicio empresaServicio = new EmpresaServicio();
         List<EmpresaDto> arrEmpresas = empresaServicio.selectFrom();
 
@@ -166,6 +170,7 @@ public class BusServicio implements ApiOperacionBD<BusDto, Integer> {
                 String npub = columnas[7].trim();
                 String nocu = columnas[8].trim();
 
+                // FILTRAR SOLO LOS ACTIVOS
                 if (Boolean.TRUE.equals(estBus)) {
                     BusDto dto = new BusDto();
                     dto.setIdBus(codBus);
@@ -177,6 +182,7 @@ public class BusServicio implements ApiOperacionBD<BusDto, Integer> {
                     dto.setNombreImagenPublicoBus(npub);
                     dto.setNombreImagenPrivadoBus(nocu);
 
+                    // AQUÍ SE USA LA LISTA DE EMPRESAS
                     dto.setEmpresaBus(obtenerEmpresaCompleta(codEmpresa, arrEmpresas));
 
                     arregloBus.add(dto);
@@ -215,11 +221,57 @@ public class BusServicio implements ApiOperacionBD<BusDto, Integer> {
 
     @Override
     public BusDto getOne(Integer codigo) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        int contador = 0;
+        BusDto objListo = new BusDto();
+        List<BusDto> arrBuses = selectFrom();
+
+        for (BusDto objBus : arrBuses) {
+            if (contador == codigo) {
+                objListo = objBus;
+                break;
+            }
+            contador++;
+        }
+        return objListo;
     }
 
     @Override
     public BusDto updateSet(Integer codigo, BusDto objeto, String ruta) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            String cadena, nocu;
+            List<String> arregloDatos;
+
+            cadena = objeto.getIdBus() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getPlacaBus() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getModeloBus() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getCapacidadBus() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getEmpresaBus().getIdEmpresa() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getTipoBus() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getEstadoBus() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getNombreImagenPublicoBus() + Persistencia.SEPARADOR_COLUMNAS;
+
+            if (ruta.isBlank()) {
+                cadena = cadena + objeto.getNombreImagenPrivadoBus();
+            } else {
+                nocu = GestorImagen.grabarLaImagen(ruta);
+                cadena = cadena + nocu;
+                
+                arregloDatos = miArchivo.borrarFilaPosicion(codigo);
+                if (!arregloDatos.isEmpty()) {
+                    String nomOculto = arregloDatos.get(arregloDatos.size() - 1);
+                    String nombreBorrar = Persistencia.RUTA_IMAGENES 
+                            + Persistencia.SEPARADOR_CARPETAS + nomOculto;
+                    java.nio.file.Path rutaBorrar = java.nio.file.Paths.get(nombreBorrar);
+                    java.nio.file.Files.deleteIfExists(rutaBorrar);
+                }
+            }
+
+            if (miArchivo.actualizaFilaPosicion(codigo, cadena)) {
+                return objeto;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(BusServicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
