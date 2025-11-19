@@ -1,7 +1,0 @@
-10;Terror;true@
-30;Ciencia ficción;false@
-60;Supenso;true@
-78;otro mas;false@
-80;dos copoias;false@
-81;dgsdfsdgsdg;false@
-82;Le genero de don ramon;true@
