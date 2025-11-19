@@ -1,0 +1,5 @@
+1;Bogotá – Medellín;Bogotá;Medellín;408.0;8;true;bogota_a_medellin.png;b2321e0a-cde7-4bf3-a8a0-7bdcfb2caf81_bogota_a_medellin.png@
+2;Cali – Popayán;Cali;Popayán;140.0;4;true;Cali Popayán ruta.png;2bfb0d98-0e4f-41e1-b845-023605f14051_Cali Popayán ruta.png@
+3;Bucaramanga – Cúcuta;Bucaramanga;Cúcuta;200.0;5;true;Bucaramanga Cúcuta ruta.png;c24c41b4-5360-434c-a470-2aea613e0e67_Bucaramanga Cúcuta ruta.png@
+4;Manizales – Pereira;Manizales;Pereira;50.0;2;true;Manizales Pereira ruta.png;0e063452-57d0-4519-b635-cc5ce1b00ad8_Manizales Pereira ruta.png@
+5;Bogotá – Girardot;Bogotá;Girardot;135.0;3;false;Bogotá Girardot ruta.png;6ae81306-e70e-4d8c-bf68-a670691bf483_Bogotá Girardot ruta.png@

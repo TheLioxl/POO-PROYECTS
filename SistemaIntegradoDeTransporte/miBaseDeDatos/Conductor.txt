@@ -1,0 +1,5 @@
+1;Carlos Andrés López;1023456789;1985-04-12;avvv;C2-458721;2027-06-30;1;true;bus-driver-clipart-md.png;cdc5b26f-dc05-4e61-9f13-50a3d628984c_bus-driver-clipart-md.png@
+2;Diana Marcela Rojas;1035678921;1990-11-02;3019876543;C1-128934;2028-03-14;3;true;avatar-de-conductor-autobús-femenino-mujer-conduciendo-un-vehículo-usuario-perfil-icono-personas-ilustración-vectorial-aislada-220991683.jpg;26355b03-7da7-4fa2-9c3e-4a1a623b16f2_avatar-de-conductor-autobús-femenino-mujer-conduciendo-un-vehículo-usuario-perfil-icono-personas-ilustración-vectorial-aislada-220991683.jpg@
+3;José Miguel Barrera;795621345;1978-07-19;3127765543;C3-992341;2026-01-08;2;false;bus-driver-clipart-md2.png;36e74692-6bf6-4c8a-a8f6-1c24cf9c5e20_bus-driver-clipart-md2.png@
+4;Andrés Felipe Gutiérrez;1002345567;1983-09-27;3152349988;C2-338921;2029-10-21;4;true;bus-driver-clipart-md3.png;a859a702-8c2d-446d-a02d-20214867742a_bus-driver-clipart-md3.png@
+5;Luis Fernando Reyes;1098765432;1992-02-05;3186674421;C1-774512;2030-04-17;5;false;bus-driver-clipart-md2.png;30178338-344b-4b3c-8df4-8a1244dfdc22_bus-driver-clipart-md2.png@

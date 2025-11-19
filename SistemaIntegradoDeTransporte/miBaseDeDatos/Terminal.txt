@@ -1,0 +1,6 @@
+1;Terminal de Transportes de Ibagué;Ibagué;Calle 25 #18-33;true;5;true;false;true;terminal_ibague.png;587bc35c-c268-4435-8782-d6601f46b00e_terminal_ibague.png@
+2;Central de Transporte de Santa Marta;Santa Marta;Troncal #29-12;true;10;true;true;true;terminal_stamta.png;f401a800-4b45-4566-8b7a-ad5aa0cf290a_terminal_stamta.png@
+3;Terminal de Transporte de Monteria S.A;Monteria;Calle 22 #11-37;false;5;false;true;true;terminal_monteria.png;2d0f45d7-305b-416d-baf5-de966c5d07e7_terminal_monteria.png@
+4;Terminal de Transportes de Villavicencio;Villavicencio;Calle 39 #63-18;true;5;false;true;true;terminal_villavicencio.jpg;0146217d-6349-4fcf-a478-a25183daca28_terminal_villavicencio.jpg@
+5;Terminal del Norte de Bogotá;Bogotá;Autopista Norte #192-50;true;28;true;true;true;terminal_bogota.jpg;77140c0b-35cd-474b-8b3c-478729f56ffb_terminal_bogota.jpg@
+6;Terminal de Transportes Medellín Norte;Medellín;Calle 95 #64-44;true;20;true;false;true;terminal_medellinjpg.jpg;34df4139-16e8-455c-8126-bb50b42ff9a3_terminal_medellinjpg.jpg@

@@ -1,0 +1,421 @@
+package org.poo.vista.empresa;
+
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import org.poo.controlador.empresa.EmpresaControladorEditar;
+import org.poo.controlador.empresa.EmpresaControladorVentana;
+import org.poo.controlador.terminal.TerminalControladorListar;
+import org.poo.dto.EmpresaDto;
+import org.poo.dto.TerminalDto;
+import org.poo.recurso.constante.Configuracion;
+import org.poo.recurso.utilidad.*;
+
+import java.util.List;
+
+public class VistaEmpresaEditar extends StackPane {
+
+    private static final int H_GAP = 10;
+    private static final int V_GAP = 15;
+    private static final int ALTO_CAJA = 35;
+    private static final int TAMANIO_FUENTE = 18;
+
+    private final GridPane miGrilla;
+    private final StackPane miFormulario;
+    private final Rectangle miMarco;
+    private final Stage miEscenario;
+
+    private TextField txtNombreEmpresa;
+    private TextField txtNitEmpresa;
+    private ComboBox<TerminalDto> cmbTerminalEmpresa;
+    private ComboBox<String> cmbEstadoEmpresa;
+    private DatePicker dateFechaFundacion;
+    private Spinner<Integer> spinnerEmpleados;
+    private CheckBox chk24Horas;
+    private CheckBox chkMantenimiento;
+    private CheckBox chkServicioCliente;
+    private TextArea txtDescripcion;
+    
+    private TextField txtImagen;
+    private ImageView imgPorDefecto;
+    private ImageView imgPrevisualizar;
+    private String rutaImagenSeleccionada;
+
+    private final int posicion;
+    private final EmpresaDto objEmpresa;
+    private Pane panelCuerpo;
+    private final BorderPane panelPrincipal;
+    private final boolean origenCarrusel;
+
+    public VistaEmpresaEditar(Stage ventanaPadre, BorderPane princ, Pane pane,
+            double ancho, double alto, EmpresaDto objEmpresaExterno, int posicionArchivo, boolean origenCarrusel) {
+
+        miEscenario = ventanaPadre;
+        miFormulario = this;
+        miFormulario.setAlignment(Pos.CENTER);
+
+        posicion = posicionArchivo;
+        objEmpresa = objEmpresaExterno;
+        panelPrincipal = princ;
+        panelCuerpo = pane;
+        this.origenCarrusel = origenCarrusel;
+        rutaImagenSeleccionada = "";
+
+        miGrilla = new GridPane();
+        miMarco = Marco.crear(
+                miEscenario,
+                Configuracion.MARCO_ANCHO_PORCENTAJE,
+                Configuracion.MARCO_ALTO_PORCENTAJE,
+                Configuracion.DEGRADE_ARREGLO_EMPRESA,
+                Configuracion.DEGRADE_BORDE
+        );
+
+        getChildren().add(miMarco);
+
+        configurarGrilla(ancho, alto);
+        crearTitulo();
+        crearFormulario();
+        getChildren().add(miGrilla);
+    }
+
+    public StackPane getMiFormulario() {
+        return miFormulario;
+    }
+
+    private void configurarGrilla(double ancho, double alto) {
+        double anchoGrilla = ancho * Configuracion.GRILLA_ANCHO_PORCENTAJE;
+
+        miGrilla.setHgap(H_GAP);
+        miGrilla.setVgap(V_GAP);
+        miGrilla.setAlignment(Pos.TOP_CENTER);
+        miGrilla.setPrefSize(anchoGrilla, alto);
+        miGrilla.setMinSize(anchoGrilla, alto);
+        miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+
+        ColumnConstraints col0 = new ColumnConstraints();
+        col0.setPercentWidth(40);
+        
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(60);
+        col1.setHgrow(Priority.ALWAYS);
+        
+        miGrilla.getColumnConstraints().addAll(col0, col1);
+    }
+
+    private void crearTitulo() {
+        int columna = 0, fila = 0, colSpan = 2, rowSpan = 1;
+
+        Region espacioSuperior = new Region();
+        espacioSuperior.prefHeightProperty().bind(miEscenario.heightProperty().multiply(0.03));
+        miGrilla.add(espacioSuperior, columna, fila, colSpan, rowSpan);
+
+        fila = 1;
+        Text titulo = new Text("Formulario Actualización de Empresa");
+        titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 26));
+        GridPane.setHalignment(titulo, HPos.CENTER);
+        miGrilla.add(titulo, columna, fila, colSpan, rowSpan);
+    }
+
+    private void crearFormulario() {
+        int fila = 2;
+        int primeraColumna = 0;
+        int segundaColumna = 1;
+
+        fila++;
+        Label lblNombre = new Label("Nombre Empresa:");
+        lblNombre.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblNombre, primeraColumna, fila);
+
+        txtNombreEmpresa = new TextField();
+        txtNombreEmpresa.setText(objEmpresa.getNombreEmpresa());
+        txtNombreEmpresa.setPrefHeight(ALTO_CAJA);
+        GridPane.setHgrow(txtNombreEmpresa, Priority.ALWAYS);
+        Formulario.cantidadCaracteres(txtNombreEmpresa, 50);
+        miGrilla.add(txtNombreEmpresa, segundaColumna, fila);
+
+        fila++;
+        Label lblNit = new Label("NIT:");
+        lblNit.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblNit, primeraColumna, fila);
+
+        txtNitEmpresa = new TextField();
+        txtNitEmpresa.setText(objEmpresa.getNitEmpresa());
+        txtNitEmpresa.setPrefHeight(ALTO_CAJA);
+        GridPane.setHgrow(txtNitEmpresa, Priority.ALWAYS);
+        Formulario.cantidadCaracteres(txtNitEmpresa, 20);
+        miGrilla.add(txtNitEmpresa, segundaColumna, fila);
+
+        fila++;
+        Label lblTerminal = new Label("Terminal:");
+        lblTerminal.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblTerminal, primeraColumna, fila);
+
+        cmbTerminalEmpresa = new ComboBox<>();
+        cmbTerminalEmpresa.setMaxWidth(Double.MAX_VALUE);
+        cmbTerminalEmpresa.setPrefHeight(ALTO_CAJA);
+        
+        List<TerminalDto> terminales = TerminalControladorListar.obtenerTerminalesActivos();
+        TerminalDto opcionDefault = new TerminalDto();
+        opcionDefault.setIdTerminal(0);
+        opcionDefault.setNombreTerminal("Seleccione terminal");
+        
+        cmbTerminalEmpresa.getItems().add(opcionDefault);
+        cmbTerminalEmpresa.getItems().addAll(terminales);
+        
+        int indiceSeleccionado = 0;
+        for (int i = 0; i < cmbTerminalEmpresa.getItems().size(); i++) {
+            if (cmbTerminalEmpresa.getItems().get(i).getIdTerminal().equals(
+                    objEmpresa.getTerminalEmpresa().getIdTerminal())) {
+                indiceSeleccionado = i;
+                break;
+            }
+        }
+        cmbTerminalEmpresa.getSelectionModel().select(indiceSeleccionado);
+        
+        cmbTerminalEmpresa.setConverter(new StringConverter<TerminalDto>() {
+            @Override
+            public String toString(TerminalDto terminal) {
+                return terminal != null ? terminal.getNombreTerminal() : "";
+            }
+
+            @Override
+            public TerminalDto fromString(String string) {
+                return null;
+            }
+        });
+        
+        miGrilla.add(cmbTerminalEmpresa, segundaColumna, fila);
+
+        fila++;
+        Label lblEstado = new Label("Estado:");
+        lblEstado.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblEstado, primeraColumna, fila);
+
+        cmbEstadoEmpresa = new ComboBox<>();
+        cmbEstadoEmpresa.setMaxWidth(Double.MAX_VALUE);
+        cmbEstadoEmpresa.setPrefHeight(ALTO_CAJA);
+        cmbEstadoEmpresa.getItems().addAll("Seleccione estado", "Activo", "Inactivo");
+        
+        if (objEmpresa.getEstadoEmpresa()) {
+            cmbEstadoEmpresa.getSelectionModel().select(1);
+        } else {
+            cmbEstadoEmpresa.getSelectionModel().select(2);
+        }
+        miGrilla.add(cmbEstadoEmpresa, segundaColumna, fila);
+
+        fila++;
+        Label lblFechaFundacion = new Label("Fecha de Fundación:");
+        lblFechaFundacion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblFechaFundacion, primeraColumna, fila);
+
+        dateFechaFundacion = new DatePicker();
+        dateFechaFundacion.setMaxWidth(Double.MAX_VALUE);
+        dateFechaFundacion.setPrefHeight(ALTO_CAJA);
+        dateFechaFundacion.setValue(objEmpresa.getFechaFundacion());
+        Formulario.deshabilitarFechasFuturas(dateFechaFundacion);
+        miGrilla.add(dateFechaFundacion, segundaColumna, fila);
+
+        fila++;
+        Label lblEmpleados = new Label("Cantidad de Empleados:");
+        lblEmpleados.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblEmpleados, primeraColumna, fila);
+
+        spinnerEmpleados = new Spinner<>();
+        SpinnerValueFactory<Integer> valueFactory = 
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 
+                objEmpresa.getCantidadEmpleados() != null ? objEmpresa.getCantidadEmpleados() : 50);
+        spinnerEmpleados.setValueFactory(valueFactory);
+        spinnerEmpleados.setPrefHeight(ALTO_CAJA);
+        spinnerEmpleados.setMaxWidth(Double.MAX_VALUE);
+        spinnerEmpleados.setEditable(true);
+        miGrilla.add(spinnerEmpleados, segundaColumna, fila);
+
+        fila++;
+        Label lblServicios = new Label("Servicios de la Empresa:");
+        lblServicios.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblServicios, primeraColumna, fila);
+
+        chk24Horas = new CheckBox("Servicio 24 Horas");
+        chkMantenimiento = new CheckBox("Mantenimiento Propio");
+        chkServicioCliente = new CheckBox("Servicio al Cliente");
+        
+        chk24Horas.setSelected(objEmpresa.getServicio24Horas() != null ? objEmpresa.getServicio24Horas() : false);
+        chkMantenimiento.setSelected(objEmpresa.getTieneMantenimientoPropio() != null ? objEmpresa.getTieneMantenimientoPropio() : false);
+        chkServicioCliente.setSelected(objEmpresa.getTieneServicioCliente() != null ? objEmpresa.getTieneServicioCliente() : false);
+        
+        chk24Horas.setFont(Font.font("Arial", 14));
+        chkMantenimiento.setFont(Font.font("Arial", 14));
+        chkServicioCliente.setFont(Font.font("Arial", 14));
+
+        VBox vboxServicios = new VBox(5);
+        vboxServicios.getChildren().addAll(chk24Horas, chkMantenimiento, chkServicioCliente);
+        miGrilla.add(vboxServicios, segundaColumna, fila);
+
+        fila++;
+        Label lblDescripcion = new Label("Descripción:");
+        lblDescripcion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblDescripcion, primeraColumna, fila);
+
+        txtDescripcion = new TextArea();
+        txtDescripcion.setText(objEmpresa.getDescripcionEmpresa());
+        txtDescripcion.setPrefRowCount(3);
+        txtDescripcion.setWrapText(true);
+        txtDescripcion.setMaxWidth(Double.MAX_VALUE);
+        miGrilla.add(txtDescripcion, segundaColumna, fila);
+
+        fila++;
+        Label lblImagen = new Label("Imagen:");
+        lblImagen.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblImagen, primeraColumna, fila);
+
+        txtImagen = new TextField();
+        txtImagen.setText(objEmpresa.getNombreImagenPublicoEmpresa());
+        txtImagen.setDisable(true);
+        txtImagen.setPrefHeight(ALTO_CAJA);
+
+        String[] extensiones = {"*.png", "*.jpg", "*.jpeg"};
+        FileChooser selector = Formulario.selectorImagen(
+                "Seleccionar imagen", "Imágenes", extensiones);
+
+        Button btnSeleccionarImagen = new Button("+");
+        btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
+        btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        
+        final int filaImagenPreview = fila + 1;
+        
+        btnSeleccionarImagen.setOnAction(e -> {
+            rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
+            
+            if (!rutaImagenSeleccionada.isEmpty()) {
+                miGrilla.getChildren().remove(imgPorDefecto);
+                miGrilla.getChildren().remove(imgPrevisualizar);
+                
+                imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
+                GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
+                miGrilla.add(imgPrevisualizar, segundaColumna, filaImagenPreview);
+            }
+        });
+
+        HBox.setHgrow(txtImagen, Priority.ALWAYS);
+        HBox panelImagen = new HBox(5, txtImagen, btnSeleccionarImagen);
+        miGrilla.add(panelImagen, segundaColumna, fila);
+
+        fila++;
+        imgPorDefecto = Icono.obtenerFotosExternas(
+                objEmpresa.getNombreImagenPrivadoEmpresa(), 150);
+        GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
+        miGrilla.add(imgPorDefecto, segundaColumna, fila);
+
+        fila++;
+        Button btnActualizar = new Button("Actualizar Empresa");
+        btnActualizar.setPrefHeight(ALTO_CAJA);
+        btnActualizar.setMaxWidth(Double.MAX_VALUE);
+        btnActualizar.setTextFill(Color.web("#FFFFFF"));
+        btnActualizar.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        btnActualizar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + ";");
+        btnActualizar.setOnAction(e -> actualizarEmpresa());
+        miGrilla.add(btnActualizar, segundaColumna, fila);
+
+        fila++;
+        Button btnRegresar = new Button("Regresar");
+        btnRegresar.setPrefHeight(ALTO_CAJA);
+        btnRegresar.setMaxWidth(Double.MAX_VALUE);
+        btnRegresar.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        btnRegresar.setOnAction(e -> {
+            if (origenCarrusel) {
+                panelCuerpo = EmpresaControladorVentana.carrusel(
+                        miEscenario, panelPrincipal, panelCuerpo,
+                        Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO, posicion);
+            } else {
+                panelCuerpo = EmpresaControladorVentana.administrar(
+                        miEscenario, panelPrincipal, panelCuerpo,
+                        Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO);
+            }
+            panelPrincipal.setCenter(null);
+            panelPrincipal.setCenter(panelCuerpo);
+        });
+        miGrilla.add(btnRegresar, segundaColumna, fila);
+    }
+
+    private Boolean formularioCompleto() {
+        if (txtNombreEmpresa.getText().isBlank()) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
+                    "Campo vacío", "Debe ingresar el nombre");
+            txtNombreEmpresa.requestFocus();
+            return false;
+        }
+
+        if (txtNitEmpresa.getText().isBlank()) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
+                    "Campo vacío", "Debe ingresar el NIT");
+            txtNitEmpresa.requestFocus();
+            return false;
+        }
+
+        if (cmbTerminalEmpresa.getSelectionModel().getSelectedIndex() == 0) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
+                    "Terminal no seleccionada", "Debe seleccionar una terminal");
+            return false;
+        }
+
+        if (cmbEstadoEmpresa.getSelectionModel().getSelectedIndex() == 0) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
+                    "Estado no seleccionado", "Debe seleccionar un estado");
+            return false;
+        }
+
+        if (dateFechaFundacion.getValue() == null) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
+                    "Fecha no seleccionada", "Debe seleccionar la fecha de fundación");
+            return false;
+        }
+
+        if (txtDescripcion.getText().isBlank()) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
+                    "Campo vacío", "Debe ingresar una descripción");
+            txtDescripcion.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void actualizarEmpresa() {
+        if (formularioCompleto()) {
+            EmpresaDto dtoActualizado = new EmpresaDto();
+            dtoActualizado.setIdEmpresa(objEmpresa.getIdEmpresa());
+            dtoActualizado.setNombreEmpresa(txtNombreEmpresa.getText());
+            dtoActualizado.setNitEmpresa(txtNitEmpresa.getText());
+            dtoActualizado.setTerminalEmpresa(cmbTerminalEmpresa.getValue());
+            dtoActualizado.setEstadoEmpresa(cmbEstadoEmpresa.getValue().equals("Activo"));
+            dtoActualizado.setNombreImagenPublicoEmpresa(txtImagen.getText());
+            dtoActualizado.setNombreImagenPrivadoEmpresa(objEmpresa.getNombreImagenPrivadoEmpresa());
+            dtoActualizado.setCantidadBusesEmpresa(objEmpresa.getCantidadBusesEmpresa());
+            dtoActualizado.setFechaFundacion(dateFechaFundacion.getValue());
+            dtoActualizado.setCantidadEmpleados(spinnerEmpleados.getValue());
+            dtoActualizado.setServicio24Horas(chk24Horas.isSelected());
+            dtoActualizado.setTieneMantenimientoPropio(chkMantenimiento.isSelected());
+            dtoActualizado.setTieneServicioCliente(chkServicioCliente.isSelected());
+            dtoActualizado.setDescripcionEmpresa(txtDescripcion.getText());
+
+            if (EmpresaControladorEditar.actualizar(posicion, dtoActualizado, rutaImagenSeleccionada)) {
+                Mensaje.mostrar(Alert.AlertType.INFORMATION, this.getScene().getWindow(),
+                        "Éxito", "Empresa actualizada correctamente");
+            } else {
+                Mensaje.mostrar(Alert.AlertType.ERROR, this.getScene().getWindow(),
+                        "Error", "No se pudo actualizar la empresa");
+            }
+        }
+    }
+}
