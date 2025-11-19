@@ -3,14 +3,13 @@ package org.poo.dto;
 import java.time.LocalDate;
 
 public class PasajeroDto {
-
+    
     private Integer idPasajero;
     private String nombrePasajero;
     private String documentoPasajero;
     private LocalDate fechaNacimientoPasajero;
     private Boolean esMayorPasajero;
     private String telefonoPasajero;
-    private String emailPasajero;
     private String tipoDocumentoPasajero; // "Cédula", "Pasaporte", "Tarjeta de identidad"
     private String nombreImagenPublicoPasajero;
     private String nombreImagenPrivadoPasajero;
@@ -18,14 +17,13 @@ public class PasajeroDto {
     public PasajeroDto() {
     }
 
-    public PasajeroDto(Integer idPasajero, String nombrePasajero, String documentoPasajero, LocalDate fechaNacimientoPasajero, Boolean esMayorPasajero, String telefonoPasajero, String emailPasajero, String tipoDocumentoPasajero, String nombreImagenPublicoPasajero, String nombreImagenPrivadoPasajero) {
+    public PasajeroDto(Integer idPasajero, String nombrePasajero, String documentoPasajero, LocalDate fechaNacimientoPasajero, Boolean esMayorPasajero, String telefonoPasajero, String tipoDocumentoPasajero, String nombreImagenPublicoPasajero, String nombreImagenPrivadoPasajero) {
         this.idPasajero = idPasajero;
         this.nombrePasajero = nombrePasajero;
         this.documentoPasajero = documentoPasajero;
         this.fechaNacimientoPasajero = fechaNacimientoPasajero;
         this.esMayorPasajero = esMayorPasajero;
         this.telefonoPasajero = telefonoPasajero;
-        this.emailPasajero = emailPasajero;
         this.tipoDocumentoPasajero = tipoDocumentoPasajero;
         this.nombreImagenPublicoPasajero = nombreImagenPublicoPasajero;
         this.nombreImagenPrivadoPasajero = nombreImagenPrivadoPasajero;
@@ -77,14 +75,6 @@ public class PasajeroDto {
 
     public void setTelefonoPasajero(String telefonoPasajero) {
         this.telefonoPasajero = telefonoPasajero;
-    }
-
-    public String getEmailPasajero() {
-        return emailPasajero;
-    }
-
-    public void setEmailPasajero(String emailPasajero) {
-        this.emailPasajero = emailPasajero;
     }
 
     public String getTipoDocumentoPasajero() {

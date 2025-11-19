@@ -35,7 +35,7 @@ import org.poo.recurso.utilidad.Icono;
 import org.poo.recurso.utilidad.Marco;
 import org.poo.recurso.utilidad.Mensaje;
 
-public class VistaPasajeroAdministrar extends StackPane{
+public class VistaPasajeroAdministrar extends StackPane {
 
     private final Rectangle marco;
     private final Stage miEscenario;
@@ -56,7 +56,7 @@ public class VistaPasajeroAdministrar extends StackPane{
     private final BorderPane panelPrincipal;
 
     public VistaPasajeroAdministrar(Stage ventanaPadre, BorderPane princ, Pane pane,
-                                    double ancho, double alto) {
+            double ancho, double alto) {
 
         setAlignment(Pos.CENTER);
 
@@ -68,7 +68,7 @@ public class VistaPasajeroAdministrar extends StackPane{
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_PASAJERO,   // usa el degrade de pasajero
+                Configuracion.DEGRADE_ARREGLO_PASAJERO, // usa el degrade de pasajero
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -102,7 +102,6 @@ public class VistaPasajeroAdministrar extends StackPane{
     }
 
     // ================== COLUMNAS ==================
-
     private TableColumn<PasajeroDto, Integer> crearColumnaCodigo() {
         TableColumn<PasajeroDto, Integer> columna = new TableColumn<>("Código");
         columna.setCellValueFactory(new PropertyValueFactory<>("idPasajero"));
@@ -169,19 +168,9 @@ public class VistaPasajeroAdministrar extends StackPane{
         return columna;
     }
 
-    private TableColumn<PasajeroDto, String> crearColumnaEmail() {
-        TableColumn<PasajeroDto, String> columna = new TableColumn<>("Email");
-        columna.setCellValueFactory(new PropertyValueFactory<>("emailPasajero"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.18));
-        columna.setStyle(ESTILO_IZQUIERDA);
-        return columna;
-    }
-
     private TableColumn<PasajeroDto, String> crearColumnaImagen() {
         TableColumn<PasajeroDto, String> columna = new TableColumn<>("Imagen");
-        // ⚠️ En ADMIN miniatura ⇒ usamos nombre PRIVADO
         columna.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPrivadoPasajero"));
-
         columna.setCellFactory(column -> new TableCell<PasajeroDto, String>() {
             @Override
             protected void updateItem(String nombreImagen, boolean bandera) {
@@ -192,13 +181,13 @@ public class VistaPasajeroAdministrar extends StackPane{
                     try {
                         setGraphic(Icono.obtenerFotosExternas(nombreImagen, 50));
                     } catch (Exception e) {
+                        // Si falla, mostrar imagen por defecto
                         setGraphic(Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 50));
                     }
                 }
             }
         });
-
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.18));
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
     }
@@ -207,12 +196,13 @@ public class VistaPasajeroAdministrar extends StackPane{
         miTabla.getColumns().add(crearColumnaCodigo());
         miTabla.getColumns().add(crearColumnaNombre());
         miTabla.getColumns().add(crearColumnaDocumento());
+        miTabla.getColumns().add(crearColumnaTipoDocumento());
+        miTabla.getColumns().add(crearColumnaMayor());
         miTabla.getColumns().add(crearColumnaTelefono());
-        miTabla.getColumns().add(crearColumnaEmail());
+        miTabla.getColumns().add(crearColumnaImagen());
     }
 
     // ================== TABLA ==================
-
     private void crearTabla() {
         configurarColumnas();
 
@@ -236,7 +226,6 @@ public class VistaPasajeroAdministrar extends StackPane{
     }
 
     // ================== BOTONES ADMIN ==================
-
     private void losIconosAdmin() {
         int ancho = 40;
         int tamanioIconito = 16;

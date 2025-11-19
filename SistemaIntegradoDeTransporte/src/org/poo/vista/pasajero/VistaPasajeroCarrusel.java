@@ -61,7 +61,6 @@ public class VistaPasajeroCarrusel extends BorderPane {
     private StringProperty pasajeroTipoDocumento;
     private StringProperty pasajeroFechaNac;
     private StringProperty pasajeroTelefono;
-    private StringProperty pasajeroEmail;
     private BooleanProperty pasajeroEsMayor;
     private ObjectProperty<Image> pasajeroImagen;
 
@@ -338,15 +337,6 @@ public class VistaPasajeroCarrusel extends BorderPane {
         lblTelefono.setFont(Font.font("Rockwell", tamanioFuente));
         lblTelefono.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblTelefono);
-
-        // EMAIL
-        pasajeroEmail = new SimpleStringProperty(objCargado.getEmailPasajero());
-        Label lblEmail = new Label();
-        lblEmail.textProperty().bind(
-                Bindings.concat("Email: ", pasajeroEmail));
-        lblEmail.setFont(Font.font("Rockwell", tamanioFuente));
-        lblEmail.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
-        organizadorVertical.getChildren().add(lblEmail);
     }
 
     private void actualizarContenido() {
@@ -366,7 +356,6 @@ public class VistaPasajeroCarrusel extends BorderPane {
         pasajeroFechaNac.set(fechaNacTxt);
 
         pasajeroTelefono.set(objCargado.getTelefonoPasajero());
-        pasajeroEmail.set(objCargado.getEmailPasajero());
         pasajeroEsMayor.set(objCargado.getEsMayorPasajero() != null
                 && objCargado.getEsMayorPasajero());
 

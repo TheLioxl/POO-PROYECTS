@@ -213,6 +213,14 @@ public class VistaViajeListar extends StackPane {
         return columna;
     }
 
+    private TableColumn<ViajeDto, String> crearColumnaImagen() {
+        TableColumn<ViajeDto, String> columna = new TableColumn<>("Imagen");
+        columna.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPublicoViaje"));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
+        columna.setStyle(ESTILO_IZQUIERDA);
+        return columna;
+    }
+
     private void configurarColumnas() {
         miTabla.getColumns().addAll(List.of(
                 crearColumnaCodigo(),
@@ -227,7 +235,8 @@ public class VistaViajeListar extends StackPane {
                 crearColumnaViajeDirecto(),
                 crearColumnaRefrigerio(),
                 crearColumnaParadas(),
-                crearColumnaEstado()
+                crearColumnaEstado(),
+                crearColumnaImagen()
         ));
     }
 

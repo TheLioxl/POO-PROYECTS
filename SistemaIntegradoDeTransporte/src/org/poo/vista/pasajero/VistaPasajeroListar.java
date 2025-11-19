@@ -146,14 +146,6 @@ public class VistaPasajeroListar extends StackPane {
         return columna;
     }
 
-    private TableColumn<PasajeroDto, String> crearColumnaEmail() {
-        TableColumn<PasajeroDto, String> columna = new TableColumn<>("Email");
-        columna.setCellValueFactory(new PropertyValueFactory<>("emailPasajero"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.18));
-        columna.setStyle(ESTILO_IZQUIERDA);
-        return columna;
-    }
-
     private TableColumn<PasajeroDto, String> crearColumnaImagenPublica() {
         TableColumn<PasajeroDto, String> columna = new TableColumn<>("Imagen documento");
 
@@ -171,8 +163,10 @@ public class VistaPasajeroListar extends StackPane {
         miTabla.getColumns().add(crearColumnaCodigo());
         miTabla.getColumns().add(crearColumnaNombre());
         miTabla.getColumns().add(crearColumnaDocumento());
+        miTabla.getColumns().add(crearColumnaTipoDocumento());
+        miTabla.getColumns().add(crearColumnaMayor());
         miTabla.getColumns().add(crearColumnaTelefono());
-        miTabla.getColumns().add(crearColumnaEmail());
+        miTabla.getColumns().add(crearColumnaImagenPublica());
     }
 
     private void crearTabla() {
@@ -197,3 +191,4 @@ public class VistaPasajeroListar extends StackPane {
         getChildren().add(cajaVertical);
     }
 }
+

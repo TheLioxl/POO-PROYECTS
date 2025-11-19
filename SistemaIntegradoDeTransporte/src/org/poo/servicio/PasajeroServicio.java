@@ -49,21 +49,23 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
         objPasajero.setNombrePasajero(dto.getNombrePasajero());
         objPasajero.setDocumentoPasajero(dto.getDocumentoPasajero());
         objPasajero.setTipoDocumentoPasajero(dto.getTipoDocumentoPasajero());
-        objPasajero.setFechaNacimientoPasajero(dto.getFechaNacimientoPasajero());
         objPasajero.setEsMayorPasajero(dto.getEsMayorPasajero());
+        objPasajero.setFechaNacimientoPasajero(dto.getFechaNacimientoPasajero());
         objPasajero.setTelefonoPasajero(dto.getTelefonoPasajero());
-        objPasajero.setEmailPasajero(dto.getEmailPasajero());
         objPasajero.setNombreImagendocumentoPublicoPasajero(dto.getNombreImagenPublicoPasajero());
         objPasajero.setNombreImagendocumentoPrivadoPasajero(GestorImagen.grabarLaImagen(ruta));
+
+        String fechaNac = dto.getFechaNacimientoPasajero() != null
+                ? dto.getFechaNacimientoPasajero().toString()
+                : "";
 
         String filaGrabar = objPasajero.getIdPasajero() + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getNombrePasajero() + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getDocumentoPasajero() + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getTipoDocumentoPasajero() + Persistencia.SEPARADOR_COLUMNAS
-                + objPasajero.getFechaNacimientoPasajero() + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getEsMayorPasajero() + Persistencia.SEPARADOR_COLUMNAS
+                + fechaNac + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getTelefonoPasajero() + Persistencia.SEPARADOR_COLUMNAS
-                + objPasajero.getEmailPasajero() + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getNombreImagendocumentoPublicoPasajero() + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getNombreImagendocumentoPrivadoPasajero();
 
@@ -83,42 +85,38 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
 
         for (String cadena : arregloDatos) {
             try {
-                cadena = cadena.replace("@", "");
+                cadena = cadena.replace("\\@", "@");
                 String[] columnas = cadena.split(Persistencia.SEPARADOR_COLUMNAS);
-
-                // Validar que el array tenga al menos 10 elementos
-                if (columnas.length < 10) {
-                    continue;
-                }
 
                 int codPasajero = Integer.parseInt(columnas[0].trim());
                 String nombre = columnas[1].trim();
                 String documento = columnas[2].trim();
-                String tipoDoc = columnas[3].trim();
-                LocalDate fechaNac = LocalDate.parse(columnas[4].trim());
-                Boolean esMayor = Boolean.valueOf(columnas[5].trim());
+                String tipoDocumento = columnas[3].trim();
+                Boolean esMayor = Boolean.valueOf(columnas[4].trim());
+                String fechaNacTxt = columnas[5].trim();
                 String telefono = columnas[6].trim();
                 String email = columnas[7].trim();
-                String npub = columnas[8].trim();
-                String nocu = columnas[9].trim();
+                String npub = columnas.length > 8 ? columnas[8].trim() : "";
+                String nocu = columnas.length > 9 ? columnas[9].trim() : "";
 
                 PasajeroDto dto = new PasajeroDto();
                 dto.setIdPasajero(codPasajero);
                 dto.setNombrePasajero(nombre);
                 dto.setDocumentoPasajero(documento);
-                dto.setTipoDocumentoPasajero(tipoDoc);
-                dto.setFechaNacimientoPasajero(fechaNac);
+                dto.setTipoDocumentoPasajero(tipoDocumento);
                 dto.setEsMayorPasajero(esMayor);
                 dto.setTelefonoPasajero(telefono);
-                dto.setEmailPasajero(email);
                 dto.setNombreImagenPublicoPasajero(npub);
                 dto.setNombreImagenPrivadoPasajero(nocu);
 
+                if (!fechaNacTxt.isBlank()) {
+                    dto.setFechaNacimientoPasajero(LocalDate.parse(fechaNacTxt));
+                }
+
                 arregloPasajero.add(dto);
 
-            } catch (Exception error) {
-                Logger.getLogger(PasajeroServicio.class.getName()).log(Level.SEVERE, 
-                    "Error parseando línea: " + cadena, error);
+            } catch (NumberFormatException error) {
+                Logger.getLogger(PasajeroServicio.class.getName()).log(Level.SEVERE, null, error);
             }
         }
         return arregloPasajero;
@@ -127,6 +125,7 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
     @Override
     public List<PasajeroDto> selectFromWhereActivos() {
         return selectFrom();
+
     }
 
     @Override
@@ -146,9 +145,10 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
         try {
             List<String> arreglo = miArchivo.borrarFilaPosicion(codigo);
             if (!arreglo.isEmpty()) {
-                String nocu = arreglo.get(arreglo.size() - 1);
-                String nombreBorrar = Persistencia.RUTA_IMAGENES 
-                        + Persistencia.SEPARADOR_CARPETAS + nocu;
+                // El último dato es el nombre de la imagen privada
+                String nomOculto = arreglo.get(arreglo.size() - 1);
+                String nombreBorrar = Persistencia.RUTA_IMAGENES
+                        + Persistencia.SEPARADOR_CARPETAS + nomOculto;
                 Path rutaBorrar = Paths.get(nombreBorrar);
                 Files.deleteIfExists(rutaBorrar);
                 correcto = true;
@@ -161,7 +161,6 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
 
     @Override
     public PasajeroDto getOne(Integer codigo) {
-        // CORREGIDO: Ahora obtiene por POSICIÓN en el array, no por ID
         int contador = 0;
         PasajeroDto objListo = new PasajeroDto();
         List<PasajeroDto> arrPasajeros = selectFrom();
@@ -182,26 +181,31 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
             String cadena, nocu;
             List<String> arregloDatos;
 
+            String fechaNac = objeto.getFechaNacimientoPasajero() != null
+                    ? objeto.getFechaNacimientoPasajero().toString()
+                    : "";
+
             cadena = objeto.getIdPasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getNombrePasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getDocumentoPasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getTipoDocumentoPasajero() + Persistencia.SEPARADOR_COLUMNAS
-                    + objeto.getFechaNacimientoPasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getEsMayorPasajero() + Persistencia.SEPARADOR_COLUMNAS
+                    + fechaNac + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getTelefonoPasajero() + Persistencia.SEPARADOR_COLUMNAS
-                    + objeto.getEmailPasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getNombreImagenPublicoPasajero() + Persistencia.SEPARADOR_COLUMNAS;
 
             if (ruta.isBlank()) {
+                // Mantener imagen privada actual
                 cadena = cadena + objeto.getNombreImagenPrivadoPasajero();
             } else {
+                // Grabar nueva imagen y borrar la anterior
                 nocu = GestorImagen.grabarLaImagen(ruta);
                 cadena = cadena + nocu;
-                
+
                 arregloDatos = miArchivo.borrarFilaPosicion(codigo);
                 if (!arregloDatos.isEmpty()) {
                     String nomOculto = arregloDatos.get(arregloDatos.size() - 1);
-                    String nombreBorrar = Persistencia.RUTA_IMAGENES 
+                    String nombreBorrar = Persistencia.RUTA_IMAGENES
                             + Persistencia.SEPARADOR_CARPETAS + nomOculto;
                     Path rutaBorrar = Paths.get(nombreBorrar);
                     Files.deleteIfExists(rutaBorrar);

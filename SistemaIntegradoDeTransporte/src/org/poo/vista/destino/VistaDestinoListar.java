@@ -90,24 +90,9 @@ public class VistaDestinoListar extends StackPane {
         colDescripcion.setStyle(ESTILO_IZQUIERDA);
 
         TableColumn<DestinoDto, String> colImagen = new TableColumn<>("Imagen");
-        colImagen.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPrivadoDestino"));
-        colImagen.setCellFactory(column -> new TableCell<DestinoDto, String>() {
-            @Override
-            protected void updateItem(String nombreImagen, boolean bandera) {
-                super.updateItem(nombreImagen, bandera);
-                if (bandera || nombreImagen == null || nombreImagen.isEmpty()) {
-                    setGraphic(null);
-                } else {
-                    try {
-                        setGraphic(Icono.obtenerFotosExternas(nombreImagen, 50));
-                    } catch (Exception e) {
-                        setGraphic(Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 50));
-                    }
-                }
-            }
-        });
+        colImagen.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPublicoDestino"));
         colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.32));
-        colImagen.setStyle(ESTILO_CENTRAR);
+        colImagen.setStyle(ESTILO_IZQUIERDA);
 
         miTabla.getColumns().add(colCodigo);
         miTabla.getColumns().add(colNombre);
