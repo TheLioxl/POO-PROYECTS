@@ -75,6 +75,11 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                 cadena = cadena.replace("@", "");
                 String[] columnas = cadena.split(Persistencia.SEPARADOR_COLUMNAS);
 
+                // Validar que el array tenga al menos 7 elementos
+                if (columnas.length < 7) {
+                    continue;
+                }
+
                 int codPasajero = Integer.parseInt(columnas[0].trim());
                 String nombre = columnas[1].trim();
                 String cedula = columnas[2].trim();
@@ -134,14 +139,16 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
     @Override
     public PasajeroDto getOne(Integer codigo) {
         List<String> arregloDatos = miArchivo.obtenerDatos();
-        
+
+        // Buscar por ID del pasajero (columna 0)
         for (String cadena : arregloDatos) {
             try {
                 cadena = cadena.replace("@", "");
                 String[] columnas = cadena.split(Persistencia.SEPARADOR_COLUMNAS);
-                
+
                 int codPasajero = Integer.parseInt(columnas[0].trim());
-                
+
+                // Si encontramos el ID que buscamos
                 if (codPasajero == codigo) {
                     String nombre = columnas[1].trim();
                     String cedula = columnas[2].trim();
@@ -149,7 +156,7 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                     String email = columnas[4].trim();
                     String npub = columnas[5].trim();
                     String nocu = columnas[6].trim();
-                    
+
                     PasajeroDto dto = new PasajeroDto();
                     dto.setIdPasajero(codPasajero);
                     dto.setNombrePasajero(nombre);
@@ -158,41 +165,46 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                     dto.setEmailPasajero(email);
                     dto.setNombreImagenPublicoPasajero(npub);
                     dto.setNombreImagenPrivadoPasajero(nocu);
-                    
+
                     return dto;
                 }
             } catch (NumberFormatException error) {
                 Logger.getLogger(PasajeroServicio.class.getName()).log(Level.SEVERE, null, error);
             }
         }
-        return null;
+        return null; // No encontrado
     }
 
     @Override
     public PasajeroDto updateSet(Integer codigo, PasajeroDto dto, String ruta) {
         List<String> arregloDatos = miArchivo.obtenerDatos();
         int posicionAEditar = -1;
-        
+
         for (int i = 0; i < arregloDatos.size(); i++) {
             String cadena = arregloDatos.get(i);
             cadena = cadena.replace("@", "");
             String[] columnas = cadena.split(Persistencia.SEPARADOR_COLUMNAS);
-            
+
+            // Validar que el array tenga al menos 7 elementos
+            if (columnas.length < 7) {
+                continue;
+            }
+
             int codPasajero = Integer.parseInt(columnas[0].trim());
-            
+
             if (codPasajero == codigo) {
                 posicionAEditar = i;
                 break;
             }
         }
-        
+
         if (posicionAEditar != -1) {
             String imagenPrivada = dto.getNombreImagenPrivadoPasajero();
-            
+
             if (!ruta.isEmpty()) {
                 imagenPrivada = GestorImagen.grabarLaImagen(ruta);
             }
-            
+
             String filaActualizada = dto.getIdPasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + dto.getNombrePasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + dto.getDocumentoPasajero() + Persistencia.SEPARADOR_COLUMNAS
@@ -200,7 +212,7 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                     + dto.getEmailPasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + dto.getNombreImagenPublicoPasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + imagenPrivada;
-            
+
             try {
                 if (miArchivo.actualizaFilaPosicion(posicionAEditar, filaActualizada)) {
                     dto.setNombreImagenPrivadoPasajero(imagenPrivada);
@@ -210,7 +222,7 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                 Logger.getLogger(PasajeroServicio.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         return null;
     }
 }

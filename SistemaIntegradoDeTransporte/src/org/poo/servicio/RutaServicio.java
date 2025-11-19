@@ -163,11 +163,11 @@ public class RutaServicio implements ApiOperacionBD<RutaDto, Integer> {
     public RutaDto getOne(Integer codigo) {
         int contador = 0;
         RutaDto objListo = new RutaDto();
-        List<RutaDto> arrRutas = selectFrom();
+        List<RutaDto> arrEmpresas = selectFrom();
 
-        for (RutaDto objRuta : arrRutas) {
+        for (RutaDto objEmpresa : arrEmpresas) {
             if (contador == codigo) {
-                objListo = objRuta;
+                objListo = objEmpresa;
                 break;
             }
             contador++;

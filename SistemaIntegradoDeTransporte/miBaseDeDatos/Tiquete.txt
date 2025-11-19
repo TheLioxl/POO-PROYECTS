@@ -1,3 +1,0 @@
-1;1;1;2;50000.0;Ejecutivo;2025-11-19T04:53:06.983934700;bustike.png;88633c07-275e-4914-a1d8-cb7a807143d1_bustike.png@
-2;1;1;1;50000.0;Económico;2025-11-19T04:53:46.068218900;bustike.png;a3f34766-1631-45f4-95d3-44b847bfa9ad_bustike.png@
-3;1;1;1;50000.0;Económico;2025-11-19T04:54:41.182484300;descarga.jpg;796d4de4-71e9-45ae-9021-7ca4c4c4cc3a_descarga.jpg@

@@ -76,7 +76,6 @@ public class VistaPasajeroCrear extends StackPane {
         miMarco = Marco.crear(escenario,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
-                // Si creas un degrade propio para pasajero, cámbialo aquí:
                 Configuracion.DEGRADE_ARREGLO_CONDUCTOR,
                 Configuracion.DEGRADE_BORDE);
 
@@ -149,8 +148,7 @@ public class VistaPasajeroCrear extends StackPane {
         txtDocumentoPasajero.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtDocumentoPasajero, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtDocumentoPasajero, 15);
-        // Si tienes soloNumeros:
-        // Formulario.soloNumeros(txtDocumentoPasajero);
+        Formulario.soloNumeros(txtDocumentoPasajero);
         miGrilla.add(txtDocumentoPasajero, 1, 3);
 
         // TIPO DOCUMENTO
@@ -178,6 +176,7 @@ public class VistaPasajeroCrear extends StackPane {
         dpFechaNacimiento = new DatePicker();
         dpFechaNacimiento.setPrefHeight(ALTO_CAJA);
         dpFechaNacimiento.setMaxWidth(Double.MAX_VALUE);
+        Formulario.deshabilitarFechasFuturas(dpFechaNacimiento);
         miGrilla.add(dpFechaNacimiento, 1, 5);
 
         // ES MAYOR DE EDAD (RADIOBUTTON)
@@ -205,8 +204,7 @@ public class VistaPasajeroCrear extends StackPane {
         txtTelefonoPasajero.setPromptText("Ej: 3001234567");
         txtTelefonoPasajero.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtTelefonoPasajero, Priority.ALWAYS);
-        Formulario.cantidadCaracteres(txtTelefonoPasajero, 15);
-        // Formulario.soloNumeros(txtTelefonoPasajero);
+        Formulario.soloTelefono(txtTelefonoPasajero);
         miGrilla.add(txtTelefonoPasajero, 1, 7);
 
         // EMAIL
@@ -275,7 +273,6 @@ public class VistaPasajeroCrear extends StackPane {
         miGrilla.add(btnGrabar, 1, 10);
     }
 
-    // ================== VALIDACIÓN ==================
     private Boolean formularioCompleto() {
         Window ventana = this.getScene() != null ? this.getScene().getWindow() : null;
 
@@ -327,6 +324,13 @@ public class VistaPasajeroCrear extends StackPane {
             return false;
         }
 
+        if (!Formulario.validarEmail(txtEmailPasajero.getText())) {
+            Mensaje.mostrar(Alert.AlertType.WARNING, ventana,
+                    "Email inválido", "El formato del email no es correcto");
+            txtEmailPasajero.requestFocus();
+            return false;
+        }
+
         if (rutaImagenSeleccionada.isBlank()) {
             Mensaje.mostrar(Alert.AlertType.WARNING, ventana,
                     "Imagen no seleccionada", "Debe seleccionar la imagen del documento");
@@ -336,7 +340,6 @@ public class VistaPasajeroCrear extends StackPane {
         return true;
     }
 
-    // ================== GUARDAR ==================
     private void guardarPasajero() {
         if (formularioCompleto()) {
             PasajeroDto dto = new PasajeroDto();
@@ -344,7 +347,7 @@ public class VistaPasajeroCrear extends StackPane {
             dto.setDocumentoPasajero(txtDocumentoPasajero.getText());
             dto.setTipoDocumentoPasajero(cmbTipoDocumento.getValue());
             dto.setFechaNacimientoPasajero(dpFechaNacimiento.getValue());
-            dto.setEsMayorPasajero(rbMayor.isSelected()); // true = mayor, false = menor
+            dto.setEsMayorPasajero(rbMayor.isSelected());
             dto.setTelefonoPasajero(txtTelefonoPasajero.getText());
             dto.setEmailPasajero(txtEmailPasajero.getText());
             dto.setNombreImagenPublicoPasajero(cajaImagen.getText());
@@ -360,7 +363,6 @@ public class VistaPasajeroCrear extends StackPane {
         }
     }
 
-    // ================== LIMPIAR ==================
     private void limpiarFormulario() {
         txtNombrePasajero.clear();
         txtDocumentoPasajero.clear();
@@ -369,12 +371,6 @@ public class VistaPasajeroCrear extends StackPane {
 
         if (grupoMayor != null) {
             grupoMayor.selectToggle(null);
-        }
-        if (rbMayor != null) {
-            rbMayor.setSelected(false);
-        }
-        if (rbMenor != null) {
-            rbMenor.setSelected(false);
         }
 
         txtTelefonoPasajero.clear();
@@ -390,7 +386,6 @@ public class VistaPasajeroCrear extends StackPane {
         txtNombrePasajero.requestFocus();
     }
 
-    // ================== POSICIÓN BONITA ==================
     private void colocarFrmElegante() {
         Runnable calcular = () -> {
             double alturaMarco = miMarco.getHeight();

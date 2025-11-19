@@ -4,12 +4,8 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -52,11 +48,6 @@ public class VistaPasajeroEditar extends StackPane {
     // Controles
     private TextField txtNombrePasajero;
     private TextField txtDocumentoPasajero;
-    private ComboBox<String> cmbTipoDocumento;
-    private DatePicker dpFechaNacimiento;
-    private RadioButton rbMayor;
-    private RadioButton rbMenor;
-    private ToggleGroup grupoMayor;
     private TextField txtTelefonoPasajero;
     private TextField txtEmailPasajero;
     private TextField txtImagen;
@@ -172,62 +163,7 @@ public class VistaPasajeroEditar extends StackPane {
         txtDocumentoPasajero.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtDocumentoPasajero, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtDocumentoPasajero, 20);
-        // Formulario.soloNumeros(txtDocumentoPasajero); // si lo tienes
         miGrilla.add(txtDocumentoPasajero, segundaColumna, fila);
-
-        // TIPO DOCUMENTO
-        fila++;
-        Label lblTipoDoc = new Label("Tipo documento:");
-        lblTipoDoc.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblTipoDoc, primeraColumna, fila);
-
-        cmbTipoDocumento = new ComboBox<>();
-        cmbTipoDocumento.setPrefHeight(ALTO_CAJA);
-        cmbTipoDocumento.setMaxWidth(Double.MAX_VALUE);
-        cmbTipoDocumento.getItems().addAll("Cédula", "Pasaporte", "Tarjeta de identidad");
-        if (objPasajero.getTipoDocumentoPasajero() != null) {
-            cmbTipoDocumento.getSelectionModel().select(objPasajero.getTipoDocumentoPasajero());
-        }
-        miGrilla.add(cmbTipoDocumento, segundaColumna, fila);
-
-        // FECHA NACIMIENTO
-        fila++;
-        Label lblFechaNac = new Label("Fecha Nacimiento:");
-        lblFechaNac.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblFechaNac, primeraColumna, fila);
-
-        dpFechaNacimiento = new DatePicker();
-        dpFechaNacimiento.setPrefHeight(ALTO_CAJA);
-        dpFechaNacimiento.setMaxWidth(Double.MAX_VALUE);
-        dpFechaNacimiento.setValue(objPasajero.getFechaNacimientoPasajero());
-        miGrilla.add(dpFechaNacimiento, segundaColumna, fila);
-
-        // MAYOR / MENOR (RadioButton)
-        fila++;
-        Label lblMayor = new Label("Mayor de edad:");
-        lblMayor.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblMayor, primeraColumna, fila);
-
-        grupoMayor = new ToggleGroup();
-        rbMayor = new RadioButton("Mayor");
-        rbMenor = new RadioButton("Menor");
-
-        rbMayor.setToggleGroup(grupoMayor);
-        rbMenor.setToggleGroup(grupoMayor);
-
-        rbMayor.setFont(Font.font("Arial", 14));
-        rbMenor.setFont(Font.font("Arial", 14));
-
-        Boolean esMayor = objPasajero.getEsMayorPasajero();
-        if (Boolean.TRUE.equals(esMayor)) {
-            rbMayor.setSelected(true);
-        } else {
-            rbMenor.setSelected(true);
-        }
-
-        HBox boxMayor = new HBox(15, rbMayor, rbMenor);
-        boxMayor.setAlignment(Pos.CENTER_LEFT);
-        miGrilla.add(boxMayor, segundaColumna, fila);
 
         // TELÉFONO
         fila++;
@@ -354,26 +290,6 @@ public class VistaPasajeroEditar extends StackPane {
             return false;
         }
 
-        if (cmbTipoDocumento.getValue() == null) {
-            Mensaje.mostrar(Alert.AlertType.WARNING, ventana,
-                    "Tipo documento no seleccionado", "Debe seleccionar un tipo de documento");
-            cmbTipoDocumento.requestFocus();
-            return false;
-        }
-
-        if (dpFechaNacimiento.getValue() == null) {
-            Mensaje.mostrar(Alert.AlertType.WARNING, ventana,
-                    "Campo vacío", "Debe seleccionar la fecha de nacimiento");
-            dpFechaNacimiento.requestFocus();
-            return false;
-        }
-
-        if (grupoMayor.getSelectedToggle() == null) {
-            Mensaje.mostrar(Alert.AlertType.WARNING, ventana,
-                    "Campo vacío", "Debe seleccionar si es Mayor o Menor");
-            return false;
-        }
-
         if (txtTelefonoPasajero.getText().isBlank()) {
             Mensaje.mostrar(Alert.AlertType.WARNING, ventana,
                     "Campo vacío", "Debe ingresar el teléfono");
@@ -397,9 +313,6 @@ public class VistaPasajeroEditar extends StackPane {
             dtoActualizado.setIdPasajero(objPasajero.getIdPasajero());
             dtoActualizado.setNombrePasajero(txtNombrePasajero.getText());
             dtoActualizado.setDocumentoPasajero(txtDocumentoPasajero.getText());
-            dtoActualizado.setTipoDocumentoPasajero(cmbTipoDocumento.getValue());
-            dtoActualizado.setFechaNacimientoPasajero(dpFechaNacimiento.getValue());
-            dtoActualizado.setEsMayorPasajero(rbMayor.isSelected());
             dtoActualizado.setTelefonoPasajero(txtTelefonoPasajero.getText());
             dtoActualizado.setEmailPasajero(txtEmailPasajero.getText());
             dtoActualizado.setNombreImagenPublicoPasajero(txtImagen.getText());

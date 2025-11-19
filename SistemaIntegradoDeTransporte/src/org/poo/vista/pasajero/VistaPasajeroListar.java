@@ -171,11 +171,8 @@ public class VistaPasajeroListar extends StackPane {
         miTabla.getColumns().add(crearColumnaCodigo());
         miTabla.getColumns().add(crearColumnaNombre());
         miTabla.getColumns().add(crearColumnaDocumento());
-        miTabla.getColumns().add(crearColumnaTipoDocumento());
-        miTabla.getColumns().add(crearColumnaMayor());
         miTabla.getColumns().add(crearColumnaTelefono());
         miTabla.getColumns().add(crearColumnaEmail());
-        miTabla.getColumns().add(crearColumnaImagenPublica());
     }
 
     private void crearTabla() {
