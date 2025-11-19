@@ -139,15 +139,19 @@ public class VistaViajeCrear extends StackPane {
         BusDto busDefault = new BusDto();
         busDefault.setIdBus(0);
         busDefault.setPlacaBus("Seleccione un bus");
+        busDefault.setModeloBus(""); // ✅ IMPORTANTE: evita el null
         
         cmbBusViaje.getItems().add(busDefault);
         cmbBusViaje.getItems().addAll(buses);
         cmbBusViaje.getSelectionModel().select(0);
         
+        // ✅ StringConverter personalizado para controlar el texto
         cmbBusViaje.setConverter(new StringConverter<BusDto>() {
             @Override
             public String toString(BusDto bus) {
-                return bus != null ? bus.toString() : "";
+                if (bus == null) return "";
+                if (bus.getIdBus() == 0) return "Seleccione un bus";
+                return bus.getPlacaBus() + " - " + bus.getModeloBus();
             }
             @Override
             public BusDto fromString(String string) {
@@ -169,16 +173,20 @@ public class VistaViajeCrear extends StackPane {
         List<RutaDto> rutas = RutaControladorListar.obtenerRutasActivas();
         RutaDto rutaDefault = new RutaDto();
         rutaDefault.setIdRuta(0);
-        rutaDefault.setNombreRuta("Seleccione una ruta");
+        rutaDefault.setCiudadOrigenRuta("Seleccione una ruta"); // ✅ Evita null
+        rutaDefault.setCiudadDestinoRuta(""); // ✅ Evita null
         
         cmbRutaViaje.getItems().add(rutaDefault);
         cmbRutaViaje.getItems().addAll(rutas);
         cmbRutaViaje.getSelectionModel().select(0);
         
+        // ✅ StringConverter personalizado
         cmbRutaViaje.setConverter(new StringConverter<RutaDto>() {
             @Override
             public String toString(RutaDto ruta) {
-                return ruta != null ? ruta.toString() : "";
+                if (ruta == null) return "";
+                if (ruta.getIdRuta() == 0) return "Seleccione una ruta";
+                return ruta.getCiudadOrigenRuta() + " → " + ruta.getCiudadDestinoRuta();
             }
             @Override
             public RutaDto fromString(String string) {
@@ -201,17 +209,19 @@ public class VistaViajeCrear extends StackPane {
         ConductorDto conductorDefault = new ConductorDto();
         conductorDefault.setIdConductor(0);
         conductorDefault.setNombreConductor("Seleccione un conductor");
+        conductorDefault.setCedulaConductor(""); // ✅ Evita null
         
         cmbConductorViaje.getItems().add(conductorDefault);
         cmbConductorViaje.getItems().addAll(conductores);
         cmbConductorViaje.getSelectionModel().select(0);
         
+        // ✅ StringConverter personalizado
         cmbConductorViaje.setConverter(new StringConverter<ConductorDto>() {
             @Override
             public String toString(ConductorDto conductor) {
                 if (conductor == null) return "";
-                if (conductor.getIdConductor() == 0) return conductor.getNombreConductor();
-                return conductor.getNombreConductor() != null ? conductor.getNombreConductor() : "Conductor sin nombre";
+                if (conductor.getIdConductor() == 0) return "Seleccione un conductor";
+                return conductor.getNombreConductor() + " - " + conductor.getCedulaConductor();
             }
             @Override
             public ConductorDto fromString(String string) {
