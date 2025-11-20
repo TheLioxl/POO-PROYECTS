@@ -99,7 +99,7 @@ public class VistaDestinoAdministrar extends StackPane {
     private TableColumn<DestinoDto, String> crearColumnaNombre() {
         TableColumn<DestinoDto, String> columna = new TableColumn<>("Nombre Destino");
         columna.setCellValueFactory(new PropertyValueFactory<>("nombreDestino"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15)); // CAMBIAR de 0.20
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
         columna.setStyle(ESTILO_IZQUIERDA);
         return columna;
     }
@@ -107,7 +107,7 @@ public class VistaDestinoAdministrar extends StackPane {
     private TableColumn<DestinoDto, String> crearColumnaDepartamento() {
         TableColumn<DestinoDto, String> columna = new TableColumn<>("Departamento");
         columna.setCellValueFactory(new PropertyValueFactory<>("departamentoDestino"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12)); // CAMBIAR de 0.15
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
     }
@@ -115,7 +115,7 @@ public class VistaDestinoAdministrar extends StackPane {
     private TableColumn<DestinoDto, String> crearColumnaDescripcion() {
         TableColumn<DestinoDto, String> columna = new TableColumn<>("Descripción");
         columna.setCellValueFactory(new PropertyValueFactory<>("descripcionDestino"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15)); // CAMBIAR de 0.25
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
         columna.setStyle(ESTILO_IZQUIERDA);
         return columna;
     }
@@ -202,7 +202,7 @@ public class VistaDestinoAdministrar extends StackPane {
                 }
             }
         });
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12)); // CAMBIAR de 0.22
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
     }
@@ -218,13 +218,12 @@ public class VistaDestinoAdministrar extends StackPane {
         miTabla.getColumns().add(crearColumnaEstado());
         miTabla.getColumns().add(crearColumnaImagen());
     }
-    }
 
     private void crearTabla() {
         configurarColumnas();
 
         List<DestinoDto> arrDestinos = DestinoControladorListar.obtenerDestinos();
-        ObservableList<DestinoDto> datosTabla = FXCollections.observableArrayList(arrDestinos);
+        datosTabla.setAll(arrDestinos);
 
         miTabla.setItems(datosTabla);
         miTabla.setPlaceholder(new Text("No hay destinos registrados"));

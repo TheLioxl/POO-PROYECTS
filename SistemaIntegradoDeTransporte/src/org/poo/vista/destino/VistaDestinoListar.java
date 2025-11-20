@@ -1,6 +1,7 @@
 package org.poo.vista.destino;
 
 import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -73,25 +74,81 @@ public class VistaDestinoListar extends StackPane {
         cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
     }
 
-    private void configurarColumnas() {
-        TableColumn<DestinoDto, Integer> colCodigo = new TableColumn<>("Código");
-        colCodigo.setCellValueFactory(new PropertyValueFactory<>("idDestino"));
-        colCodigo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
-        colCodigo.setStyle(ESTILO_CENTRAR);
+    private TableColumn<DestinoDto, Integer> crearColumnaCodigo() {
+        TableColumn<DestinoDto, Integer> columna = new TableColumn<>("Código");
+        columna.setCellValueFactory(new PropertyValueFactory<>("idDestino"));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        columna.setStyle(ESTILO_CENTRAR);
+        return columna;
+    }
 
-        TableColumn<DestinoDto, String> colNombre = new TableColumn<>("Nombre Destino");
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreDestino"));
-        colNombre.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.25));
-        colNombre.setStyle(ESTILO_IZQUIERDA);
+    private TableColumn<DestinoDto, String> crearColumnaNombre() {
+        TableColumn<DestinoDto, String> columna = new TableColumn<>("Nombre Destino");
+        columna.setCellValueFactory(new PropertyValueFactory<>("nombreDestino"));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
+        columna.setStyle(ESTILO_IZQUIERDA);
+        return columna;
+    }
 
-        TableColumn<DestinoDto, String> colDescripcion = new TableColumn<>("Descripción");
-        colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcionDestino"));
-        colDescripcion.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.35));
-        colDescripcion.setStyle(ESTILO_IZQUIERDA);
+    private TableColumn<DestinoDto, String> crearColumnaDepartamento() {
+        TableColumn<DestinoDto, String> columna = new TableColumn<>("Departamento");
+        columna.setCellValueFactory(new PropertyValueFactory<>("departamentoDestino"));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
+        columna.setStyle(ESTILO_CENTRAR);
+        return columna;
+    }
 
-        TableColumn<DestinoDto, String> colImagen = new TableColumn<>("Imagen");
-        colImagen.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPrivadoDestino"));
-        colImagen.setCellFactory(column -> new TableCell<DestinoDto, String>() {
+    private TableColumn<DestinoDto, String> crearColumnaDescripcion() {
+        TableColumn<DestinoDto, String> columna = new TableColumn<>("Descripción");
+        columna.setCellValueFactory(new PropertyValueFactory<>("descripcionDestino"));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
+        columna.setStyle(ESTILO_IZQUIERDA);
+        return columna;
+    }
+
+    private TableColumn<DestinoDto, Integer> crearColumnaAltitud() {
+        TableColumn<DestinoDto, Integer> columna = new TableColumn<>("Altitud (msnm)");
+        columna.setCellValueFactory(new PropertyValueFactory<>("altitudMetros"));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        columna.setStyle(ESTILO_CENTRAR);
+        return columna;
+    }
+
+    private TableColumn<DestinoDto, Double> crearColumnaTemperatura() {
+        TableColumn<DestinoDto, Double> columna = new TableColumn<>("Temp. °C");
+        columna.setCellValueFactory(new PropertyValueFactory<>("temperaturaPromedio"));
+        columna.setCellFactory(col -> new TableCell<DestinoDto, Double>() {
+            @Override
+            protected void updateItem(Double temp, boolean empty) {
+                super.updateItem(temp, empty);
+                if (empty || temp == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("%.1f°C", temp));
+                }
+            }
+        });
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        columna.setStyle(ESTILO_CENTRAR);
+        return columna;
+    }
+
+    private TableColumn<DestinoDto, String> crearColumnaTipo() {
+        TableColumn<DestinoDto, String> columna = new TableColumn<>("Tipo");
+        columna.setCellValueFactory(obj -> {
+            Boolean esPlayero = obj.getValue().getEsPlayero();
+            String tipo = (esPlayero != null && esPlayero) ? "Playero" : "Montañoso";
+            return new SimpleStringProperty(tipo);
+        });
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        columna.setStyle(ESTILO_CENTRAR);
+        return columna;
+    }
+
+    private TableColumn<DestinoDto, String> crearColumnaImagen() {
+        TableColumn<DestinoDto, String> columna = new TableColumn<>("Imagen");
+        columna.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPrivadoDestino"));
+        columna.setCellFactory(column -> new TableCell<DestinoDto, String>() {
             @Override
             protected void updateItem(String nombreImagen, boolean bandera) {
                 super.updateItem(nombreImagen, bandera);
@@ -106,13 +163,20 @@ public class VistaDestinoListar extends StackPane {
                 }
             }
         });
-        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.32));
-        colImagen.setStyle(ESTILO_CENTRAR);
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
+        columna.setStyle(ESTILO_CENTRAR);
+        return columna;
+    }
 
-        miTabla.getColumns().add(colCodigo);
-        miTabla.getColumns().add(colNombre);
-        miTabla.getColumns().add(colDescripcion);
-        miTabla.getColumns().add(colImagen);
+    private void configurarColumnas() {
+        miTabla.getColumns().add(crearColumnaCodigo());
+        miTabla.getColumns().add(crearColumnaNombre());
+        miTabla.getColumns().add(crearColumnaDepartamento());
+        miTabla.getColumns().add(crearColumnaDescripcion());
+        miTabla.getColumns().add(crearColumnaAltitud());
+        miTabla.getColumns().add(crearColumnaTemperatura());
+        miTabla.getColumns().add(crearColumnaTipo());
+        miTabla.getColumns().add(crearColumnaImagen());
     }
 
     private void crearTabla() {
