@@ -23,13 +23,17 @@ import org.poo.recurso.utilidad.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 
 public class VistaBusEditar extends StackPane {
 
     private static final int H_GAP = 10;
-    private static final int V_GAP = 15;
-    private static final int ALTO_CAJA = 35;
+    private static final int V_GAP = 20;
+    private static final int ALTO_FILA = 31;
+    private static final int ALTO_CAJA = 32;
     private static final int TAMANIO_FUENTE = 18;
+    private static final double AJUSTE_TITULO = 0.1;
 
     private final GridPane miGrilla;
     private final StackPane miFormulario;
@@ -78,7 +82,7 @@ public class VistaBusEditar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_BUS,
+                Configuracion.DEGRADE_ARREGLO_RUTA,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -87,6 +91,7 @@ public class VistaBusEditar extends StackPane {
         configurarGrilla(ancho, alto);
         crearTitulo();
         crearFormulario();
+        colocarFrmElegante();
         getChildren().add(miGrilla);
     }
 
@@ -95,13 +100,12 @@ public class VistaBusEditar extends StackPane {
     }
 
     private void configurarGrilla(double ancho, double alto) {
-        double anchoGrilla = ancho * Configuracion.GRILLA_ANCHO_PORCENTAJE;
+        double miAnchoGrilla = ancho * Configuracion.GRILLA_ANCHO_PORCENTAJE;
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setAlignment(Pos.TOP_CENTER);
-        miGrilla.setPrefSize(anchoGrilla, alto);
-        miGrilla.setMinSize(anchoGrilla, alto);
+        miGrilla.setPrefSize(miAnchoGrilla, alto);
+        miGrilla.setMinSize(miAnchoGrilla, alto);
         miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         ColumnConstraints col0 = new ColumnConstraints();
@@ -114,56 +118,51 @@ public class VistaBusEditar extends StackPane {
         
         col1.setHgrow(Priority.ALWAYS);
         miGrilla.getColumnConstraints().addAll(col0, col1, col2);
+
+        for (int i = 0; i < 12; i++) {
+            RowConstraints fila = new RowConstraints();
+            fila.setMinHeight(ALTO_FILA);
+            fila.setMaxHeight(ALTO_FILA);
+            miGrilla.getRowConstraints().add(fila);
+        }
     }
 
     private void crearTitulo() {
-        int columna = 0, fila = 0, colSpan = 3, rowSpan = 1;
-
-        Region espacioSuperior = new Region();
-        espacioSuperior.prefHeightProperty().bind(miEscenario.heightProperty().multiply(0.03));
-        miGrilla.add(espacioSuperior, columna, fila, colSpan, rowSpan);
-
-        fila = 1;
-        Text titulo = new Text("Formulario Actualización de Bus");
-        titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 26));
-        GridPane.setHalignment(titulo, HPos.CENTER);
-        miGrilla.add(titulo, columna, fila, colSpan, rowSpan);
+        Text miTitulo = new Text("FORMULARIO - EDITAR BUS");
+        miTitulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        miTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
+        GridPane.setHalignment(miTitulo, HPos.CENTER);
+        GridPane.setMargin(miTitulo, new Insets(30, 0, 0, 0));
+        miGrilla.add(miTitulo, 0, 0, 3, 2);//nombre, columna, fila, union de filas 
     }
 
     private void crearFormulario() {
-        int fila = 2;
-        int primeraColumna = 0;
-        int segundaColumna = 1;
 
-        fila++;
         Label lblPlaca = new Label("Placa del Bus:");
-        lblPlaca.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblPlaca, primeraColumna, fila);
+        lblPlaca.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblPlaca, 0, 2);
 
         txtPlacaBus = new TextField();
         txtPlacaBus.setText(objBus.getPlacaBus());
         txtPlacaBus.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtPlacaBus, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtPlacaBus, 10);
-        miGrilla.add(txtPlacaBus, segundaColumna, fila);
+        miGrilla.add(txtPlacaBus, 1, 2);
 
-        fila++;
         Label lblModelo = new Label("Modelo:");
-        lblModelo.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblModelo, primeraColumna, fila);
+        lblModelo.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblModelo, 0, 3);
 
         txtModeloBus = new TextField();
         txtModeloBus.setText(objBus.getModeloBus());
         txtModeloBus.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtModeloBus, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtModeloBus, 50);
-        miGrilla.add(txtModeloBus, segundaColumna, fila);
+        miGrilla.add(txtModeloBus, 1, 3);
 
-        fila++;
         Label lblCapacidad = new Label("Capacidad:");
-        lblCapacidad.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblCapacidad, primeraColumna, fila);
+        lblCapacidad.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblCapacidad, 0, 4);
 
         spinnerCapacidad = new Spinner<>();
         SpinnerValueFactory<Integer> valueFactory = 
@@ -173,12 +172,11 @@ public class VistaBusEditar extends StackPane {
         spinnerCapacidad.setPrefHeight(ALTO_CAJA);
         spinnerCapacidad.setMaxWidth(Double.MAX_VALUE);
         spinnerCapacidad.setEditable(true);
-        miGrilla.add(spinnerCapacidad, segundaColumna, fila);
+        miGrilla.add(spinnerCapacidad, 1, 4);
 
-        fila++;
         Label lblEmpresa = new Label("Empresa:");
-        lblEmpresa.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblEmpresa, primeraColumna, fila);
+        lblEmpresa.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblEmpresa, 0, 5);
 
         cmbEmpresaBus = new ComboBox<>();
         cmbEmpresaBus.setMaxWidth(Double.MAX_VALUE);
@@ -214,12 +212,11 @@ public class VistaBusEditar extends StackPane {
             }
         });
         
-        miGrilla.add(cmbEmpresaBus, segundaColumna, fila);
+        miGrilla.add(cmbEmpresaBus, 1, 5);
 
-        fila++;
         Label lblTipo = new Label("Tipo de Bus:");
-        lblTipo.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblTipo, primeraColumna, fila);
+        lblTipo.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblTipo, 0, 6);
 
         cmbTipoBus = new ComboBox<>();
         cmbTipoBus.setMaxWidth(Double.MAX_VALUE);
@@ -233,52 +230,48 @@ public class VistaBusEditar extends StackPane {
             default -> 0;
         };
         cmbTipoBus.getSelectionModel().select(indiceTipo);
-        miGrilla.add(cmbTipoBus, segundaColumna, fila);
+        miGrilla.add(cmbTipoBus, 1, 6);
 
-        fila++;
         Label lblFechaAdquisicion = new Label("Fecha Adquisición:");
-        lblFechaAdquisicion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblFechaAdquisicion, primeraColumna, fila);
+        lblFechaAdquisicion.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblFechaAdquisicion, 0, 7);
 
         dateFechaAdquisicion = new DatePicker();
         dateFechaAdquisicion.setMaxWidth(Double.MAX_VALUE);
         dateFechaAdquisicion.setPrefHeight(ALTO_CAJA);
         dateFechaAdquisicion.setValue(LocalDate.now().minusYears(5));
         Formulario.deshabilitarFechasFuturas(dateFechaAdquisicion);
-        miGrilla.add(dateFechaAdquisicion, segundaColumna, fila);
+        miGrilla.add(dateFechaAdquisicion, 1, 7);
 
-        fila++;
         Label lblServicios = new Label("Servicios del Bus:");
-        lblServicios.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblServicios, primeraColumna, fila);
+        lblServicios.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblServicios, 0, 8);
 
         chkAireAcondicionado = new CheckBox("Aire Acondicionado");
         chkWifi = new CheckBox("WiFi");
         chkBano = new CheckBox("Baño");
         
-        chkAireAcondicionado.setFont(Font.font("Arial", 14));
-        chkWifi.setFont(Font.font("Arial", 14));
-        chkBano.setFont(Font.font("Arial", 14));
+        chkAireAcondicionado.setFont(Font.font("Times new roman", 12));
+        chkWifi.setFont(Font.font("Times new roman", 12));
+        chkBano.setFont(Font.font("Times new roman", 12));
 
         VBox vboxServicios = new VBox(5);
         vboxServicios.getChildren().addAll(chkAireAcondicionado, chkWifi, chkBano);
-        miGrilla.add(vboxServicios, segundaColumna, fila);
+        miGrilla.add(vboxServicios, 1, 8);
 
-        fila++;
         Label lblDescripcion = new Label("Descripción:");
-        lblDescripcion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblDescripcion, primeraColumna, fila);
+        lblDescripcion.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblDescripcion, 0, 9);
 
         txtDescripcion = new TextArea();
         txtDescripcion.setPrefRowCount(3);
         txtDescripcion.setWrapText(true);
         txtDescripcion.setMaxWidth(Double.MAX_VALUE);
-        miGrilla.add(txtDescripcion, segundaColumna, fila);
+        miGrilla.add(txtDescripcion, 1, 9);
 
-        fila++;
         Label lblEstado = new Label("Estado:");
-        lblEstado.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblEstado, primeraColumna, fila);
+        lblEstado.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblEstado, 0, 10);
 
         cmbEstadoBus = new ComboBox<>();
         cmbEstadoBus.setMaxWidth(Double.MAX_VALUE);
@@ -290,12 +283,11 @@ public class VistaBusEditar extends StackPane {
         } else {
             cmbEstadoBus.getSelectionModel().select(2);
         }
-        miGrilla.add(cmbEstadoBus, segundaColumna, fila);
+        miGrilla.add(cmbEstadoBus, 1, 10);
 
-        fila++;
         Label lblImagen = new Label("Imagen:");
-        lblImagen.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblImagen, primeraColumna, fila);
+        lblImagen.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblImagen, 0, 11);
 
         txtImagen = new TextField();
         txtImagen.setText(objBus.getNombreImagenPublicoBus());
@@ -308,55 +300,44 @@ public class VistaBusEditar extends StackPane {
 
         Button btnSeleccionarImagen = new Button("+");
         btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
-        btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        
-        final int filaImagenPreview = fila + 1;
         
         btnSeleccionarImagen.setOnAction(e -> {
             rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
             
-            if (rutaImagenSeleccionada.isEmpty()) {
+            if (!rutaImagenSeleccionada.isEmpty()) {
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
-                imgPorDefecto = Icono.obtenerFotosExternas(objBus.getNombreImagenPrivadoBus(), 150);
-                GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-                miGrilla.add(imgPorDefecto, 2, 1, 1, 11);
-            } else {
-                miGrilla.getChildren().remove(imgPorDefecto);
-                miGrilla.getChildren().remove(imgPrevisualizar);
-                imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
+                
+                imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 100);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, 2, 1, 1, 11);
+                miGrilla.add(imgPrevisualizar, 2, 5);
             }
         });
 
         HBox.setHgrow(txtImagen, Priority.ALWAYS);
-        HBox panelImagen = new HBox(2, txtImagen, btnSeleccionarImagen);
-        panelImagen.setAlignment(Pos.BOTTOM_RIGHT);
-        miGrilla.add(panelImagen, segundaColumna, fila);
+        HBox panelImagen = new HBox(5, txtImagen, btnSeleccionarImagen);
+        miGrilla.add(panelImagen, 1, 11);
 
-        // Imagen en columna derecha
         imgPorDefecto = Icono.obtenerFotosExternas(
-                objBus.getNombreImagenPrivadoBus(), 150);
+                objBus.getNombreImagenPrivadoBus(), 100);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        GridPane.setValignment(imgPorDefecto, javafx.geometry.VPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 11);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
-        fila++;
-        Button btnActualizar = new Button("Actualizar Bus");
+        Button btnActualizar = new Button("ACTUALIZAR");
         btnActualizar.setPrefHeight(ALTO_CAJA);
         btnActualizar.setMaxWidth(Double.MAX_VALUE);
         btnActualizar.setTextFill(Color.web("#FFFFFF"));
-        btnActualizar.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        btnActualizar.setFont(Font.font("Rockwell", FontWeight.BOLD, 14));
         btnActualizar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + ";");
+        btnActualizar.setCursor(Cursor.HAND);
         btnActualizar.setOnAction(e -> actualizarBus());
-        miGrilla.add(btnActualizar, segundaColumna, fila);
+        miGrilla.add(btnActualizar, 1, 12);
 
-        fila++;
-        Button btnRegresar = new Button("Regresar");
+        Button btnRegresar = new Button("VOLVER");
         btnRegresar.setPrefHeight(ALTO_CAJA);
         btnRegresar.setMaxWidth(Double.MAX_VALUE);
-        btnRegresar.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        btnRegresar.setFont(Font.font("Rockwell", FontWeight.BOLD, 14));
+        btnRegresar.setCursor(Cursor.HAND);
         btnRegresar.setOnAction(e -> {
             if (origenCarrusel) {
                 panelCuerpo = BusControladorVentana.carrusel(
@@ -370,7 +351,7 @@ public class VistaBusEditar extends StackPane {
             panelPrincipal.setCenter(null);
             panelPrincipal.setCenter(panelCuerpo);
         });
-        miGrilla.add(btnRegresar, segundaColumna, fila);
+        miGrilla.add(btnRegresar, 1, 13);
     }
 
     private Boolean formularioCompleto() {
@@ -430,5 +411,17 @@ public class VistaBusEditar extends StackPane {
                         "Error", "No se pudo actualizar el bus");
             }
         }
+    }
+
+    private void colocarFrmElegante() {
+        Runnable calcular = () -> {
+            double alturaMarco = miMarco.getHeight();
+            if (alturaMarco > 0) {
+                double desplazamiento = alturaMarco * AJUSTE_TITULO;
+                miGrilla.setTranslateY(-alturaMarco / 8 + desplazamiento);
+            }
+        };
+        calcular.run();
+        miMarco.heightProperty().addListener((obs, antes, despues) -> calcular.run());
     }
 }

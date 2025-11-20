@@ -262,7 +262,7 @@ public class VistaTerminalAdministrar extends StackPane {
 
                             datosTabla.setAll(TerminalControladorListar.obtenerTerminales());
                             miTabla.refresh();
-  
+
                             Mensaje.mostrar(Alert.AlertType.INFORMATION,
                                     miEscenario, "Éxito", "Terminal eliminada correctamente");
                         } else {

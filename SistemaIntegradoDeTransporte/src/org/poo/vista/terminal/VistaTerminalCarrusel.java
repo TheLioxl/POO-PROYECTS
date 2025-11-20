@@ -104,13 +104,13 @@ public class VistaTerminalCarrusel extends BorderPane {
         configurarOrganizadorVertical();
 
         crearTitulo();
-        construirPanelIzquierdo(0.08);
-        construirPanelDerecho(0.08);
+        construirPanelIzquierdo(0.10); // REDUCIDO de 0.14 a 0.08
+        construirPanelDerecho(0.10);   // REDUCIDO de 0.14 a 0.08
         construirPanelCentro();
     }
 
     private void configurarOrganizadorVertical() {
-        organizadorVertical.setSpacing(15);
+        organizadorVertical.setSpacing(10);
         organizadorVertical.setAlignment(Pos.TOP_CENTER);
         organizadorVertical.prefWidthProperty().bind(miEscenario.widthProperty());
         organizadorVertical.prefHeightProperty().bind(miEscenario.heightProperty());
@@ -122,12 +122,12 @@ public class VistaTerminalCarrusel extends BorderPane {
         organizadorVertical.getChildren().add(0, bloqueSeparador);
 
         terminalTitulo = new SimpleStringProperty(
-                "Detalle de la Terminal (" + (indiceActual + 1) + " / " + totalTerminales + ")");
+                "DETALLES DE LA TERMINAL: (" + (indiceActual + 1) + " / " + totalTerminales + ")");
 
         Label lblTitulo = new Label();
         lblTitulo.textProperty().bind(terminalTitulo);
         lblTitulo.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
-        lblTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 26));
+        lblTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 24));
         organizadorVertical.getChildren().add(lblTitulo);
     }
 
@@ -170,8 +170,7 @@ public class VistaTerminalCarrusel extends BorderPane {
     private void construirPanelCentro() {
         StackPane centerPane = new StackPane();
 
-        // Marco
-        Rectangle miMarco = Marco.crear(miEscenario, 0.70, 0.80,
+        Rectangle miMarco = Marco.crear(miEscenario, 0.75, 0.65, // AJUSTADO para mejor visualización
                 Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE);
         centerPane.getChildren().addAll(miMarco, organizadorVertical);
@@ -376,7 +375,7 @@ public class VistaTerminalCarrusel extends BorderPane {
     private void actualizarContenido() {
         objCargado = TerminalControladorUna.obtenerTerminal(indiceActual);
 
-        terminalTitulo.set("Detalle de la terminal (" + (indiceActual + 1) + " / " + totalTerminales + ")");
+        terminalTitulo.set("DETALLES DE LA TERMINAL: (" + (indiceActual + 1) + " / " + totalTerminales + ")");
         terminalNombre.set(objCargado.getNombreTerminal());
         terminalCiudad.set(objCargado.getCiudadTerminal());
         terminalDireccion.set(objCargado.getDireccionTerminal());

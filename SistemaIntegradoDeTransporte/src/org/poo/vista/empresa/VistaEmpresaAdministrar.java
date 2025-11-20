@@ -46,16 +46,16 @@ public class VistaEmpresaAdministrar extends StackPane {
     public VistaEmpresaAdministrar(Stage ventanaPadre, BorderPane princ, Pane pane,
             double ancho, double alto) {
         setAlignment(Pos.CENTER);
-        
+
         miEscenario = ventanaPadre;
         panelPrincipal = princ;
         panelCuerpo = pane;
-        
+
         marco = Marco.crear(
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_EMPRESA,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -81,33 +81,34 @@ public class VistaEmpresaAdministrar extends StackPane {
                 miEscenario.heightProperty().multiply(0.05));
 
         int cant = EmpresaControladorListar.obtenerCantidadEmpresas();
-        titulo = new Text("Administrar Empresas (" + cant + ")");
+        Text titulo = new Text("ADMINISTRAR EMPRESAS (" + cant + ")");
         titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
         cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
     }
 
     private void crearTabla() {
+
         TableColumn<EmpresaDto, Integer> colCodigo = new TableColumn<>("Código");
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("idEmpresa"));
-        colCodigo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        colCodigo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
         colCodigo.setStyle(ESTILO_CENTRAR);
 
-        TableColumn<EmpresaDto, String> colNombre = new TableColumn<>("Nombre");
+        TableColumn<EmpresaDto, String> colNombre = new TableColumn<>("Nombre Empresa");
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreEmpresa"));
         colNombre.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colNombre.setStyle(ESTILO_IZQUIERDA);
 
         TableColumn<EmpresaDto, String> colNit = new TableColumn<>("NIT");
         colNit.setCellValueFactory(new PropertyValueFactory<>("nitEmpresa"));
-        colNit.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
+        colNit.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colNit.setStyle(ESTILO_CENTRAR);
 
         TableColumn<EmpresaDto, String> colTerminal = new TableColumn<>("Terminal");
-        colTerminal.setCellValueFactory(obj -> 
-            new SimpleStringProperty(obj.getValue().getTerminalEmpresa().getNombreTerminal()));
-        colTerminal.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
+        colTerminal.setCellValueFactory(obj
+                -> new SimpleStringProperty(obj.getValue().getTerminalEmpresa().getNombreTerminal()));
+        colTerminal.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colTerminal.setStyle(ESTILO_IZQUIERDA);
 
         TableColumn<EmpresaDto, String> colEstado = new TableColumn<>("Estado");
@@ -128,11 +129,11 @@ public class VistaEmpresaAdministrar extends StackPane {
                 }
             }
         });
-        colEstado.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        colEstado.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
 
         TableColumn<EmpresaDto, Short> colBuses = new TableColumn<>("Buses");
         colBuses.setCellValueFactory(new PropertyValueFactory<>("cantidadBusesEmpresa"));
-        colBuses.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        colBuses.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
         colBuses.setStyle(ESTILO_CENTRAR);
 
         TableColumn<EmpresaDto, String> colImagen = new TableColumn<>("Logo");
@@ -152,26 +153,30 @@ public class VistaEmpresaAdministrar extends StackPane {
                 }
             }
         });
-        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.17));
+        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colImagen.setStyle(ESTILO_CENTRAR);
 
-        miTabla.getColumns().addAll(List.of(
-                colCodigo, colNombre, colNit, colTerminal, colEstado, colBuses, colImagen
-        ));
+        miTabla.getColumns().add(colCodigo);
+        miTabla.getColumns().add(colNombre);
+        miTabla.getColumns().add(colNit);
+        miTabla.getColumns().add(colTerminal);
+        miTabla.getColumns().add(colEstado);
+        miTabla.getColumns().add(colBuses);
+        miTabla.getColumns().add(colImagen);
 
         List<EmpresaDto> arrEmpresas = EmpresaControladorListar.obtenerEmpresas();
-        datosTabla.setAll(arrEmpresas);
+        ObservableList<EmpresaDto> datosTabla = FXCollections.observableArrayList(arrEmpresas);
 
         miTabla.setItems(datosTabla);
         miTabla.setPlaceholder(new Text("No hay empresas registradas"));
         miTabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.70));
-        miTabla.maxHeightProperty().bind(miEscenario.heightProperty().multiply(0.50));
+        miTabla.maxHeightProperty().bind(miEscenario.heightProperty().multiply(0.60));
 
-        miEscenario.heightProperty().addListener((o, oldVal, newVal) -> 
-                miTabla.setPrefHeight(newVal.doubleValue()));
-        
+        miEscenario.heightProperty().addListener((o, oldVal, newVal)
+                -> miTabla.setPrefHeight(newVal.doubleValue()));
+
         VBox.setVgrow(miTabla, Priority.ALWAYS);
 
         cajaVertical.getChildren().add(miTabla);
@@ -181,19 +186,19 @@ public class VistaEmpresaAdministrar extends StackPane {
     private void losIconosAdmin() {
         int ancho = 40;
         int tamanioIconito = 16;
-        
+
         Button btnEliminar = new Button();
         btnEliminar.setPrefWidth(ancho);
         btnEliminar.setCursor(Cursor.HAND);
         btnEliminar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_BORRAR, tamanioIconito));
-        
+
         btnEliminar.setOnAction((e) -> {
             if (miTabla.getSelectionModel().getSelectedItem() == null) {
                 Mensaje.mostrar(Alert.AlertType.WARNING,
                         miEscenario, "Advertencia", "Debe seleccionar una empresa");
             } else {
                 EmpresaDto objEmpresa = miTabla.getSelectionModel().getSelectedItem();
-                
+
                 if (objEmpresa.getCantidadBusesEmpresa() == 0) {
                     String mensaje = "¿Está seguro de eliminar esta empresa?\n\n"
                             + "Código: " + objEmpresa.getIdEmpresa() + "\n"
@@ -206,12 +211,12 @@ public class VistaEmpresaAdministrar extends StackPane {
                     msg.setHeaderText(null);
                     msg.setContentText(mensaje);
                     msg.initOwner(miEscenario);
-                    
+
                     if (msg.showAndWait().get() == ButtonType.OK) {
                         int posi = miTabla.getSelectionModel().getSelectedIndex();
                         if (EmpresaControladorEliminar.borrar(posi)) {
                             int canti = EmpresaControladorListar.obtenerCantidadEmpresas();
-                            titulo.setText("Administrar Empresas (" + canti + ")");
+                            titulo.setText("ADMINISTRAR EMPRESAS (" + canti + ")");
 
                             datosTabla.setAll(EmpresaControladorListar.obtenerEmpresas());
                             miTabla.refresh();
@@ -227,21 +232,21 @@ public class VistaEmpresaAdministrar extends StackPane {
                     }
                 } else {
                     Mensaje.mostrar(Alert.AlertType.ERROR,
-                            miEscenario, "Error", 
+                            miEscenario, "Error",
                             "No se puede eliminar una empresa con buses asociados");
                 }
             }
         });
-        
+
         Button btnActualizar = new Button();
         btnActualizar.setPrefWidth(ancho);
         btnActualizar.setCursor(Cursor.HAND);
         btnActualizar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_EDITAR, tamanioIconito));
-        
+
         btnActualizar.setOnAction((e) -> {
             if (miTabla.getSelectionModel().getSelectedItem() == null) {
                 Mensaje.mostrar(Alert.AlertType.WARNING,
-                        miEscenario, "Advertencia", 
+                        miEscenario, "Advertencia",
                         "Debe seleccionar una empresa para editar");
             } else {
                 EmpresaDto objEmpresa = miTabla.getSelectionModel().getSelectedItem();
@@ -256,12 +261,12 @@ public class VistaEmpresaAdministrar extends StackPane {
                         objEmpresa,
                         posi,
                         false);
-                        
+
                 panelPrincipal.setCenter(null);
                 panelPrincipal.setCenter(panelCuerpo);
             }
         });
-        
+
         Button btnCancelar = new Button();
         btnCancelar.setPrefWidth(ancho);
         btnCancelar.setCursor(Cursor.HAND);

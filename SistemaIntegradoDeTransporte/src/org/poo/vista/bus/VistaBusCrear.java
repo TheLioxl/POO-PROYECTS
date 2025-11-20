@@ -22,13 +22,17 @@ import org.poo.recurso.utilidad.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 
 public class VistaBusCrear extends StackPane {
 
     private static final int H_GAP = 10;
-    private static final int V_GAP = 12;
-    private static final int ALTO_CAJA = 35;
-    private static final int TAMANIO_FUENTE = 16;
+    private static final int V_GAP = 20;
+    private static final int ALTO_FILA = 33;
+    private static final int ALTO_CAJA = 30;
+    private static final int TAMANIO_FUENTE = 20;
+    private static final double AJUSTE_TITULO = 0.1;
 
     private final GridPane miGrilla;
     private final Rectangle miMarco;
@@ -57,7 +61,7 @@ public class VistaBusCrear extends StackPane {
     // Tipo 6: TextArea - para descripción
     private TextArea txtDescripcion;
     
-    private TextField txtImagen;
+    private TextField cajaImagen;
     private ImageView imgPorDefecto;
     private ImageView imgPrevisualizar;
     private String rutaImagenSeleccionada;
@@ -72,7 +76,7 @@ public class VistaBusCrear extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_BUS,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -81,18 +85,17 @@ public class VistaBusCrear extends StackPane {
         configurarGrilla(ancho, alto);
         crearTitulo();
         crearFormulario();
-        
+        colocarFrmElegante();
         getChildren().add(miGrilla);
     }
 
     private void configurarGrilla(double ancho, double alto) {
-        double anchoGrilla = ancho * Configuracion.GRILLA_ANCHO_PORCENTAJE;
+        double miAnchoGrilla = ancho * Configuracion.GRILLA_ANCHO_PORCENTAJE;
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setAlignment(Pos.TOP_CENTER);
-        miGrilla.setPrefSize(anchoGrilla, alto);
-        miGrilla.setMinSize(anchoGrilla, alto);
+        miGrilla.setPrefSize(miAnchoGrilla, alto);
+        miGrilla.setMinSize(miAnchoGrilla, alto);
         miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         ColumnConstraints col0 = new ColumnConstraints();
@@ -105,60 +108,54 @@ public class VistaBusCrear extends StackPane {
         
         col1.setHgrow(Priority.ALWAYS);
         miGrilla.getColumnConstraints().addAll(col0, col1, col2);
+
+        for (int i = 0; i < 12; i++) {
+            RowConstraints fila = new RowConstraints();
+            fila.setMinHeight(ALTO_FILA);
+            fila.setMaxHeight(ALTO_FILA);
+            miGrilla.getRowConstraints().add(fila);
+        }
     }
 
     private void crearTitulo() {
-        int columna = 0, fila = 0, colSpan = 3, rowSpan = 1;
-
-        Region espacioSuperior = new Region();
-        espacioSuperior.prefHeightProperty().bind(
-                miEscenario.heightProperty().multiply(0.02));
-        miGrilla.add(espacioSuperior, columna, fila, colSpan, rowSpan);
-
-        fila = 1;
-        Text titulo = new Text("Formulario Creación de Bus");
-        titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        GridPane.setHalignment(titulo, HPos.CENTER);
-        miGrilla.add(titulo, columna, fila, colSpan, rowSpan);
+        Text miTitulo = new Text("FORMULARIO - CREAR BUS");
+        miTitulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        miTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
+        GridPane.setHalignment(miTitulo, HPos.CENTER);
+        GridPane.setMargin(miTitulo, new Insets(30, 0, 0, 0));
+        miGrilla.add(miTitulo, 0, 0, 3, 2);//nombre, columna, fila, union de filas 
     }
 
     private void crearFormulario() {
-        int fila = 2;
-        int primeraColumna = 0;
-        int segundaColumna = 1;
 
         // Campo 1: Placa del Bus (TextField)
-        fila++;
         Label lblPlaca = new Label("Placa del Bus:");
-        lblPlaca.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblPlaca, primeraColumna, fila);
+        lblPlaca.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblPlaca, 0, 2);
 
         txtPlacaBus = new TextField();
         txtPlacaBus.setPromptText("Ej: ABC-123");
         txtPlacaBus.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtPlacaBus, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtPlacaBus, 10);
-        miGrilla.add(txtPlacaBus, segundaColumna, fila);
+        miGrilla.add(txtPlacaBus, 1, 2);
 
         // Campo 2: Modelo del Bus (TextField)
-        fila++;
         Label lblModelo = new Label("Modelo:");
-        lblModelo.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblModelo, primeraColumna, fila);
+        lblModelo.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblModelo, 0, 3);
 
         txtModeloBus = new TextField();
         txtModeloBus.setPromptText("Ej: Mercedes-Benz O500");
         txtModeloBus.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtModeloBus, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtModeloBus, 50);
-        miGrilla.add(txtModeloBus, segundaColumna, fila);
+        miGrilla.add(txtModeloBus, 1, 3);
 
         // Campo 3: Capacidad (Spinner)
-        fila++;
         Label lblCapacidad = new Label("Capacidad:");
-        lblCapacidad.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblCapacidad, primeraColumna, fila);
+        lblCapacidad.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblCapacidad, 0, 4);
 
         spinnerCapacidad = new Spinner<>();
         SpinnerValueFactory<Integer> valueFactory = 
@@ -167,13 +164,12 @@ public class VistaBusCrear extends StackPane {
         spinnerCapacidad.setPrefHeight(ALTO_CAJA);
         spinnerCapacidad.setMaxWidth(Double.MAX_VALUE);
         spinnerCapacidad.setEditable(true);
-        miGrilla.add(spinnerCapacidad, segundaColumna, fila);
+        miGrilla.add(spinnerCapacidad, 1, 4);
 
         // Campo 4: Empresa (ComboBox)
-        fila++;
         Label lblEmpresa = new Label("Empresa:");
-        lblEmpresa.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblEmpresa, primeraColumna, fila);
+        lblEmpresa.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblEmpresa, 0, 5);
 
         cmbEmpresaBus = new ComboBox<>();
         cmbEmpresaBus.setMaxWidth(Double.MAX_VALUE);
@@ -200,26 +196,24 @@ public class VistaBusCrear extends StackPane {
             }
         });
         
-        miGrilla.add(cmbEmpresaBus, segundaColumna, fila);
+        miGrilla.add(cmbEmpresaBus, 1, 5);
 
         // Campo 5: Tipo de Bus (ComboBox)
-        fila++;
         Label lblTipo = new Label("Tipo de Bus:");
-        lblTipo.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblTipo, primeraColumna, fila);
+        lblTipo.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblTipo, 0, 6);
 
         cmbTipoBus = new ComboBox<>();
         cmbTipoBus.setMaxWidth(Double.MAX_VALUE);
         cmbTipoBus.setPrefHeight(ALTO_CAJA);
         cmbTipoBus.getItems().addAll("Seleccione tipo", "Normal", "Ejecutivo", "VIP");
         cmbTipoBus.getSelectionModel().select(0);
-        miGrilla.add(cmbTipoBus, segundaColumna, fila);
+        miGrilla.add(cmbTipoBus, 1, 6);
 
         // Campo 6: Fecha de Adquisición (DatePicker)
-        fila++;
         Label lblFechaAdquisicion = new Label("Fecha Adquisición:");
-        lblFechaAdquisicion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblFechaAdquisicion, primeraColumna, fila);
+        lblFechaAdquisicion.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblFechaAdquisicion, 0, 7);
 
         dateFechaAdquisicion = new DatePicker();
         dateFechaAdquisicion.setMaxWidth(Double.MAX_VALUE);
@@ -227,80 +221,74 @@ public class VistaBusCrear extends StackPane {
         dateFechaAdquisicion.setPromptText("Seleccione fecha");
         dateFechaAdquisicion.setValue(LocalDate.now().minusYears(5));
         Formulario.deshabilitarFechasFuturas(dateFechaAdquisicion);
-        miGrilla.add(dateFechaAdquisicion, segundaColumna, fila);
+        miGrilla.add(dateFechaAdquisicion, 1, 7);
 
         // Campo 7: Servicios (CheckBox)
-        fila++;
         Label lblServicios = new Label("Servicios:");
         lblServicios.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblServicios, primeraColumna, fila);
+        miGrilla.add(lblServicios, 0, 8);
 
         chkAireAcondicionado = new CheckBox("Aire Acondicionado");
         chkWifi = new CheckBox("WiFi");
         chkBano = new CheckBox("Baño");
         
-        chkAireAcondicionado.setFont(Font.font("Arial", 13));
-        chkWifi.setFont(Font.font("Arial", 13));
-        chkBano.setFont(Font.font("Arial", 13));
+        chkAireAcondicionado.setFont(Font.font("Times new roman", 13));
+        chkWifi.setFont(Font.font("Times new roman", 13));
+        chkBano.setFont(Font.font("Times new roman", 13));
 
         VBox vboxServicios = new VBox(3);
         vboxServicios.getChildren().addAll(chkAireAcondicionado, chkWifi, chkBano);
-        miGrilla.add(vboxServicios, segundaColumna, fila);
+        miGrilla.add(vboxServicios, 1, 8);
 
         // Campo 8: Descripción (TextArea)
-        fila++;
         Label lblDescripcion = new Label("Descripción:");
-        lblDescripcion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblDescripcion, primeraColumna, fila);
+        lblDescripcion.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblDescripcion, 0, 9);
 
         txtDescripcion = new TextArea();
         txtDescripcion.setPromptText("Breve descripción del bus...");
         txtDescripcion.setPrefRowCount(2);
         txtDescripcion.setWrapText(true);
         txtDescripcion.setMaxWidth(Double.MAX_VALUE);
-        miGrilla.add(txtDescripcion, segundaColumna, fila);
+        miGrilla.add(txtDescripcion, 1, 9);
 
         // Campo 9: Estado (ComboBox)
-        fila++;
         Label lblEstado = new Label("Estado:");
-        lblEstado.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblEstado, primeraColumna, fila);
+        lblEstado.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblEstado, 0, 10);
 
         cmbEstadoBus = new ComboBox<>();
         cmbEstadoBus.setMaxWidth(Double.MAX_VALUE);
         cmbEstadoBus.setPrefHeight(ALTO_CAJA);
         cmbEstadoBus.getItems().addAll("Seleccione estado", "Activo", "Inactivo");
         cmbEstadoBus.getSelectionModel().select(0);
-        miGrilla.add(cmbEstadoBus, segundaColumna, fila);
+        miGrilla.add(cmbEstadoBus, 1, 10);
 
         // Campo 10: Imagen
-        fila++;
         Label lblImagen = new Label("Imagen:");
-        lblImagen.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblImagen, primeraColumna, fila);
+        lblImagen.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblImagen, 0, 11);
 
-        txtImagen = new TextField();
-        txtImagen.setDisable(true);
-        txtImagen.setPrefHeight(ALTO_CAJA);
+        cajaImagen = new TextField();
+        cajaImagen.setDisable(true);
+        cajaImagen.setPrefHeight(ALTO_CAJA);
 
         String[] extensiones = {"*.png", "*.jpg", "*.jpeg"};
-        FileChooser selector = Formulario.selectorImagen(
+        FileChooser objSeleccionar = Formulario.selectorImagen(
                 "Seleccionar imagen", "Imágenes", extensiones);
 
         Button btnSeleccionarImagen = new Button("+");
         btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
-        btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         
-        final int filaImagenPreview = fila + 1;
-        
-        btnSeleccionarImagen.setOnAction(e -> {
-            rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
-            
+        btnSeleccionarImagen.setOnAction((e)->{
+            rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(cajaImagen, objSeleccionar);
             if (rutaImagenSeleccionada.isEmpty()) {
+                //Solo es para crear NO para actualizar
+                //OJOOOOOOOOOOOOO
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 miGrilla.add(imgPorDefecto, 2, 1, 1, 10);
-            } else {
+            }else{
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
@@ -309,27 +297,26 @@ public class VistaBusCrear extends StackPane {
             }
         });
 
-        HBox.setHgrow(txtImagen, Priority.ALWAYS);
-        HBox panelImagen = new HBox(2, txtImagen, btnSeleccionarImagen);
-        panelImagen.setAlignment(Pos.BOTTOM_RIGHT);
-        miGrilla.add(panelImagen, segundaColumna, fila);
+        HBox.setHgrow(cajaImagen, Priority.ALWAYS);
+        HBox panelImagen = new HBox(5, cajaImagen, btnSeleccionarImagen);
+        miGrilla.add(panelImagen, 1, 11);
 
-        // Previsualización de imagen en columna derecha
+        // Previsualización de imagen
         imgPorDefecto = Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        GridPane.setValignment(imgPorDefecto, javafx.geometry.VPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 11);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
         // Botón Crear
-        fila++;
-        Button btnGrabar = new Button("Crear Bus");
+        Button btnGrabar = new Button("GRABAR BUS");
         btnGrabar.setPrefHeight(ALTO_CAJA);
         btnGrabar.setMaxWidth(Double.MAX_VALUE);
         btnGrabar.setTextFill(Color.web("#FFFFFF"));
-        btnGrabar.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-        btnGrabar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + ";");
+        btnGrabar.setFont(Font.font("Rockwell", FontWeight.BOLD, 14));
+        btnGrabar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + ";" 
+                + "-fx-border-radius: 8; -fx-background-radius: 8;");
+        btnGrabar.setCursor(Cursor.HAND);
         btnGrabar.setOnAction(e -> guardarBus());
-        miGrilla.add(btnGrabar, segundaColumna, fila);
+        miGrilla.add(btnGrabar, 1, 12);
     }
 
     private Boolean formularioCompleto() {
@@ -396,7 +383,7 @@ public class VistaBusCrear extends StackPane {
             dto.setEmpresaBus(cmbEmpresaBus.getValue());
             dto.setTipoBus(cmbTipoBus.getValue());
             dto.setEstadoBus(cmbEstadoBus.getValue().equals("Activo"));
-            dto.setNombreImagenPublicoBus(txtImagen.getText());
+            dto.setNombreImagenPublicoBus(cajaImagen.getText());
 
             if (BusControladorGrabar.crearBus(dto, rutaImagenSeleccionada)) {
                 Mensaje.mostrar(Alert.AlertType.INFORMATION, this.getScene().getWindow(),
@@ -421,13 +408,25 @@ public class VistaBusCrear extends StackPane {
         chkBano.setSelected(false);
         txtDescripcion.clear();
         cmbEstadoBus.getSelectionModel().select(0);
-        txtImagen.clear();
+        cajaImagen.clear();
         rutaImagenSeleccionada = "";
 
         miGrilla.getChildren().remove(imgPrevisualizar);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        miGrilla.add(imgPorDefecto, 1, 11);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
         txtPlacaBus.requestFocus();
+    }
+
+    private void colocarFrmElegante() {
+        Runnable calcular = () -> {
+            double alturaMarco = miMarco.getHeight();
+            if (alturaMarco > 0) {
+                double desplazamiento = alturaMarco * AJUSTE_TITULO;
+                miGrilla.setTranslateY(-alturaMarco / 8 + desplazamiento);
+            }
+        };
+        calcular.run();
+        miMarco.heightProperty().addListener((obs, antes, despues) -> calcular.run());
     }
 }

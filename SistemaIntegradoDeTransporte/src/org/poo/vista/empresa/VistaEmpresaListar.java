@@ -46,7 +46,7 @@ public class VistaEmpresaListar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_EMPRESA,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -73,15 +73,16 @@ public class VistaEmpresaListar extends StackPane {
         int cant = EmpresaControladorListar.obtenerCantidadEmpresas();
         Text titulo = new Text("LISTA DE EMPRESAS (" + cant + ")");
         titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
         cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
     }
 
     private void crearTabla() {
+        
         TableColumn<EmpresaDto, Integer> colCodigo = new TableColumn<>("Código");
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("idEmpresa"));
-        colCodigo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        colCodigo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
         colCodigo.setStyle(ESTILO_CENTRAR);
 
         TableColumn<EmpresaDto, String> colNombre = new TableColumn<>("Nombre Empresa");
@@ -91,13 +92,13 @@ public class VistaEmpresaListar extends StackPane {
 
         TableColumn<EmpresaDto, String> colNit = new TableColumn<>("NIT");
         colNit.setCellValueFactory(new PropertyValueFactory<>("nitEmpresa"));
-        colNit.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
+        colNit.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colNit.setStyle(ESTILO_CENTRAR);
 
         TableColumn<EmpresaDto, String> colTerminal = new TableColumn<>("Terminal");
         colTerminal.setCellValueFactory(obj -> 
             new SimpleStringProperty(obj.getValue().getTerminalEmpresa().getNombreTerminal()));
-        colTerminal.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
+        colTerminal.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colTerminal.setStyle(ESTILO_IZQUIERDA);
 
         TableColumn<EmpresaDto, String> colEstado = new TableColumn<>("Estado");
@@ -118,21 +119,25 @@ public class VistaEmpresaListar extends StackPane {
                 }
             }
         });
-        colEstado.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        colEstado.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
 
         TableColumn<EmpresaDto, Short> colBuses = new TableColumn<>("Buses");
         colBuses.setCellValueFactory(new PropertyValueFactory<>("cantidadBusesEmpresa"));
-        colBuses.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        colBuses.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
         colBuses.setStyle(ESTILO_CENTRAR);
 
-        TableColumn<EmpresaDto, String> colImagen = new TableColumn<>("Logo");
+        TableColumn<EmpresaDto, String> colImagen = new TableColumn<>("Logo/Imagen");
         colImagen.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPublicoEmpresa"));
-        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.17));
+        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colImagen.setStyle(ESTILO_IZQUIERDA);
-
-        miTabla.getColumns().addAll(List.of(
-                colCodigo, colNombre, colNit, colTerminal, colEstado, colBuses, colImagen
-        ));
+        
+        miTabla.getColumns().add(colCodigo);
+        miTabla.getColumns().add(colNombre);
+        miTabla.getColumns().add(colNit);
+        miTabla.getColumns().add(colTerminal);
+        miTabla.getColumns().add(colEstado);
+        miTabla.getColumns().add(colBuses);
+        miTabla.getColumns().add(colImagen);
 
         List<EmpresaDto> arrEmpresas = EmpresaControladorListar.obtenerEmpresas();
         ObservableList<EmpresaDto> datosTabla = FXCollections.observableArrayList(arrEmpresas);
@@ -141,7 +146,7 @@ public class VistaEmpresaListar extends StackPane {
         miTabla.setPlaceholder(new Text("No hay empresas registradas"));
         miTabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
-        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.75));
+        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.70));
         miTabla.maxHeightProperty().bind(miEscenario.heightProperty().multiply(0.60));
 
         miEscenario.heightProperty().addListener((o, oldVal, newVal)

@@ -129,13 +129,17 @@ public class VistaRutaListar extends StackPane {
 
         TableColumn<RutaDto, String> colImagen = new TableColumn<>("Imagen");
         colImagen.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPublicoRuta"));
-        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.17));
+        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colImagen.setStyle(ESTILO_IZQUIERDA);
-
-        miTabla.getColumns().addAll(List.of(
-                colCodigo, colNombre, colOrigen, colDestino, colDistancia,
-                colDuracion, colEstado, colImagen
-        ));
+        
+        miTabla.getColumns().add(colCodigo);
+        miTabla.getColumns().add(colNombre);
+        miTabla.getColumns().add(colOrigen);
+        miTabla.getColumns().add(colDestino);
+        miTabla.getColumns().add(colDistancia);
+        miTabla.getColumns().add(colDuracion);
+        miTabla.getColumns().add(colEstado);
+        miTabla.getColumns().add(colImagen);
 
         List<RutaDto> arrRutas = RutaControladorListar.obtenerRutas();
         datosTabla.setAll(arrRutas);

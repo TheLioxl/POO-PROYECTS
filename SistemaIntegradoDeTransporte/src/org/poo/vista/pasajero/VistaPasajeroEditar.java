@@ -2,6 +2,7 @@ package org.poo.vista.pasajero;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -283,10 +284,10 @@ public class VistaPasajeroEditar extends StackPane {
 
         // PREVISUALIZACIÓN INICIAL (usa nombre PRIVADO)
         fila++;
-        imgPorDefecto = Icono.obtenerFotosExternas(
-                objPasajero.getNombreImagenPrivadoPasajero(), 150);
+        imgPorDefecto = Icono.obtenerIcono("imgNoDisponible.png", 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        miGrilla.add(imgPorDefecto, segundaColumna, fila);
+        GridPane.setValignment(imgPorDefecto, VPos.CENTER);
+        miGrilla.add(imgPorDefecto, 2, 1, 1, 9);
 
         // ESPACIO ADICIONAL
         fila++;

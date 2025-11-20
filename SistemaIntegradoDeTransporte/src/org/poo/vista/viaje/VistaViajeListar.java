@@ -161,33 +161,6 @@ public class VistaViajeListar extends StackPane {
         return columna;
     }
 
-    private TableColumn<ViajeDto, String> crearColumnaViajeDirecto() {
-        TableColumn<ViajeDto, String> columna = new TableColumn<>("Directo");
-        columna.setCellValueFactory(obj -> 
-            new SimpleStringProperty(obj.getValue().getViajeDirecto() ? "Sí" : "No"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
-        columna.setStyle(ESTILO_CENTRAR);
-        return columna;
-    }
-
-    private TableColumn<ViajeDto, String> crearColumnaRefrigerio() {
-        TableColumn<ViajeDto, String> columna = new TableColumn<>("Refrigerio");
-        columna.setCellValueFactory(obj -> 
-            new SimpleStringProperty(obj.getValue().getIncluyeRefrigerio() ? "Sí" : "No"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
-        columna.setStyle(ESTILO_CENTRAR);
-        return columna;
-    }
-
-    private TableColumn<ViajeDto, String> crearColumnaParadas() {
-        TableColumn<ViajeDto, String> columna = new TableColumn<>("Paradas");
-        columna.setCellValueFactory(obj -> 
-            new SimpleStringProperty(obj.getValue().getTieneParadasIntermedias() ? "Sí" : "No"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
-        columna.setStyle(ESTILO_CENTRAR);
-        return columna;
-    }
-
     private TableColumn<ViajeDto, String> crearColumnaEstado() {
         TableColumn<ViajeDto, String> columna = new TableColumn<>("Estado");
         columna.setCellValueFactory(obj -> {
@@ -213,14 +186,6 @@ public class VistaViajeListar extends StackPane {
         return columna;
     }
 
-    private TableColumn<ViajeDto, String> crearColumnaImagen() {
-        TableColumn<ViajeDto, String> columna = new TableColumn<>("Imagen");
-        columna.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPublicoViaje"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
-        columna.setStyle(ESTILO_IZQUIERDA);
-        return columna;
-    }
-
     private void configurarColumnas() {
         miTabla.getColumns().addAll(List.of(
                 crearColumnaCodigo(),
@@ -232,11 +197,7 @@ public class VistaViajeListar extends StackPane {
                 crearColumnaBus(),
                 crearColumnaAsientos(),
                 crearColumnaPrecio(),
-                crearColumnaViajeDirecto(),
-                crearColumnaRefrigerio(),
-                crearColumnaParadas(),
-                crearColumnaEstado(),
-                crearColumnaImagen()
+                crearColumnaEstado()
         ));
     }
 

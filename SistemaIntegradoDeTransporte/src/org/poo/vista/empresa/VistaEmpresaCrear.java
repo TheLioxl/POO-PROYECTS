@@ -65,7 +65,7 @@ public class VistaEmpresaCrear extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_EMPRESA,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -280,7 +280,7 @@ public class VistaEmpresaCrear extends StackPane {
         imgPorDefecto = Icono.obtenerIcono("imgNoDisponible.png", 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         GridPane.setValignment(imgPorDefecto, VPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 11);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
         
         Button btnGrabar = new Button("GRABAR EMPRESA");
@@ -388,7 +388,7 @@ public class VistaEmpresaCrear extends StackPane {
 
         miGrilla.getChildren().remove(imgPrevisualizar);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 11);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
         txtNombreEmpresa.requestFocus();
     }

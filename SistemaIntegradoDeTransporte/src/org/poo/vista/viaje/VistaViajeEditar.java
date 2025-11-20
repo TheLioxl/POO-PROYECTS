@@ -116,19 +116,17 @@ public class VistaViajeEditar extends StackPane {
         miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         ColumnConstraints col0 = new ColumnConstraints();
+        col0.setPercentWidth(35);
+        
         ColumnConstraints col1 = new ColumnConstraints();
-        ColumnConstraints col2 = new ColumnConstraints();
-        
-        col0.setPrefWidth(200);
-        col1.setPrefWidth(200);
-        col2.setPrefWidth(200);
-        
+        col1.setPercentWidth(65);
         col1.setHgrow(Priority.ALWAYS);
-        miGrilla.getColumnConstraints().addAll(col0, col1, col2);
+        
+        miGrilla.getColumnConstraints().addAll(col0, col1);
     }
 
     private void crearTitulo() {
-        int columna = 0, fila = 0, colSpan = 3, rowSpan = 1;
+        int columna = 0, fila = 0, colSpan = 2, rowSpan = 1;
 
         Region espacioSuperior = new Region();
         espacioSuperior.prefHeightProperty().bind(miEscenario.heightProperty().multiply(0.02));
@@ -469,32 +467,26 @@ public class VistaViajeEditar extends StackPane {
         btnSeleccionarImagen.setOnAction(e -> {
             rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
             
-            if (rutaImagenSeleccionada.isEmpty()) {
+            if (!rutaImagenSeleccionada.isEmpty()) {
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
-                imgPorDefecto = Icono.obtenerFotosExternas(objViaje.getNombreImagenPrivadoViaje(), 150);
-                GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-                miGrilla.add(imgPorDefecto, 2, 1, 1, 17);
-            } else {
-                miGrilla.getChildren().remove(imgPorDefecto);
-                miGrilla.getChildren().remove(imgPrevisualizar);
-                imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
+                
+                imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 120);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, 2, 1, 1, 17);
+                miGrilla.add(imgPrevisualizar, segundaColumna, filaImagenPreview);
             }
         });
 
         HBox.setHgrow(txtImagen, Priority.ALWAYS);
-        HBox panelImagen = new HBox(2, txtImagen, btnSeleccionarImagen);
-        panelImagen.setAlignment(Pos.BOTTOM_RIGHT);
+        HBox panelImagen = new HBox(5, txtImagen, btnSeleccionarImagen);
         miGrilla.add(panelImagen, segundaColumna, fila);
 
-        // Imagen en columna derecha
+        // PREVISUALIZACIÓN
+        fila++;
         imgPorDefecto = Icono.obtenerFotosExternas(
-                objViaje.getNombreImagenPrivadoViaje(), 150);
+                objViaje.getNombreImagenPrivadoViaje(), 120);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        GridPane.setValignment(imgPorDefecto, javafx.geometry.VPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 17);
+        miGrilla.add(imgPorDefecto, segundaColumna, fila);
 
         // BOTÓN ACTUALIZAR
         fila++;

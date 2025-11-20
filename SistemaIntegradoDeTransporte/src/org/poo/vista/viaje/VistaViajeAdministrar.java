@@ -177,11 +177,16 @@ public class VistaViajeAdministrar extends StackPane {
         });
         colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
         colImagen.setStyle(ESTILO_CENTRAR);
-
-        miTabla.getColumns().addAll(List.of(
-                colCodigo, colFecha, colRuta, colBus, colHoraSalida, 
-                colPrecio, colAsientos, colEstado, colImagen
-        ));
+        
+        miTabla.getColumns().add(colCodigo);
+        miTabla.getColumns().add(colFecha);
+        miTabla.getColumns().add(colRuta);
+        miTabla.getColumns().add(colBus);
+        miTabla.getColumns().add(colHoraSalida);
+        miTabla.getColumns().add(colPrecio);
+        miTabla.getColumns().add(colAsientos);
+        miTabla.getColumns().add(colEstado);
+        miTabla.getColumns().add(colImagen);
 
         List<ViajeDto> arrViajes = ViajeControladorListar.obtenerViajes();
         datosTabla.setAll(arrViajes);

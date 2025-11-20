@@ -52,6 +52,7 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
         objPasajero.setEsMayorPasajero(dto.getEsMayorPasajero());
         objPasajero.setFechaNacimientoPasajero(dto.getFechaNacimientoPasajero());
         objPasajero.setTelefonoPasajero(dto.getTelefonoPasajero());
+        objPasajero.setEmailPasajero(dto.getEmailPasajero());
         objPasajero.setNombreImagendocumentoPublicoPasajero(dto.getNombreImagenPublicoPasajero());
         objPasajero.setNombreImagendocumentoPrivadoPasajero(GestorImagen.grabarLaImagen(ruta));
 
@@ -66,6 +67,7 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                 + objPasajero.getEsMayorPasajero() + Persistencia.SEPARADOR_COLUMNAS
                 + fechaNac + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getTelefonoPasajero() + Persistencia.SEPARADOR_COLUMNAS
+                + objPasajero.getEmailPasajero() + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getNombreImagendocumentoPublicoPasajero() + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getNombreImagendocumentoPrivadoPasajero();
 
@@ -85,7 +87,7 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
 
         for (String cadena : arregloDatos) {
             try {
-                cadena = cadena.replace("\\@", "@");
+                cadena = cadena.replace("@", "");
                 String[] columnas = cadena.split(Persistencia.SEPARADOR_COLUMNAS);
 
                 int codPasajero = Integer.parseInt(columnas[0].trim());
@@ -96,8 +98,8 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                 String fechaNacTxt = columnas[5].trim();
                 String telefono = columnas[6].trim();
                 String email = columnas[7].trim();
-                String npub = columnas.length > 8 ? columnas[8].trim() : "";
-                String nocu = columnas.length > 9 ? columnas[9].trim() : "";
+                String npub = columnas.length > 7 ? columnas[7].trim() : "";
+                String nocu = columnas.length > 8 ? columnas[8].trim() : "";
 
                 PasajeroDto dto = new PasajeroDto();
                 dto.setIdPasajero(codPasajero);
@@ -106,6 +108,7 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                 dto.setTipoDocumentoPasajero(tipoDocumento);
                 dto.setEsMayorPasajero(esMayor);
                 dto.setTelefonoPasajero(telefono);
+                dto.setEmailPasajero(email);
                 dto.setNombreImagenPublicoPasajero(npub);
                 dto.setNombreImagenPrivadoPasajero(nocu);
 
@@ -122,10 +125,12 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
         return arregloPasajero;
     }
 
+
     @Override
     public List<PasajeroDto> selectFromWhereActivos() {
+        // No hay campo "estado" en Pasajero, así que devolvemos todos
         return selectFrom();
-
+    
     }
 
     @Override
@@ -141,7 +146,7 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
 
     @Override
     public Boolean deleteFrom(Integer codigo) {
-        Boolean correcto = false;
+         Boolean correcto = false;
         try {
             List<String> arreglo = miArchivo.borrarFilaPosicion(codigo);
             if (!arreglo.isEmpty()) {
@@ -159,9 +164,10 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
         return correcto;
     }
 
+
     @Override
     public PasajeroDto getOne(Integer codigo) {
-        int contador = 0;
+       int contador = 0;
         PasajeroDto objListo = new PasajeroDto();
         List<PasajeroDto> arrPasajeros = selectFrom();
 
@@ -174,6 +180,7 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
         }
         return objListo;
     }
+    
 
     @Override
     public PasajeroDto updateSet(Integer codigo, PasajeroDto objeto, String ruta) {
@@ -192,6 +199,7 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                     + objeto.getEsMayorPasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + fechaNac + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getTelefonoPasajero() + Persistencia.SEPARADOR_COLUMNAS
+                    + objeto.getEmailPasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getNombreImagenPublicoPasajero() + Persistencia.SEPARADOR_COLUMNAS;
 
             if (ruta.isBlank()) {

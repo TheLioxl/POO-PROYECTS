@@ -149,6 +149,7 @@ public class VistaTerminalListar extends StackPane {
         return columna;
     }
 
+
     private void configurarColumnas() {
         miTabla.getColumns().add(crearColumnaCodigo());
         miTabla.getColumns().add(crearColumnaNombre());

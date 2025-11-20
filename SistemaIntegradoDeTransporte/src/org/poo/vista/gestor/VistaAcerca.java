@@ -96,10 +96,10 @@ public class VistaAcerca {
         contenedorFotos.setAlignment(Pos.CENTER);
         contenedorFotos.getChildren().addAll(persona1, persona2, persona3);
 
-        Button btnCerrar = new Button("Cerrar");
-        btnCerrar.setPrefWidth(200);
+        Button btnCerrar = new Button("CERRAR");
+        btnCerrar.setPrefWidth(180);
         btnCerrar.setFont(Font.font("Rockwell", FontWeight.BOLD, 14));
-        btnCerrar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + ";"
+        btnCerrar.setStyle("-fx-background-color: " + Configuracion.AZUL_SUPER_CLARO + ";"
                 + "-fx-border-radius: 8; -fx-background-radius: 8;");
         btnCerrar.setCursor(Cursor.HAND);
         btnCerrar.setOnAction(event -> escenarioModal.close());
@@ -107,7 +107,7 @@ public class VistaAcerca {
 // --- AGREGAR TODO AL PANEL PRINCIPAL ---
         miPanel.getChildren().addAll(contenedorFotos, btnCerrar);
 
-        Scene nuevaEscena = new Scene(miPanel, 850, 500);
+        Scene nuevaEscena = new Scene(miPanel, 850, 450);
 
         escenarioModal.setScene(nuevaEscena);
         escenarioModal.initModality(Modality.APPLICATION_MODAL);

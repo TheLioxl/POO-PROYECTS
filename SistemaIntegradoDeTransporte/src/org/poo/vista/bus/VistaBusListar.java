@@ -46,7 +46,7 @@ public class VistaBusListar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_BUS,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -73,41 +73,42 @@ public class VistaBusListar extends StackPane {
         int cant = BusControladorListar.obtenerCantidadBuses();
         Text titulo = new Text("LISTA DE BUSES (" + cant + ")");
         titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
         cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
     }
 
     private void crearTabla() {
+        
         TableColumn<BusDto, Integer> colCodigo = new TableColumn<>("Código");
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("idBus"));
-        colCodigo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        colCodigo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
         colCodigo.setStyle(ESTILO_CENTRAR);
 
         TableColumn<BusDto, String> colPlaca = new TableColumn<>("Placa");
         colPlaca.setCellValueFactory(new PropertyValueFactory<>("placaBus"));
-        colPlaca.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
+        colPlaca.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colPlaca.setStyle(ESTILO_CENTRAR);
 
         TableColumn<BusDto, String> colModelo = new TableColumn<>("Modelo");
         colModelo.setCellValueFactory(new PropertyValueFactory<>("modeloBus"));
-        colModelo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.18));
+        colModelo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colModelo.setStyle(ESTILO_IZQUIERDA);
 
         TableColumn<BusDto, Integer> colCapacidad = new TableColumn<>("Capacidad");
         colCapacidad.setCellValueFactory(new PropertyValueFactory<>("capacidadBus"));
-        colCapacidad.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        colCapacidad.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
         colCapacidad.setStyle(ESTILO_CENTRAR);
 
         TableColumn<BusDto, String> colEmpresa = new TableColumn<>("Empresa");
         colEmpresa.setCellValueFactory(obj -> 
             new SimpleStringProperty(obj.getValue().getEmpresaBus().getNombreEmpresa()));
-        colEmpresa.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
+        colEmpresa.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colEmpresa.setStyle(ESTILO_IZQUIERDA);
 
         TableColumn<BusDto, String> colTipo = new TableColumn<>("Tipo");
         colTipo.setCellValueFactory(new PropertyValueFactory<>("tipoBus"));
-        colTipo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        colTipo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colTipo.setStyle(ESTILO_CENTRAR);
 
         TableColumn<BusDto, String> colEstado = new TableColumn<>("Estado");
@@ -128,17 +129,22 @@ public class VistaBusListar extends StackPane {
                 }
             }
         });
-        colEstado.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        colEstado.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
 
         TableColumn<BusDto, String> colImagen = new TableColumn<>("Imagen");
         colImagen.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPublicoBus"));
-        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.17));
+        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colImagen.setStyle(ESTILO_IZQUIERDA);
 
-        miTabla.getColumns().addAll(List.of(
-                colCodigo, colPlaca, colModelo, colCapacidad, colEmpresa, colTipo, colEstado, colImagen
-        ));
-
+        miTabla.getColumns().add(colCodigo);
+        miTabla.getColumns().add(colPlaca);
+        miTabla.getColumns().add(colModelo);
+        miTabla.getColumns().add(colCapacidad);
+        miTabla.getColumns().add(colEmpresa);
+        miTabla.getColumns().add(colTipo);
+        miTabla.getColumns().add(colEstado);
+        miTabla.getColumns().add(colImagen);
+        
         List<BusDto> arrBuses = BusControladorListar.obtenerBuses();
         ObservableList<BusDto> datosTabla = FXCollections.observableArrayList(arrBuses);
 
@@ -146,7 +152,7 @@ public class VistaBusListar extends StackPane {
         miTabla.setPlaceholder(new Text("No hay buses registrados"));
         miTabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
-        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.75));
+        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.72));
         miTabla.maxHeightProperty().bind(miEscenario.heightProperty().multiply(0.60));
 
         miEscenario.heightProperty().addListener((o, oldVal, newVal)

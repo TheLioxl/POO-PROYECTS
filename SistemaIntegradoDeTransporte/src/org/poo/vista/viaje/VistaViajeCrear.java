@@ -94,19 +94,17 @@ public class VistaViajeCrear extends StackPane {
         miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         ColumnConstraints col0 = new ColumnConstraints();
+        col0.setPercentWidth(35);
+        
         ColumnConstraints col1 = new ColumnConstraints();
-        ColumnConstraints col2 = new ColumnConstraints();
-        
-        col0.setPrefWidth(200);
-        col1.setPrefWidth(200);
-        col2.setPrefWidth(200);
-        
+        col1.setPercentWidth(65);
         col1.setHgrow(Priority.ALWAYS);
-        miGrilla.getColumnConstraints().addAll(col0, col1, col2);
+        
+        miGrilla.getColumnConstraints().addAll(col0, col1);
     }
 
     private void crearTitulo() {
-        int columna = 0, fila = 0, colSpan = 3, rowSpan = 1;
+        int columna = 0, fila = 0, colSpan = 2, rowSpan = 1;
 
         Region espacioSuperior = new Region();
         espacioSuperior.prefHeightProperty().bind(

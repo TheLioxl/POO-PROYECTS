@@ -55,20 +55,10 @@ public class ConductorServicio implements ApiOperacionBD<ConductorDto, Integer> 
         objConductor.setNombreImagenPublicoConductor(dto.getNombreImagenPublicoConductor());
         objConductor.setNombreImagenPrivadoConductor(GestorImagen.grabarLaImagen(ruta));
 
-        String fechaNac = dto.getFechaNacimientoConductor() != null
-                ? dto.getFechaNacimientoConductor().toString()
-                : "";
-        String fechaVenc = dto.getFechaVencimientoLicencia() != null
-                ? dto.getFechaVencimientoLicencia().toString()
-                : "";
-
         String filaGrabar = objConductor.getIdConductor() + Persistencia.SEPARADOR_COLUMNAS
                 + objConductor.getNombreConductor() + Persistencia.SEPARADOR_COLUMNAS
                 + objConductor.getCedulaConductor() + Persistencia.SEPARADOR_COLUMNAS
-                + fechaNac + Persistencia.SEPARADOR_COLUMNAS
-                + dto.getTelefonoConductor() + Persistencia.SEPARADOR_COLUMNAS
                 + objConductor.getLicenciaConductor() + Persistencia.SEPARADOR_COLUMNAS
-                + fechaVenc + Persistencia.SEPARADOR_COLUMNAS
                 + dto.getEmpresaConductor().getIdEmpresa() + Persistencia.SEPARADOR_COLUMNAS
                 + objConductor.getEstadoConductor() + Persistencia.SEPARADOR_COLUMNAS
                 + objConductor.getNombreImagenPublicoConductor() + Persistencia.SEPARADOR_COLUMNAS
@@ -215,12 +205,6 @@ public class ConductorServicio implements ApiOperacionBD<ConductorDto, Integer> 
         try {
             List<String> arreglo = miArchivo.borrarFilaPosicion(codigo);
             if (!arreglo.isEmpty()) {
-
-                String nomOculto = arreglo.get(arreglo.size() - 1);
-                String nombreBorrar = Persistencia.RUTA_IMAGENES
-                        + Persistencia.SEPARADOR_CARPETAS + nomOculto;
-                Path rutaBorrar = Paths.get(nombreBorrar);
-                Files.deleteIfExists(rutaBorrar);
                 correcto = true;
             }
         } catch (IOException ex) {
@@ -293,5 +277,4 @@ public class ConductorServicio implements ApiOperacionBD<ConductorDto, Integer> 
     }
     return null;
 }
-    }
-    
+}

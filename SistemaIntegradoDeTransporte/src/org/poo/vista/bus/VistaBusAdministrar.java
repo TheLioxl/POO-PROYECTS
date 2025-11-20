@@ -1,13 +1,22 @@
 package org.poo.vista.bus;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -17,9 +26,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.poo.controlador.bus.BusControladorEliminar;
 import org.poo.controlador.bus.BusControladorListar;
+import org.poo.controlador.bus.BusControladorUna;
 import org.poo.controlador.bus.BusControladorVentana;
 import org.poo.dto.BusDto;
 import org.poo.recurso.constante.Configuracion;
+import org.poo.recurso.constante.Persistencia;
 import org.poo.recurso.utilidad.Icono;
 import org.poo.recurso.utilidad.Marco;
 import org.poo.recurso.utilidad.Mensaje;
@@ -30,6 +41,7 @@ public class VistaBusAdministrar extends StackPane {
     private final Stage miEscenario;
     private final VBox cajaVertical;
     private final TableView<BusDto> miTabla;
+    
 
     private static final String ESTILO_CENTRAR = "-fx-alignment: CENTER;";
     private static final String ESTILO_IZQUIERDA = "-fx-alignment: CENTER-LEFT;";
@@ -39,6 +51,19 @@ public class VistaBusAdministrar extends StackPane {
     private Text titulo;
     private HBox cajaBotones;
     private final ObservableList<BusDto> datosTabla = FXCollections.observableArrayList();
+    private int totalBuses;
+    private int indiceActual;
+    private BusDto objCargado;
+    private static int indiceActualEstatico = 0;
+    
+    private StringProperty busTitulo;
+    private StringProperty busPlaca;
+    private StringProperty busModelo;
+    private StringProperty busEmpresa;
+    private ObjectProperty<Image> busImagen;
+    private BooleanProperty busEstado;
+    private IntegerProperty busCapacidad;
+    private StringProperty busTipo;
 
     private Pane panelCuerpo;
     private final BorderPane panelPrincipal;
@@ -55,7 +80,7 @@ public class VistaBusAdministrar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_BUS,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -81,43 +106,44 @@ public class VistaBusAdministrar extends StackPane {
                 miEscenario.heightProperty().multiply(0.05));
 
         int cant = BusControladorListar.obtenerCantidadBuses();
-        titulo = new Text("Administrar Buses (" + cant + ")");
+        Text titulo = new Text("ADMINISTRAR BUSES (" + cant + ")");
         titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
         cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
     }
 
     private void crearTabla() {
+        
         TableColumn<BusDto, Integer> colCodigo = new TableColumn<>("Código");
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("idBus"));
-        colCodigo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        colCodigo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
         colCodigo.setStyle(ESTILO_CENTRAR);
 
         TableColumn<BusDto, String> colPlaca = new TableColumn<>("Placa");
         colPlaca.setCellValueFactory(new PropertyValueFactory<>("placaBus"));
-        colPlaca.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
+        colPlaca.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colPlaca.setStyle(ESTILO_CENTRAR);
 
         TableColumn<BusDto, String> colModelo = new TableColumn<>("Modelo");
         colModelo.setCellValueFactory(new PropertyValueFactory<>("modeloBus"));
-        colModelo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.18));
+        colModelo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colModelo.setStyle(ESTILO_IZQUIERDA);
 
         TableColumn<BusDto, Integer> colCapacidad = new TableColumn<>("Capacidad");
         colCapacidad.setCellValueFactory(new PropertyValueFactory<>("capacidadBus"));
-        colCapacidad.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        colCapacidad.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
         colCapacidad.setStyle(ESTILO_CENTRAR);
 
         TableColumn<BusDto, String> colEmpresa = new TableColumn<>("Empresa");
         colEmpresa.setCellValueFactory(obj -> 
             new SimpleStringProperty(obj.getValue().getEmpresaBus().getNombreEmpresa()));
-        colEmpresa.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
+        colEmpresa.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colEmpresa.setStyle(ESTILO_IZQUIERDA);
 
         TableColumn<BusDto, String> colTipo = new TableColumn<>("Tipo");
         colTipo.setCellValueFactory(new PropertyValueFactory<>("tipoBus"));
-        colTipo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        colTipo.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colTipo.setStyle(ESTILO_CENTRAR);
 
         TableColumn<BusDto, String> colEstado = new TableColumn<>("Estado");
@@ -138,7 +164,7 @@ public class VistaBusAdministrar extends StackPane {
                 }
             }
         });
-        colEstado.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        colEstado.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
 
         TableColumn<BusDto, String> colImagen = new TableColumn<>("Imagen");
         colImagen.setCellValueFactory(new PropertyValueFactory<>("nombreImagenPrivadoBus"));
@@ -157,26 +183,31 @@ public class VistaBusAdministrar extends StackPane {
                 }
             }
         });
-        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.17));
+        colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.20));
         colImagen.setStyle(ESTILO_CENTRAR);
 
-        miTabla.getColumns().addAll(List.of(
-                colCodigo, colPlaca, colModelo, colCapacidad, colEmpresa, colTipo, colEstado, colImagen
-        ));
-
+        miTabla.getColumns().add(colCodigo);
+        miTabla.getColumns().add(colPlaca);
+        miTabla.getColumns().add(colModelo);
+        miTabla.getColumns().add(colCapacidad);
+        miTabla.getColumns().add(colEmpresa);
+        miTabla.getColumns().add(colTipo);
+        miTabla.getColumns().add(colEstado);
+        miTabla.getColumns().add(colImagen);
+        
         List<BusDto> arrBuses = BusControladorListar.obtenerBuses();
-        datosTabla.setAll(arrBuses);
+        ObservableList<BusDto> datosTabla = FXCollections.observableArrayList(arrBuses);
 
         miTabla.setItems(datosTabla);
         miTabla.setPlaceholder(new Text("No hay buses registrados"));
         miTabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
-        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.70));
-        miTabla.maxHeightProperty().bind(miEscenario.heightProperty().multiply(0.50));
+        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.72));
+        miTabla.maxHeightProperty().bind(miEscenario.heightProperty().multiply(0.60));
 
-        miEscenario.heightProperty().addListener((o, oldVal, newVal) -> 
-                miTabla.setPrefHeight(newVal.doubleValue()));
-        
+        miEscenario.heightProperty().addListener((o, oldVal, newVal)
+                -> miTabla.setPrefHeight(newVal.doubleValue()));
+
         VBox.setVgrow(miTabla, Priority.ALWAYS);
 
         cajaVertical.getChildren().add(miTabla);
@@ -215,7 +246,7 @@ public class VistaBusAdministrar extends StackPane {
                     int posi = miTabla.getSelectionModel().getSelectedIndex();
                     if (BusControladorEliminar.borrar(posi)) {
                         int canti = BusControladorListar.obtenerCantidadBuses();
-                        titulo.setText("Administrar Buses (" + canti + ")");
+                        titulo.setText("ADMINISTRAR BUSES (" + canti + ")");
 
                         datosTabla.setAll(BusControladorListar.obtenerBuses());
                         miTabla.refresh();
@@ -237,27 +268,43 @@ public class VistaBusAdministrar extends StackPane {
         btnActualizar.setCursor(Cursor.HAND);
         btnActualizar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_EDITAR, tamanioIconito));
         
-        btnActualizar.setOnAction((e) -> {
-            if (miTabla.getSelectionModel().getSelectedItem() == null) {
-                Mensaje.mostrar(Alert.AlertType.WARNING,
-                        miEscenario, "Advertencia", 
-                        "Debe seleccionar un bus para editar");
-            } else {
-                BusDto objBus = miTabla.getSelectionModel().getSelectedItem();
-                int posi = miTabla.getSelectionModel().getSelectedIndex();
+        btnEliminar.setOnAction(e -> {
+            String mensaje = "¿Seguro que desea eliminar este bus?\\n\\n"
+                    + "Código: " + objCargado.getIdBus() + "\\n"
+                    + "Placa: " + objCargado.getPlacaBus() + "\\n\\n"
+                    + "Esta acción es irreversible.";
 
-                panelCuerpo = BusControladorVentana.editar(
-                        miEscenario,
-                        panelPrincipal,
-                        panelCuerpo,
-                        Configuracion.ANCHO_APP,
-                        Configuracion.ALTO_CUERPO,
-                        objBus,
-                        posi,
-                        false);
-                        
-                panelPrincipal.setCenter(null);
-                panelPrincipal.setCenter(panelCuerpo);
+            Alert msg = new Alert(Alert.AlertType.CONFIRMATION);
+            msg.setTitle("Confirmar Eliminación");
+            msg.setHeaderText(null);
+            msg.setContentText(mensaje);
+            msg.initOwner(miEscenario);
+
+            if (msg.showAndWait().get() == ButtonType.OK) {
+                if (BusControladorEliminar.borrar(indiceActual)) {
+                    totalBuses = BusControladorListar.obtenerCantidadBuses();
+                    
+                    if (totalBuses > 0) {
+                        if (indiceActual >= totalBuses) {
+                            indiceActual = totalBuses - 1;
+                            indiceActualEstatico = indiceActual;
+                        }
+                        actualizarContenido();
+                        Mensaje.mostrar(Alert.AlertType.INFORMATION,
+                                miEscenario, "Éxito", "Bus eliminado correctamente");
+                    } else {
+                        Mensaje.mostrar(Alert.AlertType.INFORMATION,
+                                miEscenario, "Sin buses", "No quedan buses registrados");
+                        indiceActualEstatico = 0;
+                        panelCuerpo = BusControladorVentana.administrar(
+                                miEscenario, panelPrincipal, panelCuerpo,
+                                Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO);
+                        panelPrincipal.setCenter(panelCuerpo);
+                    }
+                } else {
+                    Mensaje.mostrar(Alert.AlertType.ERROR,
+                            miEscenario, "Error", "No se pudo eliminar el bus");
+                }
             }
         });
         
@@ -273,5 +320,27 @@ public class VistaBusAdministrar extends StackPane {
         cajaBotones.setAlignment(Pos.CENTER);
         cajaBotones.getChildren().addAll(btnEliminar, btnActualizar, btnCancelar);
         cajaVertical.getChildren().add(cajaBotones);
+    }
+    
+    private void actualizarContenido() {
+        objCargado = BusControladorUna.obtenerBus(indiceActual);
+
+        busTitulo.set("Carrusel de Buses (" + (indiceActual + 1) + " / " + totalBuses + ")");
+        busPlaca.set(objCargado.getPlacaBus() + " - " + objCargado.getModeloBus());
+        busModelo.set(objCargado.getModeloBus());
+        busCapacidad.set(objCargado.getCapacidadBus());
+        busEmpresa.set(objCargado.getEmpresaBus().getNombreEmpresa());
+        busTipo.set(objCargado.getTipoBus());
+        busEstado.set(objCargado.getEstadoBus());
+
+        try {
+            String rutaImagen = Persistencia.RUTA_IMAGENES + Persistencia.SEPARADOR_CARPETAS
+                    + objCargado.getNombreImagenPrivadoBus();
+            FileInputStream imgArchivo = new FileInputStream(rutaImagen);
+            Image imgNueva = new Image(imgArchivo);
+            busImagen.set(imgNueva);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(VistaBusCarrusel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

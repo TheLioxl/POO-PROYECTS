@@ -96,12 +96,12 @@ public class VistaBusCarrusel extends BorderPane {
         organizadorVertical.getChildren().add(0, bloqueSeparador);
 
         busTitulo = new SimpleStringProperty(
-                "Detalle del Bus (" + (indiceActual + 1) + " / " + totalBuses + ")");
+                "DETALLES DEL BUS: (" + (indiceActual + 1) + " / " + totalBuses + ")");
 
         Label lblTitulo = new Label();
         lblTitulo.textProperty().bind(busTitulo);
         lblTitulo.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
-        lblTitulo.setFont(Font.font("Arial", FontWeight.BOLD, 26));
+        lblTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 24));
         organizadorVertical.getChildren().add(lblTitulo);
     }
 
@@ -144,8 +144,8 @@ public class VistaBusCarrusel extends BorderPane {
     private void construirPanelCentro() {
         StackPane centerPane = new StackPane();
 
-        Rectangle miMarco = Marco.crear(miEscenario, 0.70, 0.80,
-                Configuracion.DEGRADE_ARREGLO_BUS,
+        Rectangle miMarco = Marco.crear(miEscenario, 0.75, 0.65,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE);
         centerPane.getChildren().addAll(miMarco, organizadorVertical);
 
@@ -234,10 +234,10 @@ public class VistaBusCarrusel extends BorderPane {
     private void mostrarDatos() {
         int tamanioFuente = 20;
 
-        busPlaca = new SimpleStringProperty(objCargado.getPlacaBus() + " - " + objCargado.getModeloBus());
+        busPlaca = new SimpleStringProperty(objCargado.getPlacaBus());
         Label lblPlaca = new Label();
         lblPlaca.textProperty().bind(busPlaca);
-        lblPlaca.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        lblPlaca.setFont(Font.font("Rockwell", FontWeight.BOLD, 24));
         lblPlaca.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblPlaca);
 
@@ -264,37 +264,37 @@ public class VistaBusCarrusel extends BorderPane {
 
         busModelo = new SimpleStringProperty(objCargado.getModeloBus());
         Label lblModelo = new Label();
-        lblModelo.textProperty().bind(Bindings.concat("🚌 Modelo: ", busModelo));
-        lblModelo.setFont(Font.font("Arial", tamanioFuente));
-        lblModelo.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblModelo.textProperty().bind(Bindings.concat("Modelo: ", busModelo));
+        lblModelo.setFont(Font.font("Rockwell", tamanioFuente));
+        lblModelo.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblModelo);
 
         busCapacidad = new SimpleIntegerProperty(objCargado.getCapacidadBus());
         Label lblCapacidad = new Label();
-        lblCapacidad.textProperty().bind(Bindings.concat("👥 Capacidad: ", busCapacidad.asString(), " pasajeros"));
-        lblCapacidad.setFont(Font.font("Arial", tamanioFuente));
-        lblCapacidad.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblCapacidad.textProperty().bind(Bindings.concat("Capacidad: ", busCapacidad.asString(), " pasajeros"));
+        lblCapacidad.setFont(Font.font("Rockwell", tamanioFuente));
+        lblCapacidad.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblCapacidad);
 
         busEmpresa = new SimpleStringProperty(
             objCargado.getEmpresaBus().getNombreEmpresa());
         Label lblEmpresa = new Label();
-        lblEmpresa.textProperty().bind(Bindings.concat("🏢 Empresa: ", busEmpresa));
-        lblEmpresa.setFont(Font.font("Arial", tamanioFuente));
-        lblEmpresa.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblEmpresa.textProperty().bind(Bindings.concat("Empresa: ", busEmpresa));
+        lblEmpresa.setFont(Font.font("Rockwell", tamanioFuente));
+        lblEmpresa.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblEmpresa);
 
         busTipo = new SimpleStringProperty(objCargado.getTipoBus());
         Label lblTipo = new Label();
-        lblTipo.textProperty().bind(Bindings.concat("⭐ Tipo: ", busTipo));
-        lblTipo.setFont(Font.font("Arial", tamanioFuente));
-        lblTipo.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblTipo.textProperty().bind(Bindings.concat("Tipo: ", busTipo));
+        lblTipo.setFont(Font.font("Rockwell", tamanioFuente));
+        lblTipo.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblTipo);
 
         busEstado = new SimpleBooleanProperty(objCargado.getEstadoBus());
         Label lblEstado = new Label();
-        lblEstado.textProperty().bind(Bindings.when(busEstado).then("✅ ACTIVO").otherwise("❌ INACTIVO"));
-        lblEstado.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        lblEstado.textProperty().bind(Bindings.when(busEstado).then("Activo").otherwise("Inactivo"));
+        lblEstado.setFont(Font.font("Rockwell", FontWeight.BOLD, 20));
         lblEstado.textFillProperty().bind(
                 busEstado.map(dato -> dato ? Color.web(Configuracion.VERDE_EXITO) 
                         : Color.web(Configuracion.ROJO_ERROR))
@@ -305,8 +305,8 @@ public class VistaBusCarrusel extends BorderPane {
     private void actualizarContenido() {
         objCargado = BusControladorUna.obtenerBus(indiceActual);
 
-        busTitulo.set("Carrusel de Buses (" + (indiceActual + 1) + " / " + totalBuses + ")");
-        busPlaca.set(objCargado.getPlacaBus() + " - " + objCargado.getModeloBus());
+        busTitulo.set("DETALLES DEL BUS: (" + (indiceActual + 1) + " / " + totalBuses + ")");
+        busPlaca.set(objCargado.getPlacaBus());
         busModelo.set(objCargado.getModeloBus());
         busCapacidad.set(objCargado.getCapacidadBus());
         busEmpresa.set(objCargado.getEmpresaBus().getNombreEmpresa());

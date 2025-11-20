@@ -59,8 +59,6 @@ public class VistaTerminalCrear extends StackPane {
     private CheckBox chkWifi;
     private CheckBox chkCafeteria;
     private CheckBox chkBanos;
-    private Button btnSeleccionarImagen;
-    private Button btnGrabar;
     private ImageView imgPorDefecto;
     private ImageView imgPrevisualizar;
     private TextField cajaImagen;
@@ -337,8 +335,7 @@ public class VistaTerminalCrear extends StackPane {
 
         miGrilla.getChildren().remove(imgPrevisualizar);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        GridPane.setValignment(imgPorDefecto, VPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 9);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
         txtNombreTerminal.requestFocus();
     }

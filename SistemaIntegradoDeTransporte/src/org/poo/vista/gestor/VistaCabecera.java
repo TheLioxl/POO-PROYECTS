@@ -338,7 +338,7 @@ public class VistaCabecera extends HBox {
         agregarMenu(menuButton);
     }
 
-    // ==================== MENÚ CONDUCTOR ====================
+    // ====================== MENÚ CONDUCTOR ======================
     private void menuConductor() {
 
         MenuItem opcion1 = new MenuItem("Crear Conductor");
@@ -405,7 +405,7 @@ public class VistaCabecera extends HBox {
 
     // ====================== MENÚ PASAJERO ======================
     private void menuPasajero() {
-        MenuItem opcion1 = new MenuItem("Registrar Pasajero");
+        MenuItem opcion1 = new MenuItem("Crear Pasajero");
         MenuItem opcion2 = new MenuItem("Listar Pasajeros");
         MenuItem opcion3 = new MenuItem("Administrar Pasajeros");
         MenuItem opcion4 = new MenuItem("Carrusel");
@@ -463,7 +463,7 @@ public class VistaCabecera extends HBox {
 
     // ====================== MENÚ VIAJE (COMPLETO Y FUNCIONAL) ======================
     private void menuViaje() {
-        MenuItem opcion1 = new MenuItem("Programar Viaje");
+        MenuItem opcion1 = new MenuItem("Crear Viaje");
         MenuItem opcion2 = new MenuItem("Listar Viajes");
         MenuItem opcion3 = new MenuItem("Administrar Viajes");
         MenuItem opcion4 = new MenuItem("Carrusel");
@@ -519,9 +519,9 @@ public class VistaCabecera extends HBox {
         agregarMenu(menuButton);
     }
 
-    // ====================== MENÚ TIQUETE (COMPLETO Y FUNCIONAL) ======================
+    // ====================== MENÚ TIQUETE ======================
     private void menuTiquete() {
-        MenuItem opcion1 = new MenuItem("Vender Tiquete");
+        MenuItem opcion1 = new MenuItem("Crear Tiquete");
         MenuItem opcion2 = new MenuItem("Listar Tiquetes");
         MenuItem opcion3 = new MenuItem("Administrar Tiquetes");
         MenuItem opcion4 = new MenuItem("Carrusel");
@@ -652,5 +652,3 @@ public class VistaCabecera extends HBox {
     }
     
 }
-  
-

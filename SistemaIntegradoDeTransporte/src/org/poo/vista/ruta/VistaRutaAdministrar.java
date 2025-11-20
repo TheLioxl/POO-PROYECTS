@@ -159,10 +159,14 @@ public class VistaRutaAdministrar extends StackPane {
         colImagen.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.17));
         colImagen.setStyle(ESTILO_CENTRAR);
 
-        miTabla.getColumns().addAll(List.of(
-                colCodigo, colNombre, colOrigen, colDestino, colDistancia,
-                colDuracion, colEstado, colImagen
-        ));
+        miTabla.getColumns().add(colCodigo);
+        miTabla.getColumns().add(colNombre);
+        miTabla.getColumns().add(colOrigen);
+        miTabla.getColumns().add(colDestino);
+        miTabla.getColumns().add(colDistancia);
+        miTabla.getColumns().add(colDuracion);
+        miTabla.getColumns().add(colEstado);
+        miTabla.getColumns().add(colImagen);
 
         List<RutaDto> arrRutas = RutaControladorListar.obtenerRutas();
         datosTabla.setAll(arrRutas);

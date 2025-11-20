@@ -153,31 +153,18 @@ public class DestinoServicio implements ApiOperacionBD<DestinoDto, Integer> {
 
     @Override
     public DestinoDto getOne(Integer codigo) {
-        List<String> arregloDatos = miArchivo.obtenerDatos();
-        
-        for (String cadena : arregloDatos) {
-            try {
-                cadena = cadena.replace("@", "");
-                String[] columnas = cadena.split(Persistencia.SEPARADOR_COLUMNAS);
-                
-                int codDestino = Integer.parseInt(columnas[0].trim());
-                
-                if (codDestino == codigo) {
-                    String nombre = columnas[1].trim();
-                    String departamento = columnas[2].trim();
-                    String descripcion = columnas[3].trim();
-                    Boolean estado = Boolean.valueOf(columnas[4].trim());
-                    String npub = columnas[5].trim();
-                    String nocu = columnas[6].trim();
-                    
-                    return new DestinoDto(codDestino, nombre, departamento,
-                            descripcion, estado, npub, nocu);
-                }
-            } catch (NumberFormatException error) {
-                Logger.getLogger(DestinoServicio.class.getName()).log(Level.SEVERE, null, error);
+        int contador = 0;
+        DestinoDto objListo = new DestinoDto();
+        List<DestinoDto> arrDestinos = selectFrom();
+
+        for (DestinoDto objDestino : arrDestinos) {
+            if (contador == codigo) {
+                objListo = objDestino;
+                break;
             }
+            contador++;
         }
-        return null;
+        return objListo;
     }
 
     @Override

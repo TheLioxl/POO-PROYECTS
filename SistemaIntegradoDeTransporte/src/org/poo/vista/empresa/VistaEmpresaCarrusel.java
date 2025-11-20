@@ -95,12 +95,12 @@ public class VistaEmpresaCarrusel extends BorderPane {
         organizadorVertical.getChildren().add(0, bloqueSeparador);
 
         empresaTitulo = new SimpleStringProperty(
-                "Detalle de la Empresa (" + (indiceActual + 1) + " / " + totalEmpresas + ")");
+                "DETALLES DE LA EMPRESA: (" + (indiceActual + 1) + " / " + totalEmpresas + ")");
 
         Label lblTitulo = new Label();
         lblTitulo.textProperty().bind(empresaTitulo);
         lblTitulo.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
-        lblTitulo.setFont(Font.font("Arial", FontWeight.BOLD, 26));
+        lblTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 24));
         organizadorVertical.getChildren().add(lblTitulo);
     }
 
@@ -143,8 +143,8 @@ public class VistaEmpresaCarrusel extends BorderPane {
     private void construirPanelCentro() {
         StackPane centerPane = new StackPane();
 
-        Rectangle miMarco = Marco.crear(miEscenario, 0.70, 0.80,
-                Configuracion.DEGRADE_ARREGLO_EMPRESA,
+        Rectangle miMarco = Marco.crear(miEscenario, 0.75, 0.65,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE);
         centerPane.getChildren().addAll(miMarco, organizadorVertical);
 
@@ -242,7 +242,7 @@ public class VistaEmpresaCarrusel extends BorderPane {
         empresaNombre = new SimpleStringProperty(objCargado.getNombreEmpresa());
         Label lblNombre = new Label();
         lblNombre.textProperty().bind(empresaNombre);
-        lblNombre.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        lblNombre.setFont(Font.font("Rockwell", FontWeight.BOLD, 24));
         lblNombre.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblNombre);
 
@@ -269,41 +269,41 @@ public class VistaEmpresaCarrusel extends BorderPane {
 
         empresaNit = new SimpleStringProperty(objCargado.getNitEmpresa());
         Label lblNit = new Label();
-        lblNit.textProperty().bind(Bindings.concat("🆔 NIT: ", empresaNit));
-        lblNit.setFont(Font.font("Arial", tamanioFuente));
-        lblNit.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblNit.textProperty().bind(Bindings.concat("NIT: ", empresaNit));
+        lblNit.setFont(Font.font("Rockwell", tamanioFuente));
+        lblNit.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblNit);
 
         empresaTerminal = new SimpleStringProperty(
             objCargado.getTerminalEmpresa().getNombreTerminal());
         Label lblTerminal = new Label();
-        lblTerminal.textProperty().bind(Bindings.concat("🏢 Terminal: ", empresaTerminal));
-        lblTerminal.setFont(Font.font("Arial", tamanioFuente));
-        lblTerminal.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblTerminal.textProperty().bind(Bindings.concat("Terminal: ", empresaTerminal));
+        lblTerminal.setFont(Font.font("Rockwell", tamanioFuente));
+        lblTerminal.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblTerminal);
 
+        empresaCantBuses = new SimpleIntegerProperty(objCargado.getCantidadBusesEmpresa());
+        Label lblCantBuses = new Label();
+        lblCantBuses.textProperty().bind(Bindings.concat("Buses en flota: ", empresaCantBuses.asString()));
+        lblCantBuses.setFont(Font.font("Rockwell", tamanioFuente));
+        lblCantBuses.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
+        organizadorVertical.getChildren().add(lblCantBuses);
+        
         empresaEstado = new SimpleBooleanProperty(objCargado.getEstadoEmpresa());
         Label lblEstado = new Label();
-        lblEstado.textProperty().bind(Bindings.when(empresaEstado).then("✅ ACTIVO").otherwise("❌ INACTIVO"));
-        lblEstado.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        lblEstado.textProperty().bind(Bindings.when(empresaEstado).then("Activo").otherwise("Inactivo"));
+        lblEstado.setFont(Font.font("Rockwell", FontWeight.BOLD, 20));
         lblEstado.textFillProperty().bind(
                 empresaEstado.map(dato -> dato ? Color.web(Configuracion.VERDE_EXITO) 
                         : Color.web(Configuracion.ROJO_ERROR))
         );
         organizadorVertical.getChildren().add(lblEstado);
-
-        empresaCantBuses = new SimpleIntegerProperty(objCargado.getCantidadBusesEmpresa());
-        Label lblCantBuses = new Label();
-        lblCantBuses.textProperty().bind(Bindings.concat("🚌 Buses en flota: ", empresaCantBuses.asString()));
-        lblCantBuses.setFont(Font.font("Arial", tamanioFuente));
-        lblCantBuses.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
-        organizadorVertical.getChildren().add(lblCantBuses);
     }
 
     private void actualizarContenido() {
         objCargado = EmpresaControladorUna.obtenerEmpresa(indiceActual);
 
-        empresaTitulo.set("Carrusel de Empresas (" + (indiceActual + 1) + " / " + totalEmpresas + ")");
+        empresaTitulo.set("DETALLES DE LA EMPRESA: (" + (indiceActual + 1) + " / " + totalEmpresas + ")");
         empresaNombre.set(objCargado.getNombreEmpresa());
         empresaNit.set(objCargado.getNitEmpresa());
         empresaTerminal.set(objCargado.getTerminalEmpresa().getNombreTerminal());
