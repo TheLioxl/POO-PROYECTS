@@ -9,13 +9,20 @@ public class Destino {
     private Boolean estadoDestino;
     private String nombreImagenPublicoDestino;
     private String nombreImagenPrivadoDestino;
+    
+    // NUEVOS CAMPOS PARA CUMPLIR CON 6 TIPOS DIFERENTES
+    private Integer altitudMetros;           // Spinner
+    private Double temperaturaPromedio;       // Slider
+    private Boolean esPlayero;               // RadioButton (ya tenías CheckBox)
+    private String temporadaAlta;            // DatePicker (guardaremos como String)
 
     public Destino() {
     }
 
     public Destino(Integer idDestino, String nombreDestino, String departamentoDestino,
                   String descripcionDestino, Boolean estadoDestino,
-                  String nombreImagenPublicoDestino, String nombreImagenPrivadoDestino) {
+                  String nombreImagenPublicoDestino, String nombreImagenPrivadoDestino,
+                  Integer altitudMetros, Double temperaturaPromedio, Boolean esPlayero, String temporadaAlta) {
         this.idDestino = idDestino;
         this.nombreDestino = nombreDestino;
         this.departamentoDestino = departamentoDestino;
@@ -23,9 +30,13 @@ public class Destino {
         this.estadoDestino = estadoDestino;
         this.nombreImagenPublicoDestino = nombreImagenPublicoDestino;
         this.nombreImagenPrivadoDestino = nombreImagenPrivadoDestino;
+        this.altitudMetros = altitudMetros;
+        this.temperaturaPromedio = temperaturaPromedio;
+        this.esPlayero = esPlayero;
+        this.temporadaAlta = temporadaAlta;
     }
 
-    // Getters y Setters
+    // Getters y Setters existentes...
     public Integer getIdDestino() {
         return idDestino;
     }
@@ -80,6 +91,39 @@ public class Destino {
 
     public void setNombreImagenPrivadoDestino(String nombreImagenPrivadoDestino) {
         this.nombreImagenPrivadoDestino = nombreImagenPrivadoDestino;
+    }
+
+    // NUEVOS GETTERS Y SETTERS
+    public Integer getAltitudMetros() {
+        return altitudMetros;
+    }
+
+    public void setAltitudMetros(Integer altitudMetros) {
+        this.altitudMetros = altitudMetros;
+    }
+
+    public Double getTemperaturaPromedio() {
+        return temperaturaPromedio;
+    }
+
+    public void setTemperaturaPromedio(Double temperaturaPromedio) {
+        this.temperaturaPromedio = temperaturaPromedio;
+    }
+
+    public Boolean getEsPlayero() {
+        return esPlayero;
+    }
+
+    public void setEsPlayero(Boolean esPlayero) {
+        this.esPlayero = esPlayero;
+    }
+
+    public String getTemporadaAlta() {
+        return temporadaAlta;
+    }
+
+    public void setTemporadaAlta(String temporadaAlta) {
+        this.temporadaAlta = temporadaAlta;
     }
 
     @Override

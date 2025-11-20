@@ -46,6 +46,10 @@ public class DestinoServicio implements ApiOperacionBD<DestinoDto, Integer> {
         objDestino.setDepartamentoDestino(dto.getDepartamentoDestino());
         objDestino.setDescripcionDestino(dto.getDescripcionDestino());
         objDestino.setEstadoDestino(dto.getEstadoDestino());
+        objDestino.setAltitudMetros(dto.getAltitudMetros());
+        objDestino.setTemperaturaPromedio(dto.getTemperaturaPromedio());
+        objDestino.setEsPlayero(dto.getEsPlayero());
+        objDestino.setTemporadaAlta(dto.getTemporadaAlta());
         objDestino.setNombreImagenPublicoDestino(dto.getNombreImagenPublicoDestino());
         objDestino.setNombreImagenPrivadoDestino(GestorImagen.grabarLaImagen(ruta));
 
@@ -54,9 +58,13 @@ public class DestinoServicio implements ApiOperacionBD<DestinoDto, Integer> {
                 + objDestino.getDepartamentoDestino() + Persistencia.SEPARADOR_COLUMNAS
                 + objDestino.getDescripcionDestino() + Persistencia.SEPARADOR_COLUMNAS
                 + objDestino.getEstadoDestino() + Persistencia.SEPARADOR_COLUMNAS
+                + objDestino.getAltitudMetros() + Persistencia.SEPARADOR_COLUMNAS
+                + objDestino.getTemperaturaPromedio() + Persistencia.SEPARADOR_COLUMNAS
+                + objDestino.getEsPlayero() + Persistencia.SEPARADOR_COLUMNAS
+                + objDestino.getTemporadaAlta() + Persistencia.SEPARADOR_COLUMNAS
                 + objDestino.getNombreImagenPublicoDestino() + Persistencia.SEPARADOR_COLUMNAS
                 + objDestino.getNombreImagenPrivadoDestino();
-
+        
         if (miArchivo.agregarRegistro(filaGrabar)) {
             dto.setIdDestino(objDestino.getIdDestino());
             return dto;
@@ -80,11 +88,25 @@ public class DestinoServicio implements ApiOperacionBD<DestinoDto, Integer> {
                 String departamento = columnas[2].trim();
                 String descripcion = columnas[3].trim();
                 Boolean estado = Boolean.valueOf(columnas[4].trim());
-                String npub = columnas[5].trim();
-                String nocu = columnas[6].trim();
+                Integer altitud = Integer.parseInt(columnas[5].trim());
+                Double temperatura = Double.parseDouble(columnas[6].trim());
+                Boolean esPlayero = Boolean.valueOf(columnas[7].trim());
+                String temporadaAlta = columnas[8].trim();
+                String npub = columnas[9].trim();
+                String nocu = columnas[10].trim();
 
-                DestinoDto dto = new DestinoDto(codDestino, nombre, departamento,
-                        descripcion, estado, npub, nocu);
+                DestinoDto dto = new DestinoDto();
+                dto.setIdDestino(codDestino);
+                dto.setNombreDestino(nombre);
+                dto.setDepartamentoDestino(departamento);
+                dto.setDescripcionDestino(descripcion);
+                dto.setEstadoDestino(estado);
+                dto.setAltitudMetros(altitud);
+                dto.setTemperaturaPromedio(temperatura);
+                dto.setEsPlayero(esPlayero);
+                dto.setTemporadaAlta(temporadaAlta);
+                dto.setNombreImagenPublicoDestino(npub);
+                dto.setNombreImagenPrivadoDestino(nocu);
 
                 arregloDestino.add(dto);
 
@@ -112,10 +134,24 @@ public class DestinoServicio implements ApiOperacionBD<DestinoDto, Integer> {
                 Boolean estado = Boolean.valueOf(columnas[4].trim());
                 String npub = columnas[5].trim();
                 String nocu = columnas[6].trim();
+                Integer altitud = Integer.parseInt(columnas[5].trim());
+                Double temperatura = Double.parseDouble(columnas[6].trim());
+                Boolean esPlayero = Boolean.valueOf(columnas[7].trim());
+                String temporadaAlta = columnas[8].trim();
 
                 if (Boolean.TRUE.equals(estado)) {
-                    DestinoDto dto = new DestinoDto(codDestino, nombre, departamento,
-                            descripcion, estado, npub, nocu);
+                    DestinoDto dto = new DestinoDto();
+                    dto.setIdDestino(codDestino);
+                    dto.setNombreDestino(nombre);
+                    dto.setDepartamentoDestino(departamento);
+                    dto.setDescripcionDestino(descripcion);
+                    dto.setEstadoDestino(estado);
+                    dto.setAltitudMetros(altitud);
+                    dto.setTemperaturaPromedio(temperatura);
+                    dto.setEsPlayero(esPlayero);
+                    dto.setTemporadaAlta(temporadaAlta);
+                    dto.setNombreImagenPublicoDestino(npub);
+                    dto.setNombreImagenPrivadoDestino(nocu);
 
                     arregloDestino.add(dto);
                 }
@@ -197,6 +233,10 @@ public class DestinoServicio implements ApiOperacionBD<DestinoDto, Integer> {
                     + dto.getDepartamentoDestino() + Persistencia.SEPARADOR_COLUMNAS
                     + dto.getDescripcionDestino() + Persistencia.SEPARADOR_COLUMNAS
                     + dto.getEstadoDestino() + Persistencia.SEPARADOR_COLUMNAS
+                    + dto.getAltitudMetros() + Persistencia.SEPARADOR_COLUMNAS
+                    + dto.getTemperaturaPromedio() + Persistencia.SEPARADOR_COLUMNAS
+                    + dto.getEsPlayero() + Persistencia.SEPARADOR_COLUMNAS
+                    + dto.getTemporadaAlta() + Persistencia.SEPARADOR_COLUMNAS
                     + dto.getNombreImagenPublicoDestino() + Persistencia.SEPARADOR_COLUMNAS
                     + imagenPrivada;
             

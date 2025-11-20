@@ -9,7 +9,10 @@ public class DestinoDto {
     private Boolean estadoDestino;
     private String nombreImagenPublicoDestino;
     private String nombreImagenPrivadoDestino;
-
+    private Integer altitudMetros;
+    private Double temperaturaPromedio;
+    private Boolean esPlayero;
+    private String temporadaAlta;
     public DestinoDto() {
     }
 
@@ -80,6 +83,38 @@ public class DestinoDto {
 
     public void setNombreImagenPrivadoDestino(String nombreImagenPrivadoDestino) {
         this.nombreImagenPrivadoDestino = nombreImagenPrivadoDestino;
+    }
+    
+    public Integer getAltitudMetros() {
+        return altitudMetros;
+    }
+
+    public void setAltitudMetros(Integer altitudMetros) {
+        this.altitudMetros = altitudMetros;
+    }
+
+    public Double getTemperaturaPromedio() {
+        return temperaturaPromedio;
+    }
+
+    public void setTemperaturaPromedio(Double temperaturaPromedio) {
+        this.temperaturaPromedio = temperaturaPromedio;
+    }
+
+    public Boolean getEsPlayero() {
+        return esPlayero;
+    }
+
+    public void setEsPlayero(Boolean esPlayero) {
+        this.esPlayero = esPlayero;
+    }
+
+    public String getTemporadaAlta() {
+        return temporadaAlta;
+    }
+
+    public void setTemporadaAlta(String temporadaAlta) {
+        this.temporadaAlta = temporadaAlta;
     }
 
     @Override

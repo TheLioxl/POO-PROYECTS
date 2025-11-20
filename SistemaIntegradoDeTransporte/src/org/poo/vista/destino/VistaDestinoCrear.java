@@ -1,5 +1,6 @@
 package org.poo.vista.destino;
 
+import java.time.LocalDate;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -40,6 +41,12 @@ public class VistaDestinoCrear extends StackPane {
     private ImageView imgPorDefecto;
     private ImageView imgPrevisualizar;
     private String rutaImagenSeleccionada;
+    private Spinner<Integer> spinnerAltitud;
+    private Slider sliderTemperatura;
+    private Label lblValorTemp;
+    private RadioButton radioPlayero;
+    private RadioButton radioMontañoso;
+    private DatePicker datePickerTemporada;
 
     public VistaDestinoCrear(Stage escenario, double ancho, double alto) {
         miEscenario = escenario;
@@ -82,7 +89,7 @@ public class VistaDestinoCrear extends StackPane {
         col1.setHgrow(Priority.ALWAYS);
         miGrilla.getColumnConstraints().addAll(col0, col1, col2);
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 12; i++) {  // CAMBIAR de 8 a 12
             RowConstraints fila = new RowConstraints();
             fila.setMinHeight(ALTO_FILA);
             fila.setMaxHeight(ALTO_FILA);
@@ -141,6 +148,77 @@ public class VistaDestinoCrear extends StackPane {
         txtDescripcionDestino.setWrapText(true);
         txtDescripcionDestino.setMaxWidth(Double.MAX_VALUE);
         miGrilla.add(txtDescripcionDestino, segundaColumna, fila);
+
+        // ALTITUD (Spinner)
+        fila++;
+        Label lblAltitud = new Label("Altitud (msnm):");
+        lblAltitud.setFont(Font.font("Rockwell", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblAltitud, primeraColumna, fila);
+
+        spinnerAltitud = new Spinner<>();
+        SpinnerValueFactory<Integer> valueFactoryAltitud = 
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5000, 100);
+        spinnerAltitud.setValueFactory(valueFactoryAltitud);
+        spinnerAltitud.setPrefHeight(ALTO_CAJA);
+        spinnerAltitud.setMaxWidth(Double.MAX_VALUE);
+        spinnerAltitud.setEditable(true);
+        miGrilla.add(spinnerAltitud, segundaColumna, fila);
+
+        // TEMPERATURA (Slider)
+        fila++;
+        Label lblTemperatura = new Label("Temperatura Promedio °C:");
+        lblTemperatura.setFont(Font.font("Rockwell", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblTemperatura, primeraColumna, fila);
+
+        VBox vboxTemp = new VBox(5);
+        sliderTemperatura = new Slider(0, 40, 25);
+        sliderTemperatura.setShowTickLabels(true);
+        sliderTemperatura.setShowTickMarks(true);
+        sliderTemperatura.setMajorTickUnit(10);
+        sliderTemperatura.setBlockIncrement(1);
+        
+        lblValorTemp = new Label("25.0°C");
+        lblValorTemp.setFont(Font.font("Rockwell", FontWeight.BOLD, 14));
+        
+        sliderTemperatura.valueProperty().addListener((obs, oldVal, newVal) -> {
+            lblValorTemp.setText(String.format("%.1f°C", newVal.doubleValue()));
+        });
+        
+        vboxTemp.getChildren().addAll(sliderTemperatura, lblValorTemp);
+        miGrilla.add(vboxTemp, segundaColumna, fila);
+
+        // TIPO DE DESTINO (RadioButton)
+        fila++;
+        Label lblTipo = new Label("Tipo de Destino:");
+        lblTipo.setFont(Font.font("Rockwell", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblTipo, primeraColumna, fila);
+
+        ToggleGroup grupoTipo = new ToggleGroup();
+        radioPlayero = new RadioButton("Playero");
+        radioMontañoso = new RadioButton("Montañoso/Cultural");
+        
+        radioPlayero.setToggleGroup(grupoTipo);
+        radioMontañoso.setToggleGroup(grupoTipo);
+        radioPlayero.setSelected(true);
+        
+        radioPlayero.setFont(Font.font("Rockwell", 14));
+        radioMontañoso.setFont(Font.font("Rockwell", 14));
+        
+        HBox hboxRadio = new HBox(15);
+        hboxRadio.getChildren().addAll(radioPlayero, radioMontañoso);
+        miGrilla.add(hboxRadio, segundaColumna, fila);
+
+        // TEMPORADA ALTA (DatePicker)
+        fila++;
+        Label lblTemporada = new Label("Inicio Temporada Alta:");
+        lblTemporada.setFont(Font.font("Rockwell", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblTemporada, primeraColumna, fila);
+
+        datePickerTemporada = new DatePicker();
+        datePickerTemporada.setValue(LocalDate.now());
+        datePickerTemporada.setPrefHeight(ALTO_CAJA);
+        datePickerTemporada.setMaxWidth(Double.MAX_VALUE);
+        miGrilla.add(datePickerTemporada, segundaColumna, fila);
 
         // ESTADO
         fila++;
@@ -258,6 +336,10 @@ public class VistaDestinoCrear extends StackPane {
             dto.setNombreDestino(txtNombreDestino.getText());
             dto.setDepartamentoDestino(txtDepartamentoDestino.getText());
             dto.setDescripcionDestino(txtDescripcionDestino.getText());
+            dto.setAltitudMetros(spinnerAltitud.getValue());
+            dto.setTemperaturaPromedio(sliderTemperatura.getValue());
+            dto.setEsPlayero(radioPlayero.isSelected());
+            dto.setTemporadaAlta(datePickerTemporada.getValue().toString());
             dto.setEstadoDestino(cmbEstadoDestino.getValue().equals("Activo"));
             dto.setNombreImagenPublicoDestino(cajaImagen.getText());
 
@@ -276,6 +358,10 @@ public class VistaDestinoCrear extends StackPane {
         txtNombreDestino.clear();
         txtDepartamentoDestino.clear();
         txtDescripcionDestino.clear();
+        spinnerAltitud.getValueFactory().setValue(100);
+        sliderTemperatura.setValue(25);
+        radioPlayero.setSelected(true);
+        datePickerTemporada.setValue(LocalDate.now());
         cmbEstadoDestino.getSelectionModel().select(0);
         cajaImagen.clear();
         rutaImagenSeleccionada = "";

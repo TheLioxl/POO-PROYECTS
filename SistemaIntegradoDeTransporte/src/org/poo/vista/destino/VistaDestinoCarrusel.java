@@ -43,6 +43,10 @@ public class VistaDestinoCarrusel extends BorderPane {
     private StringProperty destinoDescripcion;
     private ObjectProperty<Image> destinoImagen;
     private BooleanProperty destinoEstado;
+    private IntegerProperty destinoAltitud;
+    private DoubleProperty destinoTemperatura;
+    private StringProperty destinoTipo;
+    private StringProperty destinoTemporada;
 
     public VistaDestinoCarrusel(Stage ventanaPadre, BorderPane princ, Pane pane,
             double anchoPanel, double altoPanel, int indice) {
@@ -290,6 +294,45 @@ public class VistaDestinoCarrusel extends BorderPane {
         lblDescripcion.setMaxWidth(500);
         organizadorVertical.getChildren().add(lblDescripcion);
         
+        // Altitud
+        destinoAltitud = new SimpleIntegerProperty(
+            objCargado.getAltitudMetros() != null ? objCargado.getAltitudMetros() : 0);
+        Label lblAltitud = new Label();
+        lblAltitud.textProperty().bind(Bindings.concat("Altitud: ", destinoAltitud.asString(), " msnm"));
+        lblAltitud.setFont(Font.font("Rockwell", tamanioFuente));
+        lblAltitud.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
+        organizadorVertical.getChildren().add(lblAltitud);
+
+        // Temperatura
+        destinoTemperatura = new SimpleDoubleProperty(
+            objCargado.getTemperaturaPromedio() != null ? objCargado.getTemperaturaPromedio() : 0.0);
+        Label lblTemperatura = new Label();
+        lblTemperatura.textProperty().bind(Bindings.concat("Temperatura Promedio: ", 
+            Bindings.format("%.1f°C", destinoTemperatura)));
+        lblTemperatura.setFont(Font.font("Rockwell", tamanioFuente));
+        lblTemperatura.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
+        organizadorVertical.getChildren().add(lblTemperatura);
+
+        // Tipo de Destino
+        String tipoTexto = (objCargado.getEsPlayero() != null && objCargado.getEsPlayero()) 
+            ? "Playero" : "Montañoso/Cultural";
+        destinoTipo = new SimpleStringProperty(tipoTexto);
+        Label lblTipo = new Label();
+        lblTipo.textProperty().bind(Bindings.concat("Tipo: ", destinoTipo));
+        lblTipo.setFont(Font.font("Rockwell", tamanioFuente));
+        lblTipo.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
+        organizadorVertical.getChildren().add(lblTipo);
+
+        // Temporada Alta
+        String temporadaTexto = objCargado.getTemporadaAlta() != null 
+            ? objCargado.getTemporadaAlta() : "No especificada";
+        destinoTemporada = new SimpleStringProperty(temporadaTexto);
+        Label lblTemporada = new Label();
+        lblTemporada.textProperty().bind(Bindings.concat("Temporada Alta: ", destinoTemporada));
+        lblTemporada.setFont(Font.font("Rockwell", tamanioFuente));
+        lblTemporada.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
+        organizadorVertical.getChildren().add(lblTemporada);
+        
         // Estado
         destinoEstado = new SimpleBooleanProperty(objCargado.getEstadoDestino());
         Label lblEstado = new Label();
@@ -310,6 +353,17 @@ public class VistaDestinoCarrusel extends BorderPane {
         destinoDepartamento.set(objCargado.getDepartamentoDestino());
         destinoDescripcion.set(objCargado.getDescripcionDestino());
         destinoEstado.set(objCargado.getEstadoDestino());
+        
+        destinoAltitud.set(objCargado.getAltitudMetros() != null ? objCargado.getAltitudMetros() : 0);
+        destinoTemperatura.set(objCargado.getTemperaturaPromedio() != null ? objCargado.getTemperaturaPromedio() : 0.0);
+        
+        String tipoTexto = (objCargado.getEsPlayero() != null && objCargado.getEsPlayero()) 
+            ? "Playero" : "Montañoso/Cultural";
+        destinoTipo.set(tipoTexto);
+        
+        String temporadaTexto = objCargado.getTemporadaAlta() != null 
+            ? objCargado.getTemporadaAlta() : "No especificada";
+        destinoTemporada.set(temporadaTexto);
 
         // Actualizar imagen
         try {
