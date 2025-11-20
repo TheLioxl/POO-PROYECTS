@@ -206,6 +206,10 @@ public class VistaTerminalCarrusel extends BorderPane {
                 msg.initOwner(miEscenario);
 
                 if (msg.showAndWait().get() == ButtonType.OK) {
+                    // Liberar la imagen antes de eliminar
+                    terminalImagen.set(null);
+                    System.gc(); // Sugerir recolección de basura
+                    
                     if (TerminalControladorEliminar.borrar(indiceActual)) {
                         totalTerminales = TerminalControladorListar.obtenerCantidadTerminales();
                         
@@ -220,7 +224,7 @@ public class VistaTerminalCarrusel extends BorderPane {
                         } else {
                             Mensaje.mostrar(Alert.AlertType.INFORMATION,
                                     miEscenario, "Sin terminales", "No quedan terminales registradas");
-                            indiceActualEstatico = 0; // Resetear índice estático
+                            indiceActualEstatico = 0;
                             panelCuerpo = TerminalControladorVentana.administrar(
                                     miEscenario, panelPrincipal, panelCuerpo,
                                     Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO);

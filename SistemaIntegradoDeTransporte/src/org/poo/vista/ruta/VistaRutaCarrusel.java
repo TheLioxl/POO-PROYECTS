@@ -165,9 +165,9 @@ public class VistaRutaCarrusel extends BorderPane {
         btnEliminar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_BORRAR, tamanioIcono));
 
         btnEliminar.setOnAction(e -> {
-            String mensaje = "¿Seguro que desea eliminar esta ruta?\\n\\n"
-                    + "Código: " + objCargado.getIdRuta() + "\\n"
-                    + "Nombre: " + objCargado.getNombreRuta() + "\\n\\n"
+            String mensaje = "¿Seguro que desea eliminar esta ruta?\n\n"
+                    + "Código: " + objCargado.getIdRuta() + "\n"
+                    + "Nombre: " + objCargado.getNombreRuta() + "\n\n"
                     + "Esta acción es irreversible.";
 
             Alert msg = new Alert(Alert.AlertType.CONFIRMATION);
@@ -177,6 +177,10 @@ public class VistaRutaCarrusel extends BorderPane {
             msg.initOwner(miEscenario);
 
             if (msg.showAndWait().get() == ButtonType.OK) {
+                // Liberar la imagen antes de eliminar
+                rutaImagen.set(null);
+                System.gc(); // Sugerir recolección de basura
+                
                 if (RutaControladorEliminar.borrar(indiceActual)) {
                     totalRutas = RutaControladorListar.obtenerCantidadRutas();
                     

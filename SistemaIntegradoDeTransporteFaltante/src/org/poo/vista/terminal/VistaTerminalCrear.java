@@ -50,6 +50,7 @@ public class VistaTerminalCrear extends StackPane {
     private final GridPane miGrilla;
     private final Rectangle miMarco;
 
+    // Componentes del formulario
     private TextField txtNombreTerminal;
     private TextField txtCiudadTerminal;
     private TextField txtDireccionTerminal;
@@ -88,25 +89,25 @@ public class VistaTerminalCrear extends StackPane {
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setPrefSize(miAnchoGrilla, alto);
-        miGrilla.setMinSize(miAnchoGrilla, alto);
-        miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        miGrilla.maxWidthProperty().bind(widthProperty().multiply(0.70));
+        miGrilla.maxHeightProperty().bind(heightProperty().multiply(0.80));
+        miGrilla.setAlignment(Pos.CENTER);
+
 
         ColumnConstraints col0 = new ColumnConstraints();
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
         
-        col0.setPrefWidth(200);
-        col1.setPrefWidth(200);
-        col2.setPrefWidth(200);
-        
+        col0.setPercentWidth(30);  // etiqueta
+        col1.setPercentWidth(45);  // campo de texto
+        col2.setPercentWidth(30);  // imagen
         col1.setHgrow(Priority.ALWAYS);
+
         miGrilla.getColumnConstraints().addAll(col0, col1, col2);
 
         for (int i = 0; i < 10; i++) {
             RowConstraints fila = new RowConstraints();
-            fila.setMinHeight(ALTO_FILA);
-            fila.setMaxHeight(ALTO_FILA);
+            fila.setVgrow(Priority.ALWAYS);
             miGrilla.getRowConstraints().add(fila);
         }
     }
@@ -117,7 +118,7 @@ public class VistaTerminalCrear extends StackPane {
         miTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
         GridPane.setHalignment(miTitulo, HPos.CENTER);
         GridPane.setMargin(miTitulo, new Insets(30, 0, 0, 0));
-        miGrilla.add(miTitulo, 0, 0, 3, 2);//nombre, columna, fila, union de filas 
+        miGrilla.add(miTitulo, 0, 0, 3, 1);//nombre, columna, fila, union de filas 
     }
 
     private void crearFormulario() {
@@ -129,6 +130,8 @@ public class VistaTerminalCrear extends StackPane {
         txtNombreTerminal = new TextField();
         txtNombreTerminal.setPromptText("Ej: Terminal del Norte");
         txtNombreTerminal.setPrefHeight(ALTO_CAJA);
+        txtNombreTerminal.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtNombreTerminal.setMinHeight(Region.USE_PREF_SIZE);
         GridPane.setHgrow(txtNombreTerminal, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtNombreTerminal, 50);
         miGrilla.add(txtNombreTerminal, 1, 2);
@@ -141,11 +144,14 @@ public class VistaTerminalCrear extends StackPane {
         txtCiudadTerminal = new TextField();
         txtCiudadTerminal.setPromptText("Ej: Santa Marta");
         txtCiudadTerminal.setPrefHeight(ALTO_CAJA);
+        txtCiudadTerminal.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtCiudadTerminal.setMinHeight(Region.USE_PREF_SIZE);
         GridPane.setHgrow(txtCiudadTerminal, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtCiudadTerminal, 30);
         Formulario.soloLetras(txtCiudadTerminal);
         miGrilla.add(txtCiudadTerminal, 1, 3);
 
+        // DIRECCIÓN
         Label lblDireccion = new Label("Dirección:");
         lblDireccion.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
         miGrilla.add(lblDireccion, 0, 4);
@@ -153,10 +159,13 @@ public class VistaTerminalCrear extends StackPane {
         txtDireccionTerminal = new TextField();
         txtDireccionTerminal.setPromptText("Ej: Calle 25 # 15-30");
         txtDireccionTerminal.setPrefHeight(ALTO_CAJA);
+        txtDireccionTerminal.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtDireccionTerminal.setMinHeight(Region.USE_PREF_SIZE);
         GridPane.setHgrow(txtDireccionTerminal, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtDireccionTerminal, 100);
         miGrilla.add(txtDireccionTerminal, 1, 4);
 
+        // ESTADO
         Label lblEstado = new Label("Estado:");
         lblEstado.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
         miGrilla.add(lblEstado, 0, 5);
@@ -164,10 +173,13 @@ public class VistaTerminalCrear extends StackPane {
         cmbEstadoTerminal = new ComboBox<>();
         cmbEstadoTerminal.setMaxWidth(Double.MAX_VALUE);
         cmbEstadoTerminal.setPrefHeight(ALTO_CAJA);
+        cmbEstadoTerminal.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        cmbEstadoTerminal.setMinHeight(Region.USE_PREF_SIZE);
         cmbEstadoTerminal.getItems().addAll("Seleccione estado", "Activo", "Inactivo");
         cmbEstadoTerminal.getSelectionModel().select(0);
         miGrilla.add(cmbEstadoTerminal, 1, 5);
 
+        // PLATAFORMAS (Spinner)
         Label lblPlataformas = new Label("Plataformas/Muelles:");
         lblPlataformas.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
         miGrilla.add(lblPlataformas, 0, 6);
@@ -177,10 +189,12 @@ public class VistaTerminalCrear extends StackPane {
             new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 50);
         spinnerPlataformas.setValueFactory(valueFactory);
         spinnerPlataformas.setPrefHeight(ALTO_CAJA);
-        spinnerPlataformas.setMaxWidth(Double.MAX_VALUE);
+        spinnerPlataformas.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        spinnerPlataformas.setMinHeight(Region.USE_PREF_SIZE);
         spinnerPlataformas.setEditable(true);
         miGrilla.add(spinnerPlataformas, 1, 6);
 
+        // SERVICIOS (CheckBox)
         Label lblServicios = new Label("Servicios disponibles:");
         lblServicios.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
         miGrilla.add(lblServicios, 0, 7);
@@ -197,6 +211,7 @@ public class VistaTerminalCrear extends StackPane {
         vboxServicios.getChildren().addAll(chkWifi, chkCafeteria, chkBanos);
         miGrilla.add(vboxServicios, 1, 7);
 
+        // IMAGEN
         Label lblImagen = new Label("Imagen de la terminal:");
         lblImagen.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
         miGrilla.add(lblImagen, 0, 8);
@@ -204,6 +219,7 @@ public class VistaTerminalCrear extends StackPane {
         cajaImagen = new TextField();
         cajaImagen.setDisable(true);
         cajaImagen.setPrefHeight(ALTO_CAJA);
+        cajaImagen.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
         String[] extensiones = {"*.png", "*.jpg", "*.jpeg"};
         FileChooser objSeleccionar = Formulario.selectorImagen(
                 "Seleccionar imagen", "Imágenes", extensiones);
@@ -214,10 +230,12 @@ public class VistaTerminalCrear extends StackPane {
         btnSeleccionarImagen.setOnAction((e)->{
             rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(cajaImagen, objSeleccionar);
             if (rutaImagenSeleccionada.isEmpty()) {
-                
+                //Solo es para crear NO para actualizar
+                //OJOOOOOOOOOOOOO
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 miGrilla.add(imgPorDefecto, 2, 1, 1, 9);
+                
             }else{
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
@@ -238,9 +256,11 @@ public class VistaTerminalCrear extends StackPane {
         GridPane.setValignment(imgPorDefecto, VPos.CENTER);
         miGrilla.add(imgPorDefecto, 2, 1, 1, 9);
 
+        // BOTÓN GRABAR
         Button btnGrabar = new Button("GRABAR TERMINAL");
         btnGrabar.setPrefHeight(ALTO_CAJA);
         btnGrabar.setMaxWidth(Double.MAX_VALUE);
+        
         btnGrabar.setTextFill(Color.web("#FFFFFF"));
         btnGrabar.setFont(Font.font("Rockwell", FontWeight.BOLD, 14));
         btnGrabar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + ";" 
@@ -327,8 +347,7 @@ public class VistaTerminalCrear extends StackPane {
 
         miGrilla.getChildren().remove(imgPrevisualizar);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        GridPane.setValignment(imgPorDefecto, VPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 9);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
         txtNombreTerminal.requestFocus();
     }
@@ -338,7 +357,7 @@ public class VistaTerminalCrear extends StackPane {
             double alturaMarco = miMarco.getHeight();
             if (alturaMarco > 0) {
                 double desplazamiento = alturaMarco * AJUSTE_TITULO;
-                miGrilla.setTranslateY(-alturaMarco / 14 + desplazamiento);
+                miGrilla.setTranslateY(-alturaMarco / 12 + desplazamiento);
             }
         };
         calcular.run();

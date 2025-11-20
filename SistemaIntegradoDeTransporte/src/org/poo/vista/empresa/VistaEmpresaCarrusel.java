@@ -177,6 +177,10 @@ public class VistaEmpresaCarrusel extends BorderPane {
                 msg.initOwner(miEscenario);
 
                 if (msg.showAndWait().get() == ButtonType.OK) {
+                    // Liberar la imagen antes de eliminar
+                    empresaImagen.set(null);
+                    System.gc(); // Sugerir recolección de basura
+                    
                     if (EmpresaControladorEliminar.borrar(indiceActual)) {
                         totalEmpresas = EmpresaControladorListar.obtenerCantidadEmpresas();
                         

@@ -81,11 +81,11 @@ public class VistaEmpresaAdministrar extends StackPane {
                 miEscenario.heightProperty().multiply(0.05));
 
         int cant = EmpresaControladorListar.obtenerCantidadEmpresas();
-        Text titulo = new Text("ADMINISTRAR EMPRESAS (" + cant + ")");
-        titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
+        this.titulo = new Text("ADMINISTRAR EMPRESAS (" + cant + ")");
+        this.titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        this.titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
-        cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
+        cajaVertical.getChildren().addAll(bloqueSeparador, this.titulo);
     }
 
     private void crearTabla() {
@@ -165,7 +165,7 @@ public class VistaEmpresaAdministrar extends StackPane {
         miTabla.getColumns().add(colImagen);
 
         List<EmpresaDto> arrEmpresas = EmpresaControladorListar.obtenerEmpresas();
-        ObservableList<EmpresaDto> datosTabla = FXCollections.observableArrayList(arrEmpresas);
+        datosTabla.setAll(arrEmpresas);
 
         miTabla.setItems(datosTabla);
         miTabla.setPlaceholder(new Text("No hay empresas registradas"));

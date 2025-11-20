@@ -206,7 +206,7 @@ public class VistaTerminalAdministrar extends StackPane {
         configurarColumnas();
 
         List<TerminalDto> arrTerminales = TerminalControladorListar.obtenerTerminales();
-        ObservableList<TerminalDto> datosTabla = FXCollections.observableArrayList(arrTerminales);
+        datosTabla.setAll(arrTerminales);
 
         miTabla.setItems(datosTabla);
         miTabla.setPlaceholder(new Text("No hay terminales registradas"));

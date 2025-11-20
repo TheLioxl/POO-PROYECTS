@@ -31,7 +31,7 @@ public class VistaEmpresaCrear extends StackPane {
     private static final int H_GAP = 10;
     private static final int V_GAP = 20;
     private static final int ALTO_FILA = 38;
-    private static final int ALTO_CAJA = 35;
+    private static final int ALTO_CAJA = 32;
     private static final int TAMANIO_FUENTE = 20;
     private static final double AJUSTE_TITULO = 0.1;
 
@@ -83,25 +83,26 @@ public class VistaEmpresaCrear extends StackPane {
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setPrefSize(miAnchoGrilla, alto);
-        miGrilla.setMinSize(miAnchoGrilla, alto);
-        miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        miGrilla.maxWidthProperty().bind(widthProperty().multiply(0.70));
+        miGrilla.maxHeightProperty().bind(heightProperty().multiply(0.80));
+        miGrilla.setAlignment(Pos.CENTER);
 
         ColumnConstraints col0 = new ColumnConstraints();
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
         
-        col0.setPrefWidth(200);
-        col1.setPrefWidth(200);
-        col2.setPrefWidth(200);
-        
+        col0.setPercentWidth(30);  // etiqueta
+        col1.setPercentWidth(45);  // campo de texto
+        col2.setPercentWidth(30);  // imagen
         col1.setHgrow(Priority.ALWAYS);
+        
         miGrilla.getColumnConstraints().addAll(col0, col1, col2);
 
         for (int i = 0; i < 12; i++) {
             RowConstraints fila = new RowConstraints();
             fila.setMinHeight(ALTO_FILA);
             fila.setMaxHeight(ALTO_FILA);
+            fila.setVgrow(Priority.ALWAYS);
             miGrilla.getRowConstraints().add(fila);
         }
     }
@@ -125,6 +126,8 @@ public class VistaEmpresaCrear extends StackPane {
         txtNombreEmpresa = new TextField();
         txtNombreEmpresa.setPromptText("Ej: Expreso Brasilia");
         txtNombreEmpresa.setPrefHeight(ALTO_CAJA);
+        txtNombreEmpresa.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtNombreEmpresa.setMinHeight(Region.USE_PREF_SIZE);
         GridPane.setHgrow(txtNombreEmpresa, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtNombreEmpresa, 50);
         miGrilla.add(txtNombreEmpresa, 1, 2);
@@ -136,6 +139,8 @@ public class VistaEmpresaCrear extends StackPane {
         txtNitEmpresa = new TextField();
         txtNitEmpresa.setPromptText("Ej: 900123456-7");
         txtNitEmpresa.setPrefHeight(ALTO_CAJA);
+        txtNitEmpresa.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtNitEmpresa.setMinHeight(Region.USE_PREF_SIZE);
         GridPane.setHgrow(txtNitEmpresa, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtNitEmpresa, 20);
         miGrilla.add(txtNitEmpresa, 1, 3);
@@ -147,6 +152,8 @@ public class VistaEmpresaCrear extends StackPane {
         cmbTerminalEmpresa = new ComboBox<>();
         cmbTerminalEmpresa.setMaxWidth(Double.MAX_VALUE);
         cmbTerminalEmpresa.setPrefHeight(ALTO_CAJA);
+        cmbTerminalEmpresa.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        cmbTerminalEmpresa.setMinHeight(Region.USE_PREF_SIZE);
 
         List<TerminalDto> terminales = TerminalControladorListar.obtenerTerminalesActivos();
         TerminalDto opcionDefault = new TerminalDto();
@@ -178,6 +185,8 @@ public class VistaEmpresaCrear extends StackPane {
         cmbEstadoEmpresa = new ComboBox<>();
         cmbEstadoEmpresa.setMaxWidth(Double.MAX_VALUE);
         cmbEstadoEmpresa.setPrefHeight(ALTO_CAJA);
+        cmbEstadoEmpresa.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        cmbEstadoEmpresa.setMinHeight(Region.USE_PREF_SIZE);
         cmbEstadoEmpresa.getItems().addAll("Seleccione estado", "Activo", "Inactivo");
         cmbEstadoEmpresa.getSelectionModel().select(0);
         miGrilla.add(cmbEstadoEmpresa, 1, 5);
@@ -190,6 +199,8 @@ public class VistaEmpresaCrear extends StackPane {
         dateFechaFundacion = new DatePicker();
         dateFechaFundacion.setMaxWidth(Double.MAX_VALUE);
         dateFechaFundacion.setPrefHeight(ALTO_CAJA);
+        dateFechaFundacion.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        dateFechaFundacion.setMinHeight(Region.USE_PREF_SIZE);
         dateFechaFundacion.setPromptText("Seleccione fecha");
         dateFechaFundacion.setValue(LocalDate.now().minusYears(10));
         Formulario.deshabilitarFechasFuturas(dateFechaFundacion);
@@ -205,7 +216,8 @@ public class VistaEmpresaCrear extends StackPane {
             new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 50);
         spinnerEmpleados.setValueFactory(valueFactory);
         spinnerEmpleados.setPrefHeight(ALTO_CAJA);
-        spinnerEmpleados.setMaxWidth(Double.MAX_VALUE);
+        spinnerEmpleados.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        spinnerEmpleados.setMinHeight(Region.USE_PREF_SIZE);
         spinnerEmpleados.setEditable(true);
         miGrilla.add(spinnerEmpleados, 1, 7);
 
@@ -234,8 +246,9 @@ public class VistaEmpresaCrear extends StackPane {
         txtDescripcion = new TextArea();
         txtDescripcion.setPromptText("Breve descripción de la empresa...");
         txtDescripcion.setPrefRowCount(2);
+        txtDescripcion.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtDescripcion.setMinHeight(Region.USE_PREF_SIZE);
         txtDescripcion.setWrapText(true);
-        txtDescripcion.setMaxWidth(Double.MAX_VALUE);
         miGrilla.add(txtDescripcion, 1, 9);
 
 
@@ -246,6 +259,8 @@ public class VistaEmpresaCrear extends StackPane {
         cajaImagen = new TextField();
         cajaImagen.setDisable(true);
         cajaImagen.setPrefHeight(ALTO_CAJA);
+        cajaImagen.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        cajaImagen.setMinHeight(Region.USE_PREF_SIZE);
 
         String[] extensiones = {"*.png", "*.jpg", "*.jpeg"};
         FileChooser objSeleccionar = Formulario.selectorImagen(
@@ -261,13 +276,13 @@ public class VistaEmpresaCrear extends StackPane {
                 //OJOOOOOOOOOOOOO
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
-                miGrilla.add(imgPorDefecto, 2, 1, 1, 10);
+                miGrilla.add(imgPorDefecto, 2, 5);
             }else{
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, 2, 1, 1, 10);
+                miGrilla.add(imgPrevisualizar, 2, 5);
             }
         });
 

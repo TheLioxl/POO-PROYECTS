@@ -216,10 +216,10 @@ public class VistaDestinoAdministrar extends StackPane {
             } else {
                 DestinoDto objDestino = miTabla.getSelectionModel().getSelectedItem();
                 
-                String mensaje = "¿Está seguro de eliminar este destino?\\n\\n"
-                        + "Código: " + objDestino.getIdDestino() + "\\n"
-                        + "Destino: " + objDestino.getNombreDestino() + "\\n"
-                        + "Departamento: " + objDestino.getDepartamentoDestino() + "\\n\\n"
+                String mensaje = "¿Está seguro de eliminar este destino?\n\n"
+                        + "Código: " + objDestino.getIdDestino() + "\n"
+                        + "Destino: " + objDestino.getNombreDestino() + "\n"
+                        + "Departamento: " + objDestino.getDepartamentoDestino() + "\n\n"
                         + "Esta acción no se puede deshacer.";
 
                 Alert msg = new Alert(Alert.AlertType.CONFIRMATION);

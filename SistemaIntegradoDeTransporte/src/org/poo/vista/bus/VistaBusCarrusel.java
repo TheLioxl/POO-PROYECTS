@@ -165,9 +165,9 @@ public class VistaBusCarrusel extends BorderPane {
         btnEliminar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_BORRAR, tamanioIcono));
 
         btnEliminar.setOnAction(e -> {
-            String mensaje = "¿Seguro que desea eliminar este bus?\\n\\n"
-                    + "Código: " + objCargado.getIdBus() + "\\n"
-                    + "Placa: " + objCargado.getPlacaBus() + "\\n\\n"
+            String mensaje = "¿Seguro que desea eliminar este bus?\n\n"
+                    + "Código: " + objCargado.getIdBus() + "\n"
+                    + "Placa: " + objCargado.getPlacaBus() + "\n\n"
                     + "Esta acción es irreversible.";
 
             Alert msg = new Alert(Alert.AlertType.CONFIRMATION);
@@ -177,6 +177,10 @@ public class VistaBusCarrusel extends BorderPane {
             msg.initOwner(miEscenario);
 
             if (msg.showAndWait().get() == ButtonType.OK) {
+                // Liberar la imagen antes de eliminar
+                busImagen.set(null);
+                System.gc(); // Sugerir recolección de basura
+                
                 if (BusControladorEliminar.borrar(indiceActual)) {
                     totalBuses = BusControladorListar.obtenerCantidadBuses();
                     

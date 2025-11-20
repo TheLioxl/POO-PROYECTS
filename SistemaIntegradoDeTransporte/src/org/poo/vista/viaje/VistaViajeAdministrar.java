@@ -81,11 +81,11 @@ public class VistaViajeAdministrar extends StackPane {
                 miEscenario.heightProperty().multiply(0.05));
 
         int cant = ViajeControladorListar.obtenerCantidadViajes();
-        titulo = new Text("Administrar Viajes (" + cant + ")");
-        titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        this.titulo = new Text("ADMINISTRAR VIAJES (" + cant + ")");
+        this.titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        this.titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
-        cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
+        cajaVertical.getChildren().addAll(bloqueSeparador, this.titulo);
     }
 
     private void crearTabla() {
@@ -240,7 +240,7 @@ public class VistaViajeAdministrar extends StackPane {
                     int posi = miTabla.getSelectionModel().getSelectedIndex();
                     if (ViajeControladorEliminar.borrar(posi)) {
                         int canti = ViajeControladorListar.obtenerCantidadViajes();
-                        titulo.setText("Administrar Viajes (" + canti + ")");
+                        titulo.setText("ADMINISTRAR VIAJES (" + canti + ")");
 
                         datosTabla.setAll(ViajeControladorListar.obtenerViajes());
                         miTabla.refresh();

@@ -81,11 +81,11 @@ public class VistaRutaAdministrar extends StackPane {
                 miEscenario.heightProperty().multiply(0.05));
 
         int cant = RutaControladorListar.obtenerCantidadRutas();
-        titulo = new Text("Administrar Rutas (" + cant + ")");
-        titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        this.titulo = new Text("ADMINISTRAR RUTAS (" + cant + ")");
+        this.titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        this.titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
-        cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
+        cajaVertical.getChildren().addAll(bloqueSeparador, this.titulo);
     }
 
     private void crearTabla() {
@@ -203,9 +203,9 @@ public class VistaRutaAdministrar extends StackPane {
             } else {
                 RutaDto objRuta = miTabla.getSelectionModel().getSelectedItem();
                 
-                String mensaje = "¿Está seguro de eliminar esta ruta?\\n\\n"
-                        + "Código: " + objRuta.getIdRuta() + "\\n"
-                        + "Ruta: " + objRuta.getCiudadOrigenRuta() + " → " + objRuta.getCiudadDestinoRuta() + "\\n\\n"
+                String mensaje = "¿Está seguro de eliminar esta ruta?\n\n"
+                        + "Código: " + objRuta.getIdRuta() + "\n"
+                        + "Ruta: " + objRuta.getCiudadOrigenRuta() + " → " + objRuta.getCiudadDestinoRuta() + "\n\n"
                         + "Esta acción no se puede deshacer.";
 
                 Alert msg = new Alert(Alert.AlertType.CONFIRMATION);
@@ -218,7 +218,7 @@ public class VistaRutaAdministrar extends StackPane {
                     int posi = miTabla.getSelectionModel().getSelectedIndex();
                     if (RutaControladorEliminar.borrar(posi)) {
                         int canti = RutaControladorListar.obtenerCantidadRutas();
-                        titulo.setText("Administrar Rutas (" + canti + ")");
+                        titulo.setText("ADMINISTRAR RUTAS (" + canti + ")");
 
                         datosTabla.setAll(RutaControladorListar.obtenerRutas());
                         miTabla.refresh();

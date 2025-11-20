@@ -94,11 +94,11 @@ public class VistaPasajeroAdministrar extends StackPane{
                 miEscenario.heightProperty().multiply(0.05));
 
         int cant = PasajeroControladorListar.obtenerCantidadPasajeros();
-        titulo = new Text("ADMINISTRAR PASAJEROS (" + cant + ")");
-        titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
+        this.titulo = new Text("ADMINISTRAR PASAJEROS (" + cant + ")");
+        this.titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        this.titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
-        cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
+        cajaVertical.getChildren().addAll(bloqueSeparador, this.titulo);
     }
 
     // ================== COLUMNAS ==================

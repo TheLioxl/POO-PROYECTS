@@ -94,11 +94,11 @@ public class VistaConductorAdministrar extends StackPane{
                 miEscenario.heightProperty().multiply(0.05));
 
         int cant = ConductorControladorListar.obtenerCantidadConductores();
-        titulo = new Text("ADMINISTRAR CONDUCTORES (" + cant + ")");
-        titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
+        this.titulo = new Text("ADMINISTRAR CONDUCTORES (" + cant + ")");
+        this.titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        this.titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
-        cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
+        cajaVertical.getChildren().addAll(bloqueSeparador, this.titulo);
     }
 
     private TableColumn<ConductorDto, Integer> crearColumnaCodigo() {

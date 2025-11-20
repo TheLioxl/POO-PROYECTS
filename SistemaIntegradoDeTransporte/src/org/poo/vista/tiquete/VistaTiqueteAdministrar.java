@@ -94,11 +94,11 @@ public class VistaTiqueteAdministrar extends StackPane {
                 miEscenario.heightProperty().multiply(0.05));
 
         int cant = TiqueteControladorListar.obtenerCantidadTiquetes();
-        titulo = new Text("ADMINISTRAR TIQUETES (" + cant + ")");
-        titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
+        this.titulo = new Text("ADMINISTRAR TIQUETES (" + cant + ")");
+        this.titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        this.titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
-        cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
+        cajaVertical.getChildren().addAll(bloqueSeparador, this.titulo);
     }
 
     private TableColumn<TiqueteDto, Integer> crearColumnaCodigo() {
@@ -236,11 +236,11 @@ public class VistaTiqueteAdministrar extends StackPane {
             } else {
                 TiqueteDto objTiquete = miTabla.getSelectionModel().getSelectedItem();
                 
-                String mensaje = "¿Está seguro de eliminar este tiquete?\\n\\n"
-                        + "Código: " + objTiquete.getIdTiquete() + "\\n"
+                String mensaje = "¿Está seguro de eliminar este tiquete?\n\n"
+                        + "Código: " + objTiquete.getIdTiquete() + "\n"
                         + "Pasajero: " + objTiquete.getPasajeroTiquete().getNombrePasajero() + 
-                          " - " + objTiquete.getPasajeroTiquete().getDocumentoPasajero() + "\\n"
-                        + "Asiento: " + objTiquete.getNumeroAsientoTiquete() + "\\n\\n"
+                          " - " + objTiquete.getPasajeroTiquete().getDocumentoPasajero() + "\n"
+                        + "Asiento: " + objTiquete.getNumeroAsientoTiquete() + "\n\n"
                         + "Esta acción no se puede deshacer.";
 
                 Alert msg = new Alert(Alert.AlertType.CONFIRMATION);

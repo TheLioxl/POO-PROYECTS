@@ -183,11 +183,11 @@ public class VistaTiqueteCarrusel extends BorderPane {
         btnEliminar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_BORRAR, tamanioIcono));
 
         btnEliminar.setOnAction(e -> {
-            String mensaje = "¿Seguro que desea eliminar este tiquete?\\n\\n"
-                    + "Código: " + objCargado.getIdTiquete() + "\\n"
+            String mensaje = "¿Seguro que desea eliminar este tiquete?\n\n"
+                    + "Código: " + objCargado.getIdTiquete() + "\n"
                     + "Pasajero: " + objCargado.getPasajeroTiquete().getNombrePasajero() + 
-                      " - " + objCargado.getPasajeroTiquete().getDocumentoPasajero()+ "\\n"
-                    + "Asiento: " + objCargado.getNumeroAsientoTiquete() + "\\n\\n"
+                      " - " + objCargado.getPasajeroTiquete().getDocumentoPasajero()+ "\n"
+                    + "Asiento: " + objCargado.getNumeroAsientoTiquete() + "\n\n"
                     + "Esta acción es irreversible.";
 
             Alert msg = new Alert(Alert.AlertType.CONFIRMATION);
@@ -197,6 +197,10 @@ public class VistaTiqueteCarrusel extends BorderPane {
             msg.initOwner(miEscenario);
 
             if (msg.showAndWait().get() == ButtonType.OK) {
+                // Liberar la imagen antes de eliminar
+                tiqueteImagen.set(null);
+                System.gc(); // Sugerir recolección de basura
+                
                 if (TiqueteControladorEliminar.borrar(indiceActual)) {
                     totalTiquetes = TiqueteControladorListar.obtenerCantidadTiquetes();
                     

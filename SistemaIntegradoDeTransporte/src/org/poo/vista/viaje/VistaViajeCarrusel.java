@@ -185,6 +185,10 @@ public class VistaViajeCarrusel extends BorderPane {
             msg.initOwner(miEscenario);
 
             if (msg.showAndWait().get() == ButtonType.OK) {
+                // Liberar la imagen antes de eliminar
+                viajeImagen.set(null);
+                System.gc(); // Sugerir recolección de basura
+                
                 if (ViajeControladorEliminar.borrar(indiceActual)) {
                     totalViajes = ViajeControladorListar.obtenerCantidadViajes();
                     

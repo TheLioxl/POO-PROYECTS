@@ -1,22 +1,13 @@
 package org.poo.vista.bus;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -26,11 +17,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.poo.controlador.bus.BusControladorEliminar;
 import org.poo.controlador.bus.BusControladorListar;
-import org.poo.controlador.bus.BusControladorUna;
 import org.poo.controlador.bus.BusControladorVentana;
 import org.poo.dto.BusDto;
 import org.poo.recurso.constante.Configuracion;
-import org.poo.recurso.constante.Persistencia;
 import org.poo.recurso.utilidad.Icono;
 import org.poo.recurso.utilidad.Marco;
 import org.poo.recurso.utilidad.Mensaje;
@@ -51,19 +40,6 @@ public class VistaBusAdministrar extends StackPane {
     private Text titulo;
     private HBox cajaBotones;
     private final ObservableList<BusDto> datosTabla = FXCollections.observableArrayList();
-    private int totalBuses;
-    private int indiceActual;
-    private BusDto objCargado;
-    private static int indiceActualEstatico = 0;
-    
-    private StringProperty busTitulo;
-    private StringProperty busPlaca;
-    private StringProperty busModelo;
-    private StringProperty busEmpresa;
-    private ObjectProperty<Image> busImagen;
-    private BooleanProperty busEstado;
-    private IntegerProperty busCapacidad;
-    private StringProperty busTipo;
 
     private Pane panelCuerpo;
     private final BorderPane panelPrincipal;
@@ -106,11 +82,11 @@ public class VistaBusAdministrar extends StackPane {
                 miEscenario.heightProperty().multiply(0.05));
 
         int cant = BusControladorListar.obtenerCantidadBuses();
-        Text titulo = new Text("ADMINISTRAR BUSES (" + cant + ")");
-        titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
+        this.titulo = new Text("ADMINISTRAR BUSES (" + cant + ")");
+        this.titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        this.titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
-        cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
+        cajaVertical.getChildren().addAll(bloqueSeparador, this.titulo);
     }
 
     private void crearTabla() {
@@ -196,7 +172,7 @@ public class VistaBusAdministrar extends StackPane {
         miTabla.getColumns().add(colImagen);
         
         List<BusDto> arrBuses = BusControladorListar.obtenerBuses();
-        ObservableList<BusDto> datosTabla = FXCollections.observableArrayList(arrBuses);
+        datosTabla.setAll(arrBuses);
 
         miTabla.setItems(datosTabla);
         miTabla.setPlaceholder(new Text("No hay buses registrados"));
@@ -230,10 +206,10 @@ public class VistaBusAdministrar extends StackPane {
             } else {
                 BusDto objBus = miTabla.getSelectionModel().getSelectedItem();
                 
-                String mensaje = "¿Está seguro de eliminar este bus?\\n\\n"
-                        + "Código: " + objBus.getIdBus() + "\\n"
-                        + "Placa: " + objBus.getPlacaBus() + "\\n"
-                        + "Modelo: " + objBus.getModeloBus() + "\\n\\n"
+                String mensaje = "¿Está seguro de eliminar este bus?\n\n"
+                        + "Código: " + objBus.getIdBus() + "\n"
+                        + "Placa: " + objBus.getPlacaBus() + "\n"
+                        + "Modelo: " + objBus.getModeloBus() + "\n\n"
                         + "Esta acción no se puede deshacer.";
 
                 Alert msg = new Alert(Alert.AlertType.CONFIRMATION);
@@ -268,43 +244,27 @@ public class VistaBusAdministrar extends StackPane {
         btnActualizar.setCursor(Cursor.HAND);
         btnActualizar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_EDITAR, tamanioIconito));
         
-        btnEliminar.setOnAction(e -> {
-            String mensaje = "¿Seguro que desea eliminar este bus?\\n\\n"
-                    + "Código: " + objCargado.getIdBus() + "\\n"
-                    + "Placa: " + objCargado.getPlacaBus() + "\\n\\n"
-                    + "Esta acción es irreversible.";
+        btnActualizar.setOnAction((e) -> {
+            if (miTabla.getSelectionModel().getSelectedItem() == null) {
+                Mensaje.mostrar(Alert.AlertType.WARNING,
+                        miEscenario, "Advertencia", 
+                        "Debe seleccionar un bus para editar");
+            } else {
+                BusDto objBus = miTabla.getSelectionModel().getSelectedItem();
+                int posi = miTabla.getSelectionModel().getSelectedIndex();
 
-            Alert msg = new Alert(Alert.AlertType.CONFIRMATION);
-            msg.setTitle("Confirmar Eliminación");
-            msg.setHeaderText(null);
-            msg.setContentText(mensaje);
-            msg.initOwner(miEscenario);
-
-            if (msg.showAndWait().get() == ButtonType.OK) {
-                if (BusControladorEliminar.borrar(indiceActual)) {
-                    totalBuses = BusControladorListar.obtenerCantidadBuses();
-                    
-                    if (totalBuses > 0) {
-                        if (indiceActual >= totalBuses) {
-                            indiceActual = totalBuses - 1;
-                            indiceActualEstatico = indiceActual;
-                        }
-                        actualizarContenido();
-                        Mensaje.mostrar(Alert.AlertType.INFORMATION,
-                                miEscenario, "Éxito", "Bus eliminado correctamente");
-                    } else {
-                        Mensaje.mostrar(Alert.AlertType.INFORMATION,
-                                miEscenario, "Sin buses", "No quedan buses registrados");
-                        indiceActualEstatico = 0;
-                        panelCuerpo = BusControladorVentana.administrar(
-                                miEscenario, panelPrincipal, panelCuerpo,
-                                Configuracion.ANCHO_APP, Configuracion.ALTO_CUERPO);
-                        panelPrincipal.setCenter(panelCuerpo);
-                    }
-                } else {
-                    Mensaje.mostrar(Alert.AlertType.ERROR,
-                            miEscenario, "Error", "No se pudo eliminar el bus");
-                }
+                panelCuerpo = BusControladorVentana.editar(
+                        miEscenario,
+                        panelPrincipal,
+                        panelCuerpo,
+                        Configuracion.ANCHO_APP,
+                        Configuracion.ALTO_CUERPO,
+                        objBus,
+                        posi,
+                        false);
+                        
+                panelPrincipal.setCenter(null);
+                panelPrincipal.setCenter(panelCuerpo);
             }
         });
         
@@ -320,27 +280,5 @@ public class VistaBusAdministrar extends StackPane {
         cajaBotones.setAlignment(Pos.CENTER);
         cajaBotones.getChildren().addAll(btnEliminar, btnActualizar, btnCancelar);
         cajaVertical.getChildren().add(cajaBotones);
-    }
-    
-    private void actualizarContenido() {
-        objCargado = BusControladorUna.obtenerBus(indiceActual);
-
-        busTitulo.set("Carrusel de Buses (" + (indiceActual + 1) + " / " + totalBuses + ")");
-        busPlaca.set(objCargado.getPlacaBus() + " - " + objCargado.getModeloBus());
-        busModelo.set(objCargado.getModeloBus());
-        busCapacidad.set(objCargado.getCapacidadBus());
-        busEmpresa.set(objCargado.getEmpresaBus().getNombreEmpresa());
-        busTipo.set(objCargado.getTipoBus());
-        busEstado.set(objCargado.getEstadoBus());
-
-        try {
-            String rutaImagen = Persistencia.RUTA_IMAGENES + Persistencia.SEPARADOR_CARPETAS
-                    + objCargado.getNombreImagenPrivadoBus();
-            FileInputStream imgArchivo = new FileInputStream(rutaImagen);
-            Image imgNueva = new Image(imgArchivo);
-            busImagen.set(imgNueva);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(VistaBusCarrusel.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }

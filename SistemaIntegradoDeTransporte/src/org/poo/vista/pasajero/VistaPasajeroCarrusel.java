@@ -203,6 +203,10 @@ public class VistaPasajeroCarrusel extends BorderPane {
             msg.initOwner(miEscenario);
 
             if (msg.showAndWait().get() == ButtonType.OK) {
+                // Liberar la imagen antes de eliminar
+                pasajeroImagen.set(null);
+                System.gc(); // Sugerir recolección de basura
+                
                 if (PasajeroControladorEliminar.borrar(indiceActual)) {
                     totalPasajeros = PasajeroControladorListar.obtenerCantidadPasajeros();
 

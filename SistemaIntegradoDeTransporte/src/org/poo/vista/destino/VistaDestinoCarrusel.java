@@ -167,10 +167,10 @@ public class VistaDestinoCarrusel extends BorderPane {
         btnEliminar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_BORRAR, tamanioIcono));
 
         btnEliminar.setOnAction(e -> {
-            String mensaje = "¿Seguro que desea eliminar este destino?\\n\\n"
-                    + "Código: " + objCargado.getIdDestino() + "\\n"
-                    + "Destino: " + objCargado.getNombreDestino() + "\\n"
-                    + "Departamento: " + objCargado.getDepartamentoDestino() + "\\n\\n"
+            String mensaje = "¿Seguro que desea eliminar este destino?\n\n"
+                    + "Código: " + objCargado.getIdDestino() + "\n"
+                    + "Destino: " + objCargado.getNombreDestino() + "\n"
+                    + "Departamento: " + objCargado.getDepartamentoDestino() + "\n\n"
                     + "Esta acción es irreversible.";
 
             Alert msg = new Alert(Alert.AlertType.CONFIRMATION);
@@ -180,6 +180,10 @@ public class VistaDestinoCarrusel extends BorderPane {
             msg.initOwner(miEscenario);
 
             if (msg.showAndWait().get() == ButtonType.OK) {
+                // Liberar la imagen antes de eliminar
+                destinoImagen.set(null);
+                System.gc(); // Sugerir recolección de basura
+                
                 if (DestinoControladorEliminar.borrar(indiceActual)) {
                     totalDestinos = DestinoControladorListar.obtenerCantidadDestinos();
                     

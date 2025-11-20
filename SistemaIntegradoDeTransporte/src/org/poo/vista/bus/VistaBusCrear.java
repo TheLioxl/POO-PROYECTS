@@ -94,18 +94,17 @@ public class VistaBusCrear extends StackPane {
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setPrefSize(miAnchoGrilla, alto);
-        miGrilla.setMinSize(miAnchoGrilla, alto);
-        miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        miGrilla.maxWidthProperty().bind(widthProperty().multiply(0.70));
+        miGrilla.maxHeightProperty().bind(heightProperty().multiply(0.80));
+        miGrilla.setAlignment(Pos.CENTER);
 
         ColumnConstraints col0 = new ColumnConstraints();
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
         
-        col0.setPrefWidth(200);
-        col1.setPrefWidth(200);
-        col2.setPrefWidth(200);
-        
+        col0.setPercentWidth(30);  // etiqueta
+        col1.setPercentWidth(45);  // campo de texto
+        col2.setPercentWidth(30);  // imagen
         col1.setHgrow(Priority.ALWAYS);
         miGrilla.getColumnConstraints().addAll(col0, col1, col2);
 
@@ -113,6 +112,7 @@ public class VistaBusCrear extends StackPane {
             RowConstraints fila = new RowConstraints();
             fila.setMinHeight(ALTO_FILA);
             fila.setMaxHeight(ALTO_FILA);
+            fila.setVgrow(Priority.ALWAYS);
             miGrilla.getRowConstraints().add(fila);
         }
     }
@@ -136,6 +136,8 @@ public class VistaBusCrear extends StackPane {
         txtPlacaBus = new TextField();
         txtPlacaBus.setPromptText("Ej: ABC-123");
         txtPlacaBus.setPrefHeight(ALTO_CAJA);
+        txtPlacaBus.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtPlacaBus.setMinHeight(Region.USE_PREF_SIZE);
         GridPane.setHgrow(txtPlacaBus, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtPlacaBus, 10);
         miGrilla.add(txtPlacaBus, 1, 2);
@@ -148,6 +150,8 @@ public class VistaBusCrear extends StackPane {
         txtModeloBus = new TextField();
         txtModeloBus.setPromptText("Ej: Mercedes-Benz O500");
         txtModeloBus.setPrefHeight(ALTO_CAJA);
+        txtModeloBus.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtModeloBus.setMinHeight(Region.USE_PREF_SIZE);
         GridPane.setHgrow(txtModeloBus, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtModeloBus, 50);
         miGrilla.add(txtModeloBus, 1, 3);
@@ -162,7 +166,8 @@ public class VistaBusCrear extends StackPane {
             new SpinnerValueFactory.IntegerSpinnerValueFactory(10, 60, 40);
         spinnerCapacidad.setValueFactory(valueFactory);
         spinnerCapacidad.setPrefHeight(ALTO_CAJA);
-        spinnerCapacidad.setMaxWidth(Double.MAX_VALUE);
+        spinnerCapacidad.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        spinnerCapacidad.setMinHeight(Region.USE_PREF_SIZE);
         spinnerCapacidad.setEditable(true);
         miGrilla.add(spinnerCapacidad, 1, 4);
 
@@ -174,6 +179,8 @@ public class VistaBusCrear extends StackPane {
         cmbEmpresaBus = new ComboBox<>();
         cmbEmpresaBus.setMaxWidth(Double.MAX_VALUE);
         cmbEmpresaBus.setPrefHeight(ALTO_CAJA);
+        cmbEmpresaBus.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        cmbEmpresaBus.setMinHeight(Region.USE_PREF_SIZE);
         
         List<EmpresaDto> empresas = EmpresaControladorListar.obtenerEmpresasActivas();
         EmpresaDto opcionDefault = new EmpresaDto();
@@ -206,6 +213,8 @@ public class VistaBusCrear extends StackPane {
         cmbTipoBus = new ComboBox<>();
         cmbTipoBus.setMaxWidth(Double.MAX_VALUE);
         cmbTipoBus.setPrefHeight(ALTO_CAJA);
+        cmbTipoBus.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        cmbTipoBus.setMinHeight(Region.USE_PREF_SIZE);
         cmbTipoBus.getItems().addAll("Seleccione tipo", "Normal", "Ejecutivo", "VIP");
         cmbTipoBus.getSelectionModel().select(0);
         miGrilla.add(cmbTipoBus, 1, 6);
@@ -218,6 +227,8 @@ public class VistaBusCrear extends StackPane {
         dateFechaAdquisicion = new DatePicker();
         dateFechaAdquisicion.setMaxWidth(Double.MAX_VALUE);
         dateFechaAdquisicion.setPrefHeight(ALTO_CAJA);
+        dateFechaAdquisicion.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        dateFechaAdquisicion.setMinHeight(Region.USE_PREF_SIZE);
         dateFechaAdquisicion.setPromptText("Seleccione fecha");
         dateFechaAdquisicion.setValue(LocalDate.now().minusYears(5));
         Formulario.deshabilitarFechasFuturas(dateFechaAdquisicion);
@@ -248,8 +259,9 @@ public class VistaBusCrear extends StackPane {
         txtDescripcion = new TextArea();
         txtDescripcion.setPromptText("Breve descripción del bus...");
         txtDescripcion.setPrefRowCount(2);
+        txtDescripcion.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtDescripcion.setMaxHeight(Double.MAX_VALUE);
         txtDescripcion.setWrapText(true);
-        txtDescripcion.setMaxWidth(Double.MAX_VALUE);
         miGrilla.add(txtDescripcion, 1, 9);
 
         // Campo 9: Estado (ComboBox)
@@ -260,6 +272,8 @@ public class VistaBusCrear extends StackPane {
         cmbEstadoBus = new ComboBox<>();
         cmbEstadoBus.setMaxWidth(Double.MAX_VALUE);
         cmbEstadoBus.setPrefHeight(ALTO_CAJA);
+        cmbEstadoBus.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        cmbEstadoBus.setMinHeight(Region.USE_PREF_SIZE);
         cmbEstadoBus.getItems().addAll("Seleccione estado", "Activo", "Inactivo");
         cmbEstadoBus.getSelectionModel().select(0);
         miGrilla.add(cmbEstadoBus, 1, 10);
@@ -272,6 +286,8 @@ public class VistaBusCrear extends StackPane {
         cajaImagen = new TextField();
         cajaImagen.setDisable(true);
         cajaImagen.setPrefHeight(ALTO_CAJA);
+        cajaImagen.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        cajaImagen.setMinHeight(Region.USE_PREF_SIZE);
 
         String[] extensiones = {"*.png", "*.jpg", "*.jpeg"};
         FileChooser objSeleccionar = Formulario.selectorImagen(
@@ -287,13 +303,13 @@ public class VistaBusCrear extends StackPane {
                 //OJOOOOOOOOOOOOO
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
-                miGrilla.add(imgPorDefecto, 2, 1, 1, 10);
+                miGrilla.add(imgPorDefecto, 2, 5);
             }else{
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, 2, 1, 1, 10);
+                miGrilla.add(imgPrevisualizar, 2, 5);
             }
         });
 
