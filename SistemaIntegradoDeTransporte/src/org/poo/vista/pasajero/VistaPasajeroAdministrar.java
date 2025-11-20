@@ -68,7 +68,7 @@ public class VistaPasajeroAdministrar extends StackPane{
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_PASAJERO,   // usa el degrade de pasajero
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,   // usa el degrade de pasajero
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -169,14 +169,6 @@ public class VistaPasajeroAdministrar extends StackPane{
         return columna;
     }
 
-    private TableColumn<PasajeroDto, String> crearColumnaEmail() {
-        TableColumn<PasajeroDto, String> columna = new TableColumn<>("Email");
-        columna.setCellValueFactory(new PropertyValueFactory<>("emailPasajero"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.18));
-        columna.setStyle(ESTILO_IZQUIERDA);
-        return columna;
-    }
-
     private TableColumn<PasajeroDto, String> crearColumnaImagen() {
         TableColumn<PasajeroDto, String> columna = new TableColumn<>("Imagen");
         // ⚠️ En ADMIN miniatura ⇒ usamos nombre PRIVADO
@@ -198,7 +190,7 @@ public class VistaPasajeroAdministrar extends StackPane{
             }
         });
 
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.15));
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
     }
@@ -210,7 +202,6 @@ public class VistaPasajeroAdministrar extends StackPane{
         miTabla.getColumns().add(crearColumnaTipoDocumento());
         miTabla.getColumns().add(crearColumnaMayor());
         miTabla.getColumns().add(crearColumnaTelefono());
-        miTabla.getColumns().add(crearColumnaEmail());
         miTabla.getColumns().add(crearColumnaImagen());
     }
 
@@ -226,7 +217,7 @@ public class VistaPasajeroAdministrar extends StackPane{
         miTabla.setPlaceholder(new Text("No hay pasajeros registrados"));
         miTabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
-        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.80));
+        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.70));
         miTabla.maxHeightProperty().bind(miEscenario.heightProperty().multiply(0.60));
 
         miEscenario.heightProperty().addListener((o, oldVal, newVal)

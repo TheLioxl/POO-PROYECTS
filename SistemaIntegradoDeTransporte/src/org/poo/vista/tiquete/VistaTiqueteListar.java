@@ -45,7 +45,7 @@ public class VistaTiqueteListar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_TIQUETE,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
 

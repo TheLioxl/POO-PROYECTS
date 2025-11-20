@@ -3,6 +3,7 @@ package org.poo.vista.destino;
 import java.time.LocalDate;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -23,9 +24,10 @@ public class VistaDestinoEditar extends StackPane {
 
     private static final int H_GAP = 10;
     private static final int V_GAP = 20;
-    private static final int ALTO_FILA = 40;
-    private static final int ALTO_CAJA = 35;
+    private static final int ALTO_FILA = 31;
+    private static final int ALTO_CAJA = 32;
     private static final int TAMANIO_FUENTE = 18;
+    private static final double AJUSTE_TITULO = 0.1;
 
     private final GridPane miGrilla;
     private final StackPane miFormulario;
@@ -73,7 +75,7 @@ public class VistaDestinoEditar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_DESTINO,
+                Configuracion.DEGRADE_ARREGLO_RUTA,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -90,31 +92,31 @@ public class VistaDestinoEditar extends StackPane {
     }
 
     private void configurarGrilla(double ancho, double alto) {
-        double anchoGrilla = ancho * Configuracion.GRILLA_ANCHO_PORCENTAJE;
+        double miAnchoGrilla = ancho * Configuracion.GRILLA_ANCHO_PORCENTAJE;
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setAlignment(Pos.TOP_CENTER);
-        miGrilla.setPrefSize(anchoGrilla, alto);
-        miGrilla.setMinSize(anchoGrilla, alto);
-        miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        miGrilla.maxWidthProperty().bind(widthProperty().multiply(0.70));
+        miGrilla.maxHeightProperty().bind(heightProperty().multiply(0.80));
+        miGrilla.setAlignment(Pos.CENTER);
+
 
         ColumnConstraints col0 = new ColumnConstraints();
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
         
-        col0.setPrefWidth(200);
-        col1.setPrefWidth(200);
-        col2.setPrefWidth(200);
-        
+        col0.setPercentWidth(30);  // etiqueta
+        col1.setPercentWidth(45);  // campo de texto
+        col2.setPercentWidth(30);  // imagen
         col1.setHgrow(Priority.ALWAYS);
+
         miGrilla.getColumnConstraints().addAll(col0, col1, col2);
 
-        // AUMENTAR A 14 FILAS
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < 12; i++) {
             RowConstraints fila = new RowConstraints();
             fila.setMinHeight(ALTO_FILA);
             fila.setMaxHeight(ALTO_FILA);
+            fila.setVgrow(Priority.ALWAYS);
             miGrilla.getRowConstraints().add(fila);
         }
     }
@@ -127,62 +129,54 @@ public class VistaDestinoEditar extends StackPane {
         miGrilla.add(espacioSuperior, columna, fila, colSpan, rowSpan);
 
         fila = 1;
-        Text titulo = new Text("Formulario Actualización de Destino");
+        Text titulo = new Text("FORMULARIO - EDITAR DESTINO");
         titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 26));
+        titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 26));
         GridPane.setHalignment(titulo, HPos.CENTER);
         miGrilla.add(titulo, columna, fila, colSpan, rowSpan);
     }
 
     private void crearFormulario() {
-        int fila = 2;
-        int primeraColumna = 0;
-        int segundaColumna = 1;
 
-        // NOMBRE
-        fila++;
         Label lblNombre = new Label("Nombre del Destino:");
-        lblNombre.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblNombre, primeraColumna, fila);
+        lblNombre.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblNombre, 0, 2);
 
         txtNombreDestino = new TextField();
         txtNombreDestino.setText(objDestino.getNombreDestino());
         txtNombreDestino.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtNombreDestino, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtNombreDestino, 50);
-        miGrilla.add(txtNombreDestino, segundaColumna, fila);
+        miGrilla.add(txtNombreDestino, 1, 2);
 
         // DEPARTAMENTO
-        fila++;
         Label lblDepartamento = new Label("Departamento:");
-        lblDepartamento.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblDepartamento, primeraColumna, fila);
+        lblDepartamento.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblDepartamento, 0, 3);
 
         txtDepartamentoDestino = new TextField();
         txtDepartamentoDestino.setText(objDestino.getDepartamentoDestino());
         txtDepartamentoDestino.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtDepartamentoDestino, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtDepartamentoDestino, 50);
-        miGrilla.add(txtDepartamentoDestino, segundaColumna, fila);
+        miGrilla.add(txtDepartamentoDestino, 1, 3);
 
         // DESCRIPCIÓN
-        fila++;
         Label lblDescripcion = new Label("Descripción:");
-        lblDescripcion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblDescripcion, primeraColumna, fila);
+        lblDescripcion.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblDescripcion, 0, 4);
 
         txtDescripcionDestino = new TextArea();
         txtDescripcionDestino.setText(objDestino.getDescripcionDestino());
         txtDescripcionDestino.setPrefRowCount(3);
         txtDescripcionDestino.setWrapText(true);
         txtDescripcionDestino.setMaxWidth(Double.MAX_VALUE);
-        miGrilla.add(txtDescripcionDestino, segundaColumna, fila);
+        miGrilla.add(txtDescripcionDestino, 1, 4);
 
         // ALTITUD (Spinner)
-        fila++;
         Label lblAltitud = new Label("Altitud (msnm):");
-        lblAltitud.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblAltitud, primeraColumna, fila);
+        lblAltitud.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblAltitud, 0, 5);
 
         spinnerAltitud = new Spinner<>();
         int altitudInicial = objDestino.getAltitudMetros() != null ? objDestino.getAltitudMetros() : 100;
@@ -192,13 +186,12 @@ public class VistaDestinoEditar extends StackPane {
         spinnerAltitud.setPrefHeight(ALTO_CAJA);
         spinnerAltitud.setMaxWidth(Double.MAX_VALUE);
         spinnerAltitud.setEditable(true);
-        miGrilla.add(spinnerAltitud, segundaColumna, fila);
+        miGrilla.add(spinnerAltitud, 1, 5);
 
         // TEMPERATURA (Slider)
-        fila++;
         Label lblTemperatura = new Label("Temperatura Promedio °C:");
-        lblTemperatura.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblTemperatura, primeraColumna, fila);
+        lblTemperatura.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblTemperatura, 0, 6);
 
         double tempInicial = objDestino.getTemperaturaPromedio() != null ? objDestino.getTemperaturaPromedio() : 25.0;
         VBox vboxTemp = new VBox(5);
@@ -216,17 +209,16 @@ public class VistaDestinoEditar extends StackPane {
         });
         
         vboxTemp.getChildren().addAll(sliderTemperatura, lblValorTemp);
-        miGrilla.add(vboxTemp, segundaColumna, fila);
+        miGrilla.add(vboxTemp, 1, 6);
 
         // TIPO DE DESTINO (RadioButton)
-        fila++;
-        Label lblTipo = new Label("Tipo de Destino:");
-        lblTipo.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblTipo, primeraColumna, fila);
+        Label lblTipo = new Label("Tipo de destino:");
+        lblTipo.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblTipo, 0, 7);
 
         ToggleGroup grupoTipo = new ToggleGroup();
         radioPlayero = new RadioButton("Playero");
-        radioMontañoso = new RadioButton("Montañoso/Cultural");
+        radioMontañoso = new RadioButton("Montañoso");
         
         radioPlayero.setToggleGroup(grupoTipo);
         radioMontañoso.setToggleGroup(grupoTipo);
@@ -238,18 +230,17 @@ public class VistaDestinoEditar extends StackPane {
             radioMontañoso.setSelected(true);
         }
         
-        radioPlayero.setFont(Font.font("Arial", 14));
-        radioMontañoso.setFont(Font.font("Arial", 14));
+        radioPlayero.setFont(Font.font("Times new roman", 14));
+        radioMontañoso.setFont(Font.font("Times new roman", 14));
         
         HBox hboxRadio = new HBox(15);
         hboxRadio.getChildren().addAll(radioPlayero, radioMontañoso);
-        miGrilla.add(hboxRadio, segundaColumna, fila);
+        miGrilla.add(hboxRadio, 1, 7);
 
         // TEMPORADA ALTA (DatePicker)
-        fila++;
         Label lblTemporada = new Label("Inicio Temporada Alta:");
-        lblTemporada.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblTemporada, primeraColumna, fila);
+        lblTemporada.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblTemporada, 0, 8);
 
         datePickerTemporada = new DatePicker();
         try {
@@ -263,13 +254,12 @@ public class VistaDestinoEditar extends StackPane {
         }
         datePickerTemporada.setPrefHeight(ALTO_CAJA);
         datePickerTemporada.setMaxWidth(Double.MAX_VALUE);
-        miGrilla.add(datePickerTemporada, segundaColumna, fila);
+        miGrilla.add(datePickerTemporada, 1, 8);
 
         // ESTADO
-        fila++;
         Label lblEstado = new Label("Estado:");
-        lblEstado.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblEstado, primeraColumna, fila);
+        lblEstado.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblEstado, 0, 9);
 
         cmbEstadoDestino = new ComboBox<>();
         cmbEstadoDestino.setMaxWidth(Double.MAX_VALUE);
@@ -281,13 +271,12 @@ public class VistaDestinoEditar extends StackPane {
         } else {
             cmbEstadoDestino.getSelectionModel().select(2);
         }
-        miGrilla.add(cmbEstadoDestino, segundaColumna, fila);
+        miGrilla.add(cmbEstadoDestino, 1, 9);
 
         // IMAGEN
-        fila++;
         Label lblImagen = new Label("Imagen:");
-        lblImagen.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblImagen, primeraColumna, fila);
+        lblImagen.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblImagen, 0, 10);
 
         txtImagen = new TextField();
         txtImagen.setText(objDestino.getNombreImagenPublicoDestino());
@@ -300,7 +289,6 @@ public class VistaDestinoEditar extends StackPane {
 
         Button btnSeleccionarImagen = new Button("+");
         btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
-        btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         
         btnSeleccionarImagen.setOnAction(e -> {
             rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
@@ -310,48 +298,44 @@ public class VistaDestinoEditar extends StackPane {
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 imgPorDefecto = Icono.obtenerFotosExternas(objDestino.getNombreImagenPrivadoDestino(), 150);
                 GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-                miGrilla.add(imgPorDefecto, 2, 1, 1, 7);
+                miGrilla.add(imgPorDefecto, 2, 5);
             } else {
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, 2, 1, 1, 7);
+                miGrilla.add(imgPrevisualizar, 2, 5);
             }
         });
 
         HBox.setHgrow(txtImagen, Priority.ALWAYS);
         HBox panelImagen = new HBox(2, txtImagen, btnSeleccionarImagen);
         panelImagen.setAlignment(Pos.BOTTOM_RIGHT);
-        miGrilla.add(panelImagen, segundaColumna, fila);
+        miGrilla.add(panelImagen, 1, 10);
 
         // Imagen en columna derecha
         imgPorDefecto = Icono.obtenerFotosExternas(
                 objDestino.getNombreImagenPrivadoDestino(), 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         GridPane.setValignment(imgPorDefecto, javafx.geometry.VPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 7);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
-        // ESPACIO ADICIONAL
-        fila++;
-
-        // BOTÓN ACTUALIZAR
-        fila++;
-        Button btnActualizar = new Button("Actualizar Destino");
+        Button btnActualizar = new Button("ACTUALIZAR");
         btnActualizar.setPrefHeight(ALTO_CAJA);
         btnActualizar.setMaxWidth(Double.MAX_VALUE);
         btnActualizar.setTextFill(Color.web("#FFFFFF"));
-        btnActualizar.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        btnActualizar.setFont(Font.font("Rockwell", FontWeight.BOLD, 16));
         btnActualizar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + ";");
+        btnActualizar.setCursor(Cursor.HAND);
         btnActualizar.setOnAction(e -> actualizarDestino());
-        miGrilla.add(btnActualizar, segundaColumna, fila);
+        miGrilla.add(btnActualizar, 1, 11);
 
         // BOTÓN REGRESAR
-        fila++;
-        Button btnRegresar = new Button("Regresar");
+        Button btnRegresar = new Button("VOLVER");
         btnRegresar.setPrefHeight(ALTO_CAJA);
         btnRegresar.setMaxWidth(Double.MAX_VALUE);
-        btnRegresar.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        btnRegresar.setFont(Font.font("Rockwell", FontWeight.BOLD, 14));
+        btnRegresar.setCursor(Cursor.HAND);
         btnRegresar.setOnAction(e -> {
             if (desdeCarrusel) {
                 panelCuerpo = DestinoControladorVentana.carrusel(
@@ -365,7 +349,7 @@ public class VistaDestinoEditar extends StackPane {
             panelPrincipal.setCenter(null);
             panelPrincipal.setCenter(panelCuerpo);
         });
-        miGrilla.add(btnRegresar, segundaColumna, fila);
+        miGrilla.add(btnRegresar, 1, 12);
     }
 
     private Boolean formularioCompleto() {

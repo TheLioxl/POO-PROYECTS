@@ -3,7 +3,9 @@ package org.poo.vista.conductor;
 import java.util.List;
 import java.util.Objects;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -20,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -45,8 +48,10 @@ public class VistaConductorEditar extends StackPane {
 
     private static final int H_GAP = 10;
     private static final int V_GAP = 20;
-    private static final int ALTO_CAJA = 35;
+    private static final int ALTO_FILA = 31;
+    private static final int ALTO_CAJA = 32;
     private static final int TAMANIO_FUENTE = 18;
+    private static final double AJUSTE_TITULO = 0.1;
 
     private final GridPane miGrilla;
     private final StackPane miFormulario;
@@ -95,7 +100,7 @@ public class VistaConductorEditar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_CONDUCTOR,
+                Configuracion.DEGRADE_ARREGLO_RUTA,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -112,63 +117,61 @@ public class VistaConductorEditar extends StackPane {
     }
 
     private void configurarGrilla(double ancho, double alto) {
-        double anchoGrilla = ancho * Configuracion.GRILLA_ANCHO_PORCENTAJE;
+        double miAnchoGrilla = ancho * Configuracion.GRILLA_ANCHO_PORCENTAJE;
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setAlignment(Pos.TOP_CENTER);
-        miGrilla.setPrefSize(anchoGrilla, alto);
-        miGrilla.setMinSize(anchoGrilla, alto);
-        miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        miGrilla.maxWidthProperty().bind(widthProperty().multiply(0.70));
+        miGrilla.maxHeightProperty().bind(heightProperty().multiply(0.80));
+        miGrilla.setAlignment(Pos.CENTER);
+
 
         ColumnConstraints col0 = new ColumnConstraints();
-        col0.setPercentWidth(40);
-
         ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(60);
+        ColumnConstraints col2 = new ColumnConstraints();
+        
+        col0.setPercentWidth(30);  // etiqueta
+        col1.setPercentWidth(45);  // campo de texto
+        col2.setPercentWidth(30);  // imagen
         col1.setHgrow(Priority.ALWAYS);
 
-        miGrilla.getColumnConstraints().addAll(col0, col1);
+        miGrilla.getColumnConstraints().addAll(col0, col1, col2);
+
+        for (int i = 0; i < 12; i++) {
+            RowConstraints fila = new RowConstraints();
+            fila.setMinHeight(ALTO_FILA);
+            fila.setMaxHeight(ALTO_FILA);
+            fila.setVgrow(Priority.ALWAYS);
+            miGrilla.getRowConstraints().add(fila);
+        }
     }
 
     private void crearTitulo() {
-        int columna = 0, fila = 0, colSpan = 3, rowSpan = 1;
-
-        Region espacioSuperior = new Region();
-        espacioSuperior.prefHeightProperty().bind(miEscenario.heightProperty().multiply(0.05));
-        miGrilla.add(espacioSuperior, columna, fila, colSpan, rowSpan);
-
-        fila = 1;
-        Text titulo = new Text("Formulario Actualización de Conductor");
-        titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 26));
-        GridPane.setHalignment(titulo, HPos.CENTER);
-        miGrilla.add(titulo, columna, fila, colSpan, rowSpan);
+        Text miTitulo = new Text("FORMULARIO - EDITAR CONDUCTOR");
+        miTitulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        miTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
+        GridPane.setHalignment(miTitulo, HPos.CENTER);
+        GridPane.setMargin(miTitulo, new Insets(30, 0, 0, 0));
+        miGrilla.add(miTitulo, 0, 0, 3, 2);//nombre, columna, fila, union de filas 
     }
 
     private void crearFormulario() {
-        int fila = 2;
-        int primeraColumna = 0;
-        int segundaColumna = 1;
 
-        // NOMBRE
-        fila++;
         Label lblNombre = new Label("Nombre Conductor:");
-        lblNombre.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblNombre, primeraColumna, fila);
+        lblNombre.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblNombre, 0, 2);
 
         txtNombreConductor = new TextField();
         txtNombreConductor.setText(objConductor.getNombreConductor());
         txtNombreConductor.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtNombreConductor, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtNombreConductor, 50);
-        miGrilla.add(txtNombreConductor, segundaColumna, fila);
+        miGrilla.add(txtNombreConductor, 1, 2);
 
         // CÉDULA
-        fila++;
         Label lblCedula = new Label("Cédula:");
-        lblCedula.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblCedula, primeraColumna, fila);
+        lblCedula.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblCedula, 0, 3);
 
         txtCedulaConductor = new TextField();
         txtCedulaConductor.setText(objConductor.getCedulaConductor());
@@ -176,25 +179,23 @@ public class VistaConductorEditar extends StackPane {
         GridPane.setHgrow(txtCedulaConductor, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtCedulaConductor, 15);
         // Formulario.soloNumeros(txtCedulaConductor); // si lo tienes
-        miGrilla.add(txtCedulaConductor, segundaColumna, fila);
+        miGrilla.add(txtCedulaConductor, 1, 3);
 
         // FECHA NACIMIENTO
-        fila++;
         Label lblFechaNac = new Label("Fecha Nacimiento:");
-        lblFechaNac.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblFechaNac, primeraColumna, fila);
+        lblFechaNac.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblFechaNac, 0, 4);
 
         dpFechaNacimiento = new DatePicker();
         dpFechaNacimiento.setPrefHeight(ALTO_CAJA);
         dpFechaNacimiento.setMaxWidth(Double.MAX_VALUE);
         dpFechaNacimiento.setValue(objConductor.getFechaNacimientoConductor());
-        miGrilla.add(dpFechaNacimiento, segundaColumna, fila);
+        miGrilla.add(dpFechaNacimiento, 1, 4);
 
         // TELÉFONO
-        fila++;
         Label lblTelefono = new Label("Teléfono:");
-        lblTelefono.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblTelefono, primeraColumna, fila);
+        lblTelefono.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblTelefono, 0, 5);
 
         txtTelefonoConductor = new TextField();
         txtTelefonoConductor.setText(objConductor.getTelefonoConductor());
@@ -202,38 +203,36 @@ public class VistaConductorEditar extends StackPane {
         GridPane.setHgrow(txtTelefonoConductor, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtTelefonoConductor, 15);
         // Formulario.soloNumeros(txtTelefonoConductor); // si lo tienes
-        miGrilla.add(txtTelefonoConductor, segundaColumna, fila);
+        miGrilla.add(txtTelefonoConductor, 1, 5);
 
         // LICENCIA
-        fila++;
+
         Label lblLicencia = new Label("Licencia:");
-        lblLicencia.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblLicencia, primeraColumna, fila);
+        lblLicencia.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblLicencia, 0, 6);
 
         txtLicenciaConductor = new TextField();
         txtLicenciaConductor.setText(objConductor.getLicenciaConductor());
         txtLicenciaConductor.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtLicenciaConductor, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtLicenciaConductor, 20);
-        miGrilla.add(txtLicenciaConductor, segundaColumna, fila);
+        miGrilla.add(txtLicenciaConductor, 1, 6);
 
         // FECHA VENCIMIENTO LICENCIA
-        fila++;
         Label lblFechaVenc = new Label("Fecha Venc. Licencia:");
-        lblFechaVenc.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblFechaVenc, primeraColumna, fila);
+        lblFechaVenc.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblFechaVenc, 0, 7);
 
         dpFechaVencLicencia = new DatePicker();
         dpFechaVencLicencia.setPrefHeight(ALTO_CAJA);
         dpFechaVencLicencia.setMaxWidth(Double.MAX_VALUE);
         dpFechaVencLicencia.setValue(objConductor.getFechaVencimientoLicencia());
-        miGrilla.add(dpFechaVencLicencia, segundaColumna, fila);
+        miGrilla.add(dpFechaVencLicencia, 1, 7);
 
         // EMPRESA
-        fila++;
         Label lblEmpresa = new Label("Empresa:");
-        lblEmpresa.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblEmpresa, primeraColumna, fila);
+        lblEmpresa.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblEmpresa, 0, 8);
 
         cmbEmpresaConductor = new ComboBox<>();
         cmbEmpresaConductor.setPrefHeight(ALTO_CAJA);
@@ -253,13 +252,12 @@ public class VistaConductorEditar extends StackPane {
             }
         }
 
-        miGrilla.add(cmbEmpresaConductor, segundaColumna, fila);
+        miGrilla.add(cmbEmpresaConductor, 1, 8);
 
         // ESTADO
-        fila++;
         Label lblEstado = new Label("Estado:");
-        lblEstado.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblEstado, primeraColumna, fila);
+        lblEstado.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblEstado, 0, 9);
 
         grupoEstado = new ToggleGroup();
 
@@ -269,8 +267,8 @@ public class VistaConductorEditar extends StackPane {
         rbActivo.setToggleGroup(grupoEstado);
         rbInactivo.setToggleGroup(grupoEstado);
 
-        rbActivo.setFont(Font.font("Arial", 14));
-        rbInactivo.setFont(Font.font("Arial", 14));
+        rbActivo.setFont(Font.font("Times new roman", 14));
+        rbInactivo.setFont(Font.font("Times new roman", 14));
 
         if (Boolean.TRUE.equals(objConductor.getEstadoConductor())) {
             grupoEstado.selectToggle(rbActivo);
@@ -281,13 +279,12 @@ public class VistaConductorEditar extends StackPane {
         HBox boxEstado = new HBox(15, rbActivo, rbInactivo);
         boxEstado.setAlignment(Pos.CENTER_LEFT);
 
-        miGrilla.add(boxEstado, segundaColumna, fila);
+        miGrilla.add(boxEstado, 1, 9);
 
         // IMAGEN
-        fila++;
         Label lblImagen = new Label("Imagen:");
-        lblImagen.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblImagen, primeraColumna, fila);
+        lblImagen.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblImagen, 0, 10);
 
         txtImagen = new TextField();
         txtImagen.setText(objConductor.getNombreImagenPublicoConductor());
@@ -300,9 +297,6 @@ public class VistaConductorEditar extends StackPane {
 
         Button btnSeleccionarImagen = new Button("+");
         btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
-        btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-
-        final int filaImagenPreview = fila + 1;
 
         btnSeleccionarImagen.setOnAction(e -> {
             rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
@@ -312,48 +306,44 @@ public class VistaConductorEditar extends StackPane {
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 imgPorDefecto = Icono.obtenerFotosExternas(objConductor.getNombreImagenPrivadoConductor(), 150);
                 GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-                miGrilla.add(imgPorDefecto, 2, 1, 1, 12);
+                miGrilla.add(imgPorDefecto, 2, 5);
             } else {
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, 2, 1, 1, 12);
+                miGrilla.add(imgPrevisualizar, 2, 5);
             }
         });
 
         HBox.setHgrow(txtImagen, Priority.ALWAYS);
         HBox panelImagen = new HBox(2, txtImagen, btnSeleccionarImagen);
         panelImagen.setAlignment(Pos.BOTTOM_RIGHT);
-        miGrilla.add(panelImagen, segundaColumna, fila);
+        miGrilla.add(panelImagen, 1, 10);
 
         // Imagen en columna derecha
         imgPorDefecto = Icono.obtenerFotosExternas(
                 objConductor.getNombreImagenPrivadoConductor(), 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         GridPane.setValignment(imgPorDefecto, javafx.geometry.VPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 12);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
-        // ESPACIO ADICIONAL
-        fila++;
-
-        // BOTÓN ACTUALIZAR
-        fila++;
-        Button btnActualizar = new Button("Actualizar Conductor");
+        Button btnActualizar = new Button("ACTUALIZAR");
         btnActualizar.setPrefHeight(ALTO_CAJA);
         btnActualizar.setMaxWidth(Double.MAX_VALUE);
         btnActualizar.setTextFill(Color.web("#FFFFFF"));
-        btnActualizar.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        btnActualizar.setFont(Font.font("Rockwell", FontWeight.BOLD, 14));
         btnActualizar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + ";");
+        btnActualizar.setCursor(Cursor.HAND);
         btnActualizar.setOnAction(e -> actualizarConductor());
-        miGrilla.add(btnActualizar, segundaColumna, fila);
+        miGrilla.add(btnActualizar, 1, 11);
 
         // BOTÓN REGRESAR (detecta si viene de carrusel o administrar)
-        fila++;
-        Button btnRegresar = new Button("Regresar");
+        Button btnRegresar = new Button("VOLVER");
         btnRegresar.setPrefHeight(ALTO_CAJA);
         btnRegresar.setMaxWidth(Double.MAX_VALUE);
-        btnRegresar.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        btnRegresar.setFont(Font.font("Rockwell", FontWeight.NORMAL, 14));
+        btnRegresar.setCursor(Cursor.HAND);
         btnRegresar.setOnAction(e -> {
             if (desdeCarrusel) {
                 panelCuerpo = ConductorControladorVentana.carrusel(
@@ -367,7 +357,7 @@ public class VistaConductorEditar extends StackPane {
             panelPrincipal.setCenter(null);
             panelPrincipal.setCenter(panelCuerpo);
         });
-        miGrilla.add(btnRegresar, segundaColumna, fila);
+        miGrilla.add(btnRegresar, 1, 12);
     }
 
     private Boolean formularioCompleto() {

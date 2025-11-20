@@ -39,54 +39,10 @@ public class Configuracion {
         new Stop(1.0, Color.web(AZUL_SUPER_CLARO, 1.0))
     };
 
-    public static final Stop[] DEGRADE_ARREGLO_EMPRESA = new Stop[]{
-        new Stop(0.0, Color.web(GRIS_CLARO, 1.0)),
-        new Stop(0.3, Color.web(AZUL_CLARO, 0.9)),
-        new Stop(0.6, Color.web(AZUL_MEDIO, 0.8)),
-        new Stop(1.0, Color.web(GRIS_CLARO, 0.9))
-    };
-
-    public static final Stop[] DEGRADE_ARREGLO_BUS = new Stop[]{
-        new Stop(0.0, Color.web(AZUL_CLARO, 1.0)),
-        new Stop(0.5, Color.web(AZUL_MEDIO, 0.9)),
-        new Stop(1.0, Color.web(AZUL_OSCURO, 0.8))
-    };
-
     public static final Stop[] DEGRADE_ARREGLO_RUTA = new Stop[]{
         new Stop(0.0, Color.web("#E0F2FE", 1.0)),
         new Stop(0.5, Color.web("#BAE6FD", 0.9)),
         new Stop(1.0, Color.web("#7DD3FC", 0.8))
-    };
-
-    public static final Stop[] DEGRADE_ARREGLO_CONDUCTOR = new Stop[]{
-        new Stop(0.0, Color.web("#F0F9FF", 1.0)),
-        new Stop(0.5, Color.web("#E0F2FE", 0.9)),
-        new Stop(1.0, Color.web("#BAE6FD", 0.8))
-    };
-
-    public static final Stop[] DEGRADE_ARREGLO_PASAJERO = new Stop[]{
-        new Stop(0.0, Color.web("#DBEAFE", 1.0)),
-        new Stop(0.5, Color.web("#BFDBFE", 0.9)),
-        new Stop(1.0, Color.web("#93C5FD", 0.8))
-    };
-
-    public static final Stop[] DEGRADE_ARREGLO_VIAJE = new Stop[]{
-        new Stop(0.0, Color.web("#DBEAFE", 1.0)),
-        new Stop(0.3, Color.web("#93C5FD", 0.9)),
-        new Stop(0.6, Color.web("#60A5FA", 0.8)),
-        new Stop(1.0, Color.web("#DBEAFE", 1.0))
-    };
-
-    public static final Stop[] DEGRADE_ARREGLO_TIQUETE = new Stop[]{
-        new Stop(0.0, Color.web("#F0F9FF", 1.0)),
-        new Stop(0.5, Color.web("#BAE6FD", 0.9)),
-        new Stop(1.0, Color.web("#7DD3FC", 0.8))
-    };
-
-    public static final Stop[] DEGRADE_ARREGLO_DESTINO = new Stop[]{
-        new Stop(0.0, Color.web("#E0F2FE", 1.0)),
-        new Stop(0.5, Color.web("#93C5FD", 0.9)),
-        new Stop(1.0, Color.web("#3B82F6", 0.8))
     };
 
     public static final String ICONO_BORRAR = "iconoBorrar.png";

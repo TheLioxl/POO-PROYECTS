@@ -113,7 +113,7 @@ public class VistaTiqueteCarrusel extends BorderPane {
         organizadorVertical.getChildren().add(0, bloqueSeparador);
 
         tiqueteTitulo = new SimpleStringProperty(
-                "Detalle del Tiquete (" + (indiceActual + 1) + " / " + totalTiquetes + ")");
+                "DETALLES DEL TIQUETE: (" + (indiceActual + 1) + " / " + totalTiquetes + ")");
 
         Label lblTitulo = new Label();
         lblTitulo.textProperty().bind(tiqueteTitulo);
@@ -161,8 +161,8 @@ public class VistaTiqueteCarrusel extends BorderPane {
     private void construirPanelCentro() {
         StackPane centerPane = new StackPane();
 
-        Rectangle miMarco = Marco.crear(miEscenario, 0.70, 0.80,
-                Configuracion.DEGRADE_ARREGLO_TIQUETE,
+        Rectangle miMarco = Marco.crear(miEscenario, 0.80, 0.70,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE);
         centerPane.getChildren().addAll(miMarco, organizadorVertical);
 
@@ -257,7 +257,7 @@ public class VistaTiqueteCarrusel extends BorderPane {
     }
     
     private void mostrarDatos() {
-        int tamanioFuente = 20;
+        int tamanioFuente = 16;
 
         // Código del tiquete
         Label lblCodigo = new Label("Tiquete #" + objCargado.getIdTiquete());
@@ -345,7 +345,7 @@ public class VistaTiqueteCarrusel extends BorderPane {
         Label lblEquipaje = new Label();
         lblEquipaje.textProperty().bind(
             Bindings.when(tiqueteEquipajeExtra).then("Con Equipaje Extra").otherwise("Sin Equipaje Extra"));
-        lblEquipaje.setFont(Font.font("Rockwell", FontWeight.BOLD, 18));
+        lblEquipaje.setFont(Font.font("Rockwell", FontWeight.BOLD, tamanioFuente));
         lblEquipaje.textFillProperty().bind(
             tiqueteEquipajeExtra.map(dato -> dato ? Color.web(Configuracion.VERDE_EXITO) 
                     : Color.web(Configuracion.AZUL_OSCURO))
@@ -357,7 +357,8 @@ public class VistaTiqueteCarrusel extends BorderPane {
     private void actualizarContenido() {
         objCargado = TiqueteControladorUna.obtenerTiquete(indiceActual);
 
-        tiqueteTitulo.set("Detalle del Tiquete (" + (indiceActual + 1) + " / " + totalTiquetes + ")");
+        tiqueteTitulo.set("DETALLES DEL TIQUETE: (" + (indiceActual + 1) + " / " + totalTiquetes + ")");
+        
         tiqueteViaje.set("Viaje #" + objCargado.getViajeTiquete().getIdViaje() + 
                 " - " + objCargado.getViajeTiquete().getRutaViaje().getNombreRuta());
         tiquetePasajero.set(objCargado.getPasajeroTiquete().getNombrePasajero() + 

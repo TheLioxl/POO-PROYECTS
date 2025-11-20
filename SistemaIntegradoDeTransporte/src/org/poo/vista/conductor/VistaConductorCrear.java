@@ -45,8 +45,8 @@ public class VistaConductorCrear extends StackPane {
 
     private static final int H_GAP = 10;
     private static final int V_GAP = 20;
-    private static final int ALTO_FILA = 40;
-    private static final int ALTO_CAJA = 35;
+    private static final int ALTO_FILA = 30;
+    private static final int ALTO_CAJA = 30;
     private static final int TAMANIO_FUENTE = 20;
     private static final double AJUSTE_TITULO = 0.1;
 
@@ -79,7 +79,7 @@ public class VistaConductorCrear extends StackPane {
         miMarco = Marco.crear(escenario,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_CONDUCTOR, // similar a TERMINAL
+                Configuracion.DEGRADE_ARREGLO_TERMINAL, // similar a TERMINAL
                 Configuracion.DEGRADE_BORDE);
 
         getChildren().add(miMarco);
@@ -96,26 +96,25 @@ public class VistaConductorCrear extends StackPane {
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setPrefSize(miAnchoGrilla, alto);
-        miGrilla.setMinSize(miAnchoGrilla, alto);
-        miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        miGrilla.maxWidthProperty().bind(widthProperty().multiply(0.70));
+        miGrilla.maxHeightProperty().bind(heightProperty().multiply(0.80));
+        miGrilla.setAlignment(Pos.CENTER);
 
         ColumnConstraints col0 = new ColumnConstraints();
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
-
-        col0.setPrefWidth(200);
-        col1.setPrefWidth(200);
-        col2.setPrefWidth(200);
-
+        
+        col0.setPercentWidth(30);  // etiqueta
+        col1.setPercentWidth(45);  // campo de texto
+        col2.setPercentWidth(30);  // imagen
         col1.setHgrow(Priority.ALWAYS);
         miGrilla.getColumnConstraints().addAll(col0, col1, col2);
 
-        // Un poco más de filas que en terminal para acomodar todos los campos
         for (int i = 0; i < 12; i++) {
             RowConstraints fila = new RowConstraints();
             fila.setMinHeight(ALTO_FILA);
             fila.setMaxHeight(ALTO_FILA);
+            fila.setVgrow(Priority.ALWAYS);
             miGrilla.getRowConstraints().add(fila);
         }
     }
@@ -131,13 +130,15 @@ public class VistaConductorCrear extends StackPane {
 
     private void crearFormulario() {
         // NOMBRE
-        Label lblNombre = new Label("Nombre Conductor:");
+        Label lblNombre = new Label("Nombre:");
         lblNombre.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
         miGrilla.add(lblNombre, 0, 2);
 
         txtNombreConductor = new TextField();
         txtNombreConductor.setPromptText("Ej: Juan Pérez");
         txtNombreConductor.setPrefHeight(ALTO_CAJA);
+        txtNombreConductor.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtNombreConductor.setMinHeight(Region.USE_PREF_SIZE);
         GridPane.setHgrow(txtNombreConductor, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtNombreConductor, 50);
         miGrilla.add(txtNombreConductor, 1, 2);
@@ -150,6 +151,8 @@ public class VistaConductorCrear extends StackPane {
         txtCedulaConductor = new TextField();
         txtCedulaConductor.setPromptText("Ej: 1234567890");
         txtCedulaConductor.setPrefHeight(ALTO_CAJA);
+        txtCedulaConductor.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtCedulaConductor.setMinHeight(Region.USE_PREF_SIZE);
         GridPane.setHgrow(txtCedulaConductor, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtCedulaConductor, 15);
         // Si tienes un método soloNúmeros:
@@ -163,7 +166,8 @@ public class VistaConductorCrear extends StackPane {
 
         dpFechaNacimiento = new DatePicker();
         dpFechaNacimiento.setPrefHeight(ALTO_CAJA);
-        dpFechaNacimiento.setMaxWidth(Double.MAX_VALUE);
+        dpFechaNacimiento.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        dpFechaNacimiento.setMinHeight(Region.USE_PREF_SIZE);
         miGrilla.add(dpFechaNacimiento, 1, 4);
 
         // TELÉFONO
@@ -174,6 +178,8 @@ public class VistaConductorCrear extends StackPane {
         txtTelefonoConductor = new TextField();
         txtTelefonoConductor.setPromptText("Ej: 3001234567");
         txtTelefonoConductor.setPrefHeight(ALTO_CAJA);
+        txtTelefonoConductor.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtTelefonoConductor.setMinHeight(Region.USE_PREF_SIZE);
         GridPane.setHgrow(txtTelefonoConductor, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtTelefonoConductor, 15);
         // Formulario.soloNumeros(txtTelefonoConductor); // si existe
@@ -187,6 +193,8 @@ public class VistaConductorCrear extends StackPane {
         txtLicenciaConductor = new TextField();
         txtLicenciaConductor.setPromptText("Ej: C2-123456");
         txtLicenciaConductor.setPrefHeight(ALTO_CAJA);
+        txtLicenciaConductor.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        txtLicenciaConductor.setMinHeight(Region.USE_PREF_SIZE);
         GridPane.setHgrow(txtLicenciaConductor, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtLicenciaConductor, 20);
         miGrilla.add(txtLicenciaConductor, 1, 6);
@@ -198,7 +206,8 @@ public class VistaConductorCrear extends StackPane {
 
         dpFechaVencLicencia = new DatePicker();
         dpFechaVencLicencia.setPrefHeight(ALTO_CAJA);
-        dpFechaVencLicencia.setMaxWidth(Double.MAX_VALUE);
+        dpFechaVencLicencia.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        dpFechaVencLicencia.setMinHeight(Region.USE_PREF_SIZE);
         miGrilla.add(dpFechaVencLicencia, 1, 7);
 
         // EMPRESA
@@ -208,7 +217,8 @@ public class VistaConductorCrear extends StackPane {
 
         cmbEmpresa = new ComboBox<>();
         cmbEmpresa.setPrefHeight(ALTO_CAJA);
-        cmbEmpresa.setMaxWidth(Double.MAX_VALUE);
+        cmbEmpresa.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        cmbEmpresa.setMinHeight(Region.USE_PREF_SIZE);
 
         // Cargar empresas (ajusta el controlador según tengas)
         List<EmpresaDto> arrEmpresas = EmpresaControladorListar.obtenerEmpresas();
@@ -230,8 +240,8 @@ public class VistaConductorCrear extends StackPane {
         rbInactivo.setToggleGroup(grupoEstado);
 
 // estilo opcional
-        rbActivo.setFont(Font.font("Arial", 14));
-        rbInactivo.setFont(Font.font("Arial", 14));
+        rbActivo.setFont(Font.font("Times new roman", 14));
+        rbInactivo.setFont(Font.font("Times new roman", 14));
 
         HBox boxEstado = new HBox(15, rbActivo, rbInactivo);
         boxEstado.setAlignment(Pos.CENTER_LEFT);
@@ -239,13 +249,15 @@ public class VistaConductorCrear extends StackPane {
         miGrilla.add(boxEstado, 1, 9);
 
         // IMAGEN
-        Label lblImagen = new Label("Imagen del conductor:");
+        Label lblImagen = new Label("Imagen:");
         lblImagen.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
         miGrilla.add(lblImagen, 0, 10);
 
         cajaImagen = new TextField();
         cajaImagen.setDisable(true);
         cajaImagen.setPrefHeight(ALTO_CAJA);
+        cajaImagen.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
+        cajaImagen.setMinHeight(Region.USE_PREF_SIZE);
         String[] extensiones = {"*.png", "*.jpg", "*.jpeg"};
         FileChooser objSeleccionar = Formulario.selectorImagen(
                 "Seleccionar imagen", "Imágenes", extensiones);
@@ -258,13 +270,13 @@ public class VistaConductorCrear extends StackPane {
             if (rutaImagenSeleccionada.isEmpty()) {
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
-                miGrilla.add(imgPorDefecto, 2, 1, 1, 10);
+                miGrilla.add(imgPorDefecto, 2, 5);
             } else {
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, 2, 1, 1, 10);
+                miGrilla.add(imgPrevisualizar, 2, 5);
             }
         });
 
@@ -277,7 +289,7 @@ public class VistaConductorCrear extends StackPane {
         imgPorDefecto = Icono.obtenerIcono("imgNoDisponible.png", 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         GridPane.setValignment(imgPorDefecto, VPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 10);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
         // BOTÓN GRABAR
         btnGrabar = new Button("GRABAR CONDUCTOR");
@@ -413,7 +425,7 @@ public class VistaConductorCrear extends StackPane {
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         GridPane.setValignment(imgPorDefecto, VPos.CENTER);
 
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 10);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
         txtNombreConductor.requestFocus();
 
@@ -424,7 +436,7 @@ public class VistaConductorCrear extends StackPane {
             double alturaMarco = miMarco.getHeight();
             if (alturaMarco > 0) {
                 double desplazamiento = alturaMarco * AJUSTE_TITULO;
-                miGrilla.setTranslateY(-alturaMarco / 14 + desplazamiento);
+                miGrilla.setTranslateY(-alturaMarco / 10 + desplazamiento);
             }
         };
         calcular.run();

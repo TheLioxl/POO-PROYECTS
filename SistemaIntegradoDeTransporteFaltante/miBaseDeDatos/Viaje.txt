@@ -1,7 +1,0 @@
-2;2;2;2;2025-11-21;10:00;16:30;95000.0;35;true;false;true;true;Viaje con paradas en ciudades intermedias;Incluye refrigerio y servicio de baño;viaje.jpg;786dbb7b-2baa-4fe9-9202-f9443a3b6d39_viaje.jpg@
-3;3;3;1;2025-11-22;06:00;12:00;65000.0;45;true;true;false;false;Viaje express sin paradas;Salida temprano en la mañana;viaje.jpg;e6fa521f-35cf-4ee5-abf5-59dc3ee6302a_viaje.jpg@
-4;5;4;4;2025-11-23;15:00;20:00;55000.0;30;true;true;true;false;Viaje nocturno cómodo y seguro;Bus con aire acondicionado y asientos reclinables;viaje.jpg;92493132-f950-417d-9ff4-8c20865391e3_viaje.jpg@
-5;2;3;1;2025-11-07;08:15;12:00;45000.0;54;true;true;false;false;Viaje expreso;Salida puntual desde plataforma 4;viaje.jpg;017ccd7b-d2af-4df9-9bc2-1a5469d5061b_viaje.jpg@
-6;1;2;4;2025-11-07;14:40;18:00;38000.0;60;true;false;true;false;Viaje cómodo con snack incluido.;Revisar refrigerios antes de salir.;viaje.jpg;234e9c00-ea8c-4b68-93c4-87ac60ae10f3_viaje.jpg@
-7;5;1;5;2025-11-07;19:34;23:50;52000.0;48;true;false;false;true;Recorrido nocturno con 3 paradas breves;Evitar retrasos en paradas.;viaje.jpg;67e0f193-59e4-416d-b8f1-beaf61f09954_viaje.jpg@
-8;3;4;2;2025-11-07;06:00;09:45;30000.0;59;false;true;false;false;Salida temprana hacia municipio cercano.;Verificar documentos.;viaje.jpg;94cdb3b9-e6c1-4540-a754-ce33740eaba3_viaje.jpg@

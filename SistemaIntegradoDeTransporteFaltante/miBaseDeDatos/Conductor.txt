@@ -1,5 +1,0 @@
-1;Carlos Andrés López;1023456789;1985-04-12;301584254;C2-458721;2027-06-30;1;true;bus-driver-clipart-md2.png;8525190b-0d80-4054-b1d9-cbf9c733879f_bus-driver-clipart-md2.png@
-2;Diana Marcela Rojas;1035678921;1990-11-02;3019876543;C1-128934;2028-03-14;3;true;bus-driver-female.jpg;5eb8d9b9-5941-459b-9e1c-c00ca1d0ef01_bus-driver-female.jpg@
-3;José Miguel Barrera;795621345;1978-07-18;3127765543;C3-992341;2025-08-13;2;false;bus-driver-clipart-md3.png;cc9a0861-f2aa-4c8b-aa6b-3ae44391ff87_bus-driver-clipart-md3.png@
-4;Andrés Felipe Gutiérrez;1002345567;1983-09-27;3152349988;C2-338921;2029-10-21;4;true;bus-driver-clipart-md.png;082a409e-d4bf-472f-a1c1-33b72d83c183_bus-driver-clipart-md.png@
-5;Juana Sanchez Maestre;195354334;1989-01-19;3056791245;A3-156432;2031-07-14;4;true;bus-driver-female.jpg;9047087a-01e5-4161-8d6a-77a87aca3a9e_bus-driver-female.jpg@

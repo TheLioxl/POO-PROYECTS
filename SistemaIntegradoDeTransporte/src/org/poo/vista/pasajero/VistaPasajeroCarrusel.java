@@ -120,7 +120,7 @@ public class VistaPasajeroCarrusel extends BorderPane {
         organizadorVertical.getChildren().add(0, bloqueSeparador);
 
         pasajeroTitulo = new SimpleStringProperty(
-                "Detalle del Pasajero (" + (indiceActual + 1) + " / " + totalPasajeros + ")");
+                "DETALLES DEL PASAJERO: (" + (indiceActual + 1) + " / " + totalPasajeros + ")");
 
         Label lblTitulo = new Label();
         lblTitulo.textProperty().bind(pasajeroTitulo);
@@ -169,7 +169,7 @@ public class VistaPasajeroCarrusel extends BorderPane {
         StackPane centerPane = new StackPane();
 
         Rectangle miMarco = Marco.crear(miEscenario, 0.75, 0.65,
-                Configuracion.DEGRADE_ARREGLO_PASAJERO, // crea este degrade en Configuracion
+                Configuracion.DEGRADE_ARREGLO_TERMINAL, // crea este degrade en Configuracion
                 Configuracion.DEGRADE_BORDE);
         centerPane.getChildren().addAll(miMarco, organizadorVertical);
 
@@ -343,20 +343,12 @@ public class VistaPasajeroCarrusel extends BorderPane {
         lblTelefono.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblTelefono);
 
-        // EMAIL
-        pasajeroEmail = new SimpleStringProperty(objCargado.getEmailPasajero());
-        Label lblEmail = new Label();
-        lblEmail.textProperty().bind(
-                Bindings.concat("Email: ", pasajeroEmail));
-        lblEmail.setFont(Font.font("Rockwell", tamanioFuente));
-        lblEmail.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
-        organizadorVertical.getChildren().add(lblEmail);
     }
 
     private void actualizarContenido() {
         objCargado = PasajeroControladorUna.obtenerPasajero(indiceActual);
 
-        pasajeroTitulo.set("Detalle del Pasajero (" + (indiceActual + 1) + " / " + totalPasajeros + ")");
+        pasajeroTitulo.set("DETALLES DEL PASAJERO: (" + (indiceActual + 1) + " / " + totalPasajeros + ")");
         pasajeroNombre.set(objCargado.getNombrePasajero());
         pasajeroDocumento.set(objCargado.getDocumentoPasajero());
         pasajeroTipoDocumento.set(
@@ -370,7 +362,6 @@ public class VistaPasajeroCarrusel extends BorderPane {
         pasajeroFechaNac.set(fechaNacTxt);
 
         pasajeroTelefono.set(objCargado.getTelefonoPasajero());
-        pasajeroEmail.set(objCargado.getEmailPasajero());
         pasajeroEsMayor.set(objCargado.getEsMayorPasajero() != null
                 && objCargado.getEsMayorPasajero());
 

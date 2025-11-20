@@ -44,7 +44,7 @@ public class VistaRutaListar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_RUTA,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -69,9 +69,9 @@ public class VistaRutaListar extends StackPane {
                 miEscenario.heightProperty().multiply(0.05));
 
         int cant = RutaControladorListar.obtenerCantidadRutas();
-        Text titulo = new Text("Listado de Rutas (" + cant + ")");
+        Text titulo = new Text("LISTA DE RUTAS (" + cant + ")");
         titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
         cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
     }
@@ -148,7 +148,7 @@ public class VistaRutaListar extends StackPane {
         miTabla.setPlaceholder(new Text("No hay rutas registradas"));
         miTabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
-        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.75));
+        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.72));
         miTabla.maxHeightProperty().bind(miEscenario.heightProperty().multiply(0.60));
 
         miEscenario.heightProperty().addListener((o, oldVal, newVal) -> 

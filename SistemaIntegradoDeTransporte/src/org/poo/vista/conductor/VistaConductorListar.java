@@ -45,7 +45,7 @@ public class VistaConductorListar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_CONDUCTOR, // análogo al de TERMINAL
+                Configuracion.DEGRADE_ARREGLO_TERMINAL, // análogo al de TERMINAL
                 Configuracion.DEGRADE_BORDE
         );
 

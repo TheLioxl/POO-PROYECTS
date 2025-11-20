@@ -2,6 +2,7 @@ package org.poo.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class ViajeDto {
     
@@ -22,16 +23,12 @@ public class ViajeDto {
     private String notasAdicionalesViaje;
     private String nombreImagenPublicoViaje;
     private String nombreImagenPrivadoViaje;
+    private List<TiqueteDto> tiquetesViaje;
 
     public ViajeDto() {
     }
 
-    public ViajeDto(Integer idViaje, BusDto busViaje, RutaDto rutaViaje, ConductorDto conductorViaje,
-                   LocalDate fechaViaje, LocalTime horaSalidaViaje, LocalTime horaLlegadaViaje,
-                   Double precioViaje, Integer asientosDisponiblesViaje, Boolean estadoViaje,
-                   Boolean viajeDirecto, Boolean incluyeRefrigerio, Boolean tieneParadasIntermedias,
-                   String descripcionViaje, String notasAdicionalesViaje,
-                   String nombreImagenPublicoViaje, String nombreImagenPrivadoViaje) {
+    public ViajeDto(Integer idViaje, BusDto busViaje, RutaDto rutaViaje, ConductorDto conductorViaje, LocalDate fechaViaje, LocalTime horaSalidaViaje, LocalTime horaLlegadaViaje, Double precioViaje, Integer asientosDisponiblesViaje, Boolean estadoViaje, Boolean viajeDirecto, Boolean incluyeRefrigerio, Boolean tieneParadasIntermedias, String descripcionViaje, String notasAdicionalesViaje, String nombreImagenPublicoViaje, String nombreImagenPrivadoViaje, List<TiqueteDto> tiquetesViaje) {
         this.idViaje = idViaje;
         this.busViaje = busViaje;
         this.rutaViaje = rutaViaje;
@@ -49,9 +46,9 @@ public class ViajeDto {
         this.notasAdicionalesViaje = notasAdicionalesViaje;
         this.nombreImagenPublicoViaje = nombreImagenPublicoViaje;
         this.nombreImagenPrivadoViaje = nombreImagenPrivadoViaje;
+        this.tiquetesViaje = tiquetesViaje;
     }
-    
-    // Getters y Setters
+
     public Integer getIdViaje() {
         return idViaje;
     }
@@ -187,6 +184,16 @@ public class ViajeDto {
     public void setNombreImagenPrivadoViaje(String nombreImagenPrivadoViaje) {
         this.nombreImagenPrivadoViaje = nombreImagenPrivadoViaje;
     }
+
+    public List<TiqueteDto> getTiquetesViaje() {
+        return tiquetesViaje;
+    }
+
+    public void setTiquetesViaje(List<TiqueteDto> tiquetesViaje) {
+        this.tiquetesViaje = tiquetesViaje;
+    }
+
+    
 
     @Override
     public String toString() {

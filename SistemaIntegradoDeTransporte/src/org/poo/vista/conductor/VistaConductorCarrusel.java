@@ -122,7 +122,7 @@ public class VistaConductorCarrusel extends  BorderPane{
         organizadorVertical.getChildren().add(0, bloqueSeparador);
 
         conductorTitulo = new SimpleStringProperty(
-                "Detalle del Conductor (" + (indiceActual + 1) + " / " + totalConductores + ")");
+                "DETALLES DEL CONDUCTOR: (" + (indiceActual + 1) + " / " + totalConductores + ")");
 
         Label lblTitulo = new Label();
         lblTitulo.textProperty().bind(conductorTitulo);
@@ -171,7 +171,7 @@ public class VistaConductorCarrusel extends  BorderPane{
         StackPane centerPane = new StackPane();
 
         Rectangle miMarco = Marco.crear(miEscenario, 0.75, 0.65,
-                Configuracion.DEGRADE_ARREGLO_CONDUCTOR,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE);
         centerPane.getChildren().addAll(miMarco, organizadorVertical);
 
@@ -368,7 +368,7 @@ public class VistaConductorCarrusel extends  BorderPane{
     private void actualizarContenido() {
         objCargado = ConductorControladorUna.obtenerConductor(indiceActual);
 
-        conductorTitulo.set("Detalle del Conductor (" + (indiceActual + 1) + " / " + totalConductores + ")");
+        conductorTitulo.set("DETALLES DEL CONDUCTOR: (" + (indiceActual + 1) + " / " + totalConductores + ")");
         conductorNombre.set(objCargado.getNombreConductor());
         conductorCedula.set(objCargado.getCedulaConductor());
         conductorTelefono.set(objCargado.getTelefonoConductor());

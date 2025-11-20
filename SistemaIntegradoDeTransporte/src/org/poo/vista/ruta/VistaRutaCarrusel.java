@@ -96,12 +96,12 @@ public class VistaRutaCarrusel extends BorderPane {
         organizadorVertical.getChildren().add(0, bloqueSeparador);
 
         rutaTitulo = new SimpleStringProperty(
-                "Detalle de la Ruta (" + (indiceActual + 1) + " / " + totalRutas + ")");
+                "DETALLES DE LA RUTA: (" + (indiceActual + 1) + " / " + totalRutas + ")");
 
         Label lblTitulo = new Label();
         lblTitulo.textProperty().bind(rutaTitulo);
         lblTitulo.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
-        lblTitulo.setFont(Font.font("Arial", FontWeight.BOLD, 26));
+        lblTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 24));
         organizadorVertical.getChildren().add(lblTitulo);
     }
 
@@ -144,8 +144,8 @@ public class VistaRutaCarrusel extends BorderPane {
     private void construirPanelCentro() {
         StackPane centerPane = new StackPane();
 
-        Rectangle miMarco = Marco.crear(miEscenario, 0.70, 0.80,
-                Configuracion.DEGRADE_ARREGLO_RUTA,
+        Rectangle miMarco = Marco.crear(miEscenario, 0.75, 0.65,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE);
         centerPane.getChildren().addAll(miMarco, organizadorVertical);
 
@@ -241,7 +241,7 @@ public class VistaRutaCarrusel extends BorderPane {
         rutaNombre = new SimpleStringProperty(objCargado.getNombreRuta());
         Label lblNombre = new Label();
         lblNombre.textProperty().bind(rutaNombre);
-        lblNombre.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        lblNombre.setFont(Font.font("Rockwell", FontWeight.BOLD, 24));
         lblNombre.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblNombre);
 
@@ -268,36 +268,36 @@ public class VistaRutaCarrusel extends BorderPane {
 
         rutaOrigen = new SimpleStringProperty(objCargado.getCiudadOrigenRuta());
         Label lblOrigen = new Label();
-        lblOrigen.textProperty().bind(Bindings.concat("📍 Origen: ", rutaOrigen));
-        lblOrigen.setFont(Font.font("Arial", tamanioFuente));
-        lblOrigen.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblOrigen.textProperty().bind(Bindings.concat("Origen: ", rutaOrigen));
+        lblOrigen.setFont(Font.font("Rockwell", tamanioFuente));
+        lblOrigen.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblOrigen);
 
         rutaDestino = new SimpleStringProperty(objCargado.getCiudadDestinoRuta());
         Label lblDestino = new Label();
-        lblDestino.textProperty().bind(Bindings.concat("🎯 Destino: ", rutaDestino));
-        lblDestino.setFont(Font.font("Arial", tamanioFuente));
-        lblDestino.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblDestino.textProperty().bind(Bindings.concat("Destino: ", rutaDestino));
+        lblDestino.setFont(Font.font("Rockwell", tamanioFuente));
+        lblDestino.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblDestino);
 
         rutaDistancia = new SimpleDoubleProperty(objCargado.getDistanciaKmRuta());
         Label lblDistancia = new Label();
-        lblDistancia.textProperty().bind(Bindings.concat("📏 Distancia: ", rutaDistancia.asString(), " Km"));
-        lblDistancia.setFont(Font.font("Arial", tamanioFuente));
-        lblDistancia.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblDistancia.textProperty().bind(Bindings.concat("Distancia: ", rutaDistancia.asString(), " Km"));
+        lblDistancia.setFont(Font.font("Rockwell", tamanioFuente));
+        lblDistancia.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblDistancia);
 
         rutaDuracion = new SimpleIntegerProperty(objCargado.getDuracionHorasRuta());
         Label lblDuracion = new Label();
-        lblDuracion.textProperty().bind(Bindings.concat("⏱️ Duración: ", rutaDuracion.asString(), " horas"));
-        lblDuracion.setFont(Font.font("Arial", tamanioFuente));
-        lblDuracion.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblDuracion.textProperty().bind(Bindings.concat("Duración: ", rutaDuracion.asString(), " horas"));
+        lblDuracion.setFont(Font.font("Rockwell", tamanioFuente));
+        lblDuracion.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblDuracion);
 
         rutaEstado = new SimpleBooleanProperty(objCargado.getEstadoRuta());
         Label lblEstado = new Label();
-        lblEstado.textProperty().bind(Bindings.when(rutaEstado).then("✅ ACTIVA").otherwise("❌ INACTIVA"));
-        lblEstado.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        lblEstado.textProperty().bind(Bindings.when(rutaEstado).then("Activa").otherwise("Inactiva"));
+        lblEstado.setFont(Font.font("Rockwell", FontWeight.BOLD, 20));
         lblEstado.textFillProperty().bind(
                 rutaEstado.map(dato -> dato ? Color.web(Configuracion.VERDE_EXITO) 
                         : Color.web(Configuracion.ROJO_ERROR))
@@ -308,7 +308,7 @@ public class VistaRutaCarrusel extends BorderPane {
     private void actualizarContenido() {
         objCargado = RutaControladorUna.obtenerUnaRuta(indiceActual);
 
-        rutaTitulo.set("Carrusel de Rutas (" + (indiceActual + 1) + " / " + totalRutas + ")");
+        rutaTitulo.set("DETALLES DE LA RUTA: (" + (indiceActual + 1) + " / " + totalRutas + ")");
         rutaNombre.set(objCargado.getNombreRuta());
         rutaOrigen.set(objCargado.getCiudadOrigenRuta());
         rutaDestino.set(objCargado.getCiudadDestinoRuta());

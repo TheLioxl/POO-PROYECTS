@@ -1,5 +1,0 @@
-1;Expreso Bolivariano;900123456;5;true;1956-11-02;1000;true;true;false;Empresa nacional de transporte terrestre de alta cobertura.;expreso bolivariano.png;f515bfb3-b136-45d8-b4bc-c8216e8bb467_expreso bolivariano.png@
-2;Flota Magdalena;800245678;1;true;1948-06-21;600;true;false;false;Empresa tradicional del suroccidente del país.;Flota Magdalena.jpeg;30d6a0da-ec21-4a46-9ae5-9504fa74d869_Flota Magdalena.jpeg@
-3;Rápido Ochoa;900345221;6;true;1958-03-12;950;false;true;true;Reconocida por cubrir rutas largas en Colombia.;Rápido Ochoa.jpg;ef6d5556-b7ab-47f2-b819-5ab31f2edb66_Rápido Ochoa.jpg@
-4;Copetran;890303030;4;true;1942-09-01;1000;true;false;true;Una de las flotas más grandes del país.;Copetran.png;0af70f44-2a91-4986-9c6d-dae574237cda_Copetran.png@
-5;Velotax;912304567;2;false;1953-05-19;430;false;true;false;Empresa tradicional del magdalena.;Velotax.png;108ccb2f-2497-4650-95a9-0e92aa6cac1e_Velotax.png@

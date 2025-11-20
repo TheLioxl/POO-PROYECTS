@@ -101,7 +101,7 @@ public class VistaDestinoCarrusel extends BorderPane {
         organizadorVertical.getChildren().add(0, bloqueSeparador);
 
         destinoTitulo = new SimpleStringProperty(
-                "Detalle del Destino (" + (indiceActual + 1) + " / " + totalDestinos + ")");
+                "DETALLES DEL DESTINO: (" + (indiceActual + 1) + " / " + totalDestinos + ")");
 
         Label lblTitulo = new Label();
         lblTitulo.textProperty().bind(destinoTitulo);
@@ -150,7 +150,7 @@ public class VistaDestinoCarrusel extends BorderPane {
         StackPane centerPane = new StackPane();
 
         Rectangle miMarco = Marco.crear(miEscenario, 0.70, 0.80,
-                Configuracion.DEGRADE_ARREGLO_DESTINO,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE);
         centerPane.getChildren().addAll(miMarco, organizadorVertical);
 
@@ -244,7 +244,7 @@ public class VistaDestinoCarrusel extends BorderPane {
     }
     
     private void mostrarDatos() {
-        int tamanioFuente = 20;
+        int tamanioFuente = 18;
 
         // Nombre
         destinoNombre = new SimpleStringProperty(objCargado.getNombreDestino());
@@ -348,7 +348,7 @@ public class VistaDestinoCarrusel extends BorderPane {
     private void actualizarContenido() {
         objCargado = DestinoControladorUna.obtenerDestino(indiceActual);
 
-        destinoTitulo.set("Detalle del Destino (" + (indiceActual + 1) + " / " + totalDestinos + ")");
+        destinoTitulo.set("DETALLES DEL DESTINO: (" + (indiceActual + 1) + " / " + totalDestinos + ")");
         destinoNombre.set(objCargado.getNombreDestino());
         destinoDepartamento.set(objCargado.getDepartamentoDestino());
         destinoDescripcion.set(objCargado.getDescripcionDestino());
@@ -358,7 +358,7 @@ public class VistaDestinoCarrusel extends BorderPane {
         destinoTemperatura.set(objCargado.getTemperaturaPromedio() != null ? objCargado.getTemperaturaPromedio() : 0.0);
         
         String tipoTexto = (objCargado.getEsPlayero() != null && objCargado.getEsPlayero()) 
-            ? "Playero" : "Montañoso/Cultural";
+            ? "Playero" : "Montañoso";
         destinoTipo.set(tipoTexto);
         
         String temporadaTexto = objCargado.getTemporadaAlta() != null 

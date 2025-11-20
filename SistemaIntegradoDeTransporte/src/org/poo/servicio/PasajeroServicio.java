@@ -52,7 +52,6 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
         objPasajero.setEsMayorPasajero(dto.getEsMayorPasajero());
         objPasajero.setFechaNacimientoPasajero(dto.getFechaNacimientoPasajero());
         objPasajero.setTelefonoPasajero(dto.getTelefonoPasajero());
-        objPasajero.setEmailPasajero(dto.getEmailPasajero());
         objPasajero.setNombreImagendocumentoPublicoPasajero(dto.getNombreImagenPublicoPasajero());
         objPasajero.setNombreImagendocumentoPrivadoPasajero(GestorImagen.grabarLaImagen(ruta));
 
@@ -67,7 +66,6 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                 + objPasajero.getEsMayorPasajero() + Persistencia.SEPARADOR_COLUMNAS
                 + fechaNac + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getTelefonoPasajero() + Persistencia.SEPARADOR_COLUMNAS
-                + objPasajero.getEmailPasajero() + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getNombreImagendocumentoPublicoPasajero() + Persistencia.SEPARADOR_COLUMNAS
                 + objPasajero.getNombreImagendocumentoPrivadoPasajero();
 
@@ -97,9 +95,8 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                 Boolean esMayor = Boolean.valueOf(columnas[4].trim());
                 String fechaNacTxt = columnas[5].trim();
                 String telefono = columnas[6].trim();
-                String email = columnas[7].trim();
-                String npub = columnas.length > 7 ? columnas[7].trim() : "";
-                String nocu = columnas.length > 8 ? columnas[8].trim() : "";
+                String npub = columnas.length > 6 ? columnas[6].trim() : "";
+                String nocu = columnas.length > 7 ? columnas[7].trim() : "";
 
                 PasajeroDto dto = new PasajeroDto();
                 dto.setIdPasajero(codPasajero);
@@ -108,7 +105,6 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                 dto.setTipoDocumentoPasajero(tipoDocumento);
                 dto.setEsMayorPasajero(esMayor);
                 dto.setTelefonoPasajero(telefono);
-                dto.setEmailPasajero(email);
                 dto.setNombreImagenPublicoPasajero(npub);
                 dto.setNombreImagenPrivadoPasajero(nocu);
 
@@ -199,7 +195,6 @@ public class PasajeroServicio implements ApiOperacionBD<PasajeroDto, Integer> {
                     + objeto.getEsMayorPasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + fechaNac + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getTelefonoPasajero() + Persistencia.SEPARADOR_COLUMNAS
-                    + objeto.getEmailPasajero() + Persistencia.SEPARADOR_COLUMNAS
                     + objeto.getNombreImagenPublicoPasajero() + Persistencia.SEPARADOR_COLUMNAS;
 
             if (ruta.isBlank()) {

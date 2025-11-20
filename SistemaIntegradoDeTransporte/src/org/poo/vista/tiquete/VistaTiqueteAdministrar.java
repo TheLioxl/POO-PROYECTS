@@ -68,7 +68,7 @@ public class VistaTiqueteAdministrar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_TIQUETE,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -300,36 +300,18 @@ public class VistaTiqueteAdministrar extends StackPane {
             }
         });
         
-        // Botón Carrusel
-        Button btnCarrusel = new Button();
-        btnCarrusel.setPrefWidth(ancho);
-        btnCarrusel.setCursor(Cursor.HAND);
-        btnCarrusel.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_CANCELAR, tamanioIconito));
-        
-        btnCarrusel.setOnAction((e) -> {
-            if (miTabla.getSelectionModel().getSelectedItem() == null) {
-                Mensaje.mostrar(Alert.AlertType.WARNING,
-                        miEscenario, "Advertencia", 
-                        "Debe seleccionar un tiquete para ver en carrusel");
-            } else {
-                int posi = miTabla.getSelectionModel().getSelectedIndex();
-
-                panelCuerpo = TiqueteControladorVentana.carrusel(
-                        miEscenario,
-                        panelPrincipal,
-                        panelCuerpo,
-                        Configuracion.ANCHO_APP,
-                        Configuracion.ALTO_CUERPO,
-                        posi);
-                
-                panelPrincipal.setCenter(panelCuerpo);
-            }
+        // Botón cancelar
+        Button btnCancelar = new Button();
+        btnCancelar.setPrefWidth(ancho);
+        btnCancelar.setCursor(Cursor.HAND);
+        btnCancelar.setGraphic(Icono.obtenerIcono(Configuracion.ICONO_CANCELAR, tamanioIconito));
+        btnCancelar.setOnAction((e) -> {
+            miTabla.getSelectionModel().clearSelection();
         });
-        
+
         cajaBotones = new HBox(5);
         cajaBotones.setAlignment(Pos.CENTER);
-        cajaBotones.getChildren().addAll(btnEliminar, btnActualizar, btnCarrusel);
-        
+        cajaBotones.getChildren().addAll(btnEliminar, btnActualizar, btnCancelar);
         cajaVertical.getChildren().add(cajaBotones);
     }
 }

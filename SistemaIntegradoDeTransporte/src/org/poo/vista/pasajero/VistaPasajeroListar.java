@@ -43,7 +43,7 @@ public class VistaPasajeroListar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_CONDUCTOR,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -146,14 +146,6 @@ public class VistaPasajeroListar extends StackPane {
         return columna;
     }
 
-    private TableColumn<PasajeroDto, String> crearColumnaEmail() {
-        TableColumn<PasajeroDto, String> columna = new TableColumn<>("Email");
-        columna.setCellValueFactory(new PropertyValueFactory<>("emailPasajero"));
-        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.18));
-        columna.setStyle(ESTILO_IZQUIERDA);
-        return columna;
-    }
-
     private TableColumn<PasajeroDto, String> crearColumnaImagenPublica() {
         TableColumn<PasajeroDto, String> columna = new TableColumn<>("Imagen documento");
 
@@ -174,7 +166,6 @@ public class VistaPasajeroListar extends StackPane {
         miTabla.getColumns().add(crearColumnaTipoDocumento());
         miTabla.getColumns().add(crearColumnaMayor());
         miTabla.getColumns().add(crearColumnaTelefono());
-        miTabla.getColumns().add(crearColumnaEmail());
         miTabla.getColumns().add(crearColumnaImagenPublica());
     }
 
@@ -188,7 +179,7 @@ public class VistaPasajeroListar extends StackPane {
         miTabla.setPlaceholder(new Text("No hay pasajeros registrados"));
         miTabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
-        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.85));
+        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.70));
         miTabla.maxHeightProperty().bind(miEscenario.heightProperty().multiply(0.60));
 
         miEscenario.heightProperty().addListener((o, oldVal, newVal)

@@ -22,7 +22,7 @@ import org.poo.recurso.dominio.Contenedor;
 public class VistaCabecera extends HBox {
 
     private final int menuAncho = 160;
-    private final int menuAlto = 35;
+    private final int menuAlto = 31;
     private final int menuEspacio = 15;
 
     private Pane miPanelCuerpo;

@@ -13,6 +13,7 @@ import org.poo.api.ApiOperacionBD;
 import org.poo.dto.BusDto;
 import org.poo.dto.ConductorDto;
 import org.poo.dto.RutaDto;
+import org.poo.dto.TiqueteDto;
 import org.poo.dto.ViajeDto;
 import org.poo.modelo.Viaje;
 import org.poo.recurso.constante.Persistencia;
@@ -108,14 +109,28 @@ public class ViajeServicio implements ApiOperacionBD<ViajeDto, Integer> {
                 String[] columnas = cadena.split(Persistencia.SEPARADOR_COLUMNAS);
 
                 ViajeDto dto = new ViajeDto();
-                
+
                 int codViaje = Integer.parseInt(columnas[0].trim());
                 int codBus = Integer.parseInt(columnas[1].trim());
                 int codRuta = Integer.parseInt(columnas[2].trim());
                 int codConductor = Integer.parseInt(columnas[3].trim());
                 LocalDate fecha = LocalDate.parse(columnas[4].trim());
                 LocalTime horaSalida = LocalTime.parse(columnas[5].trim());
-                
+                // --- NUEVO: cargar tiquetes asociados al viaje ---
+                TiqueteServicio tiqueteServicio = new TiqueteServicio();
+                List<TiqueteDto> arrTiquetes = tiqueteServicio.selectFrom();
+
+                // filtrar solo los tiquetes que pertenecen a este viaje
+                List<TiqueteDto> tiquetesDelViaje = new ArrayList<>();
+                for (TiqueteDto t : arrTiquetes) {
+                    if (t.getViajeTiquete() != null
+                            && Objects.equals(t.getViajeTiquete().getIdViaje(), dto.getIdViaje())) {
+                        tiquetesDelViaje.add(t);
+                    }
+                }
+
+                dto.setTiquetesViaje(tiquetesDelViaje);
+
                 dto.setIdViaje(codViaje);
                 dto.setFechaViaje(fecha);
                 dto.setHoraSalidaViaje(horaSalida);
@@ -132,7 +147,7 @@ public class ViajeServicio implements ApiOperacionBD<ViajeDto, Integer> {
                     String notas = columnas[14].trim();
                     String npub = columnas[15].trim();
                     String nocu = columnas[16].trim();
-                    
+
                     dto.setHoraLlegadaViaje(horaLlegada);
                     dto.setPrecioViaje(precio);
                     dto.setAsientosDisponiblesViaje(asientos);
@@ -150,7 +165,7 @@ public class ViajeServicio implements ApiOperacionBD<ViajeDto, Integer> {
                     Boolean estado = Boolean.valueOf(columnas[8].trim());
                     String npub = columnas[9].trim();
                     String nocu = columnas[10].trim();
-                    
+
                     dto.setHoraLlegadaViaje(horaSalida.plusHours(4));
                     dto.setPrecioViaje(precio);
                     dto.setAsientosDisponiblesViaje(asientos);
@@ -208,13 +223,13 @@ public class ViajeServicio implements ApiOperacionBD<ViajeDto, Integer> {
     public List<ViajeDto> selectFromWhereActivos() {
         List<ViajeDto> todosLosViajes = selectFrom();
         List<ViajeDto> viajesActivos = new ArrayList<>();
-        
+
         for (ViajeDto viaje : todosLosViajes) {
             if (Boolean.TRUE.equals(viaje.getEstadoViaje())) {
                 viajesActivos.add(viaje);
             }
         }
-        
+
         return viajesActivos;
     }
 
@@ -287,11 +302,11 @@ public class ViajeServicio implements ApiOperacionBD<ViajeDto, Integer> {
             } else {
                 nocu = GestorImagen.grabarLaImagen(ruta);
                 cadena = cadena + nocu;
-                
+
                 arregloDatos = miArchivo.borrarFilaPosicion(codigo);
                 if (!arregloDatos.isEmpty()) {
                     String nomOculto = arregloDatos.get(arregloDatos.size() - 1);
-                    String nombreBorrar = Persistencia.RUTA_IMAGENES 
+                    String nombreBorrar = Persistencia.RUTA_IMAGENES
                             + Persistencia.SEPARADOR_CARPETAS + nomOculto;
                     java.nio.file.Path rutaBorrar = java.nio.file.Paths.get(nombreBorrar);
                     java.nio.file.Files.deleteIfExists(rutaBorrar);

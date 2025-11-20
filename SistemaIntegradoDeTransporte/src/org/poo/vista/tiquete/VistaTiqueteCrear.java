@@ -56,8 +56,8 @@ public class VistaTiqueteCrear extends StackPane {
 
     private static final int H_GAP = 10;
     private static final int V_GAP = 20;
-    private static final int ALTO_FILA = 40;
-    private static final int ALTO_CAJA = 35;
+    private static final int ALTO_FILA = 30;
+    private static final int ALTO_CAJA = 30;
     private static final int TAMANIO_FUENTE = 20;
     private static final double AJUSTE_TITULO = 0.1;
 
@@ -100,7 +100,7 @@ public class VistaTiqueteCrear extends StackPane {
         miMarco = Marco.crear(escenario,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_TIQUETE,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE);
 
         getChildren().add(miMarco);
@@ -117,28 +117,29 @@ public class VistaTiqueteCrear extends StackPane {
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setPrefSize(miAnchoGrilla, alto);
-        miGrilla.setMinSize(miAnchoGrilla, alto);
-        miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        miGrilla.maxWidthProperty().bind(widthProperty().multiply(0.70));
+        miGrilla.maxHeightProperty().bind(heightProperty().multiply(0.80));
+        miGrilla.setAlignment(Pos.CENTER);
 
         ColumnConstraints col0 = new ColumnConstraints();
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
-
-        col0.setPrefWidth(200);
-        col1.setPrefWidth(200);
-        col2.setPrefWidth(200);
-
+        
+        col0.setPercentWidth(30);  // etiqueta
+        col1.setPercentWidth(45);  // campo de texto
+        col2.setPercentWidth(30);  // imagen
         col1.setHgrow(Priority.ALWAYS);
         miGrilla.getColumnConstraints().addAll(col0, col1, col2);
 
-        for (int i = 0; i < 13; i++) {
+        for (int i = 0; i < 12; i++) {
             RowConstraints fila = new RowConstraints();
             fila.setMinHeight(ALTO_FILA);
             fila.setMaxHeight(ALTO_FILA);
+            fila.setVgrow(Priority.ALWAYS);
             miGrilla.getRowConstraints().add(fila);
         }
     }
+
 
     private void crearTitulo() {
         Text miTitulo = new Text("FORMULARIO - CREAR TIQUETE");
@@ -308,13 +309,13 @@ public class VistaTiqueteCrear extends StackPane {
             if (rutaImagenSeleccionada.isEmpty()) {
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
-                miGrilla.add(imgPorDefecto, 2, 1, 1, 11);
+                miGrilla.add(imgPorDefecto, 2, 5);
             } else {
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, 2, 1, 1, 11);
+                miGrilla.add(imgPrevisualizar, 2, 5);
             }
         });
 
@@ -327,7 +328,7 @@ public class VistaTiqueteCrear extends StackPane {
         imgPorDefecto = Icono.obtenerIcono("imgNoDisponible.png", 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         GridPane.setValignment(imgPorDefecto, VPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 11);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
         // ===== BOTÓN GRABAR =====
         btnGrabar = new Button("GRABAR TIQUETE");
@@ -442,7 +443,7 @@ public class VistaTiqueteCrear extends StackPane {
         miGrilla.getChildren().remove(imgPrevisualizar);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         GridPane.setValignment(imgPorDefecto, VPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 11);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
         cmbViaje.requestFocus();
     }
@@ -453,7 +454,7 @@ public class VistaTiqueteCrear extends StackPane {
             double alturaMarco = miMarco.getHeight();
             if (alturaMarco > 0) {
                 double desplazamiento = alturaMarco * AJUSTE_TITULO;
-                miGrilla.setTranslateY(-alturaMarco / 14 + desplazamiento);
+                miGrilla.setTranslateY(-alturaMarco / 8 + desplazamiento);
             }
         };
 

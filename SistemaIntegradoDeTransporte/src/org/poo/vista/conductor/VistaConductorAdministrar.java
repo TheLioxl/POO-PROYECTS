@@ -68,7 +68,7 @@ public class VistaConductorAdministrar extends StackPane{
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_CONDUCTOR, // similar a DEGRADE_ARREGLO_TERMINAL
+                Configuracion.DEGRADE_ARREGLO_TERMINAL, // similar a DEGRADE_ARREGLO_TERMINAL
                 Configuracion.DEGRADE_BORDE
         );
 

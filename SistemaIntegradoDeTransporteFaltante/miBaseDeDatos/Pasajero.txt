@@ -1,6 +1,0 @@
-1;Carlos Martínez López;1012345678;Cédula de ciudadanía;false;2009-11-05;3101234567;idhombre.png;8f59bc44-0b8a-4624-870b-c13b62fe36e1_idhombre.png@
-2;Carlos Pérez Campo;1098532216;Cédula de ciudadanía;true;2000-03-15;3001234567;idhombre.png;01b097c5-d77f-4801-a3a7-bc9d700102e7_idhombre.png@
-3;Mariana Duarte Salinas;1009876543;Tarjeta de identidad;false;2010-10-22;3124567890;idmujer.png;f72aa90f-4060-40a5-9012-d7ec92d81fa5_idmujer.png@
-4;Juan Esteban Rojas;902345671;Tarjeta de identidad;false;2008-11-07;3059876543;idhombre.png;890f8641-569c-422d-8552-21db5a092517_idhombre.png@
-5;Ana Sofía Martínez;456789123;Pasaporte;true;1988-11-05;3206789012;idmujer.png;4a1d51d8-7f51-4ced-af55-c053945ee6de_idmujer.png@
-6;Diego Fernando Torres;1145678901;Cédula de ciudadanía;true;2004-07-29;3152349087;idhombre.png;90ab86ec-3965-4c1a-a9ff-df4a9af97dfb_idhombre.png@

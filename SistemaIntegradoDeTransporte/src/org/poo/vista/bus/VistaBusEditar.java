@@ -272,20 +272,10 @@ public class VistaBusEditar extends StackPane {
         vboxServicios.getChildren().addAll(chkAireAcondicionado, chkWifi, chkBano);
         miGrilla.add(vboxServicios, 1, 8);
 
-        Label lblDescripcion = new Label("Descripción:");
-        lblDescripcion.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblDescripcion, 0, 9);
-
-        txtDescripcion = new TextArea();
-        txtDescripcion.setPrefRowCount(3);
-        txtDescripcion.setWrapText(true);
-        txtDescripcion.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
-        txtDescripcion.setMaxHeight(Double.MAX_VALUE);
-        miGrilla.add(txtDescripcion, 1, 9);
 
         Label lblEstado = new Label("Estado:");
         lblEstado.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblEstado, 0, 10);
+        miGrilla.add(lblEstado, 0, 9);
 
         cmbEstadoBus = new ComboBox<>();
         cmbEstadoBus.setMaxWidth(Double.MAX_VALUE);
@@ -299,11 +289,11 @@ public class VistaBusEditar extends StackPane {
         } else {
             cmbEstadoBus.getSelectionModel().select(2);
         }
-        miGrilla.add(cmbEstadoBus, 1, 10);
+        miGrilla.add(cmbEstadoBus, 1, 9);
 
         Label lblImagen = new Label("Imagen:");
         lblImagen.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblImagen, 0, 11);
+        miGrilla.add(lblImagen, 0, 10);
 
         txtImagen = new TextField();
         txtImagen.setText(objBus.getNombreImagenPublicoBus());
@@ -334,7 +324,7 @@ public class VistaBusEditar extends StackPane {
 
         HBox.setHgrow(txtImagen, Priority.ALWAYS);
         HBox panelImagen = new HBox(5, txtImagen, btnSeleccionarImagen);
-        miGrilla.add(panelImagen, 1, 11);
+        miGrilla.add(panelImagen, 1, 10);
 
         imgPorDefecto = Icono.obtenerFotosExternas(
                 objBus.getNombreImagenPrivadoBus(), 100);
@@ -349,7 +339,7 @@ public class VistaBusEditar extends StackPane {
         btnActualizar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + ";");
         btnActualizar.setCursor(Cursor.HAND);
         btnActualizar.setOnAction(e -> actualizarBus());
-        miGrilla.add(btnActualizar, 1, 12);
+        miGrilla.add(btnActualizar, 1, 11);
 
         Button btnRegresar = new Button("VOLVER");
         btnRegresar.setPrefHeight(ALTO_CAJA);
@@ -369,7 +359,7 @@ public class VistaBusEditar extends StackPane {
             panelPrincipal.setCenter(null);
             panelPrincipal.setCenter(panelCuerpo);
         });
-        miGrilla.add(btnRegresar, 1, 13);
+        miGrilla.add(btnRegresar, 1, 12);
     }
 
     private Boolean formularioCompleto() {

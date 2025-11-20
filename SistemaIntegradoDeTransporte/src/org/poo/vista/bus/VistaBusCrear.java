@@ -57,10 +57,7 @@ public class VistaBusCrear extends StackPane {
     private CheckBox chkAireAcondicionado;
     private CheckBox chkWifi;
     private CheckBox chkBano;
-    
-    // Tipo 6: TextArea - para descripción
-    private TextArea txtDescripcion;
-    
+      
     private TextField cajaImagen;
     private ImageView imgPorDefecto;
     private ImageView imgPrevisualizar;
@@ -251,23 +248,11 @@ public class VistaBusCrear extends StackPane {
         vboxServicios.getChildren().addAll(chkAireAcondicionado, chkWifi, chkBano);
         miGrilla.add(vboxServicios, 1, 8);
 
-        // Campo 8: Descripción (TextArea)
-        Label lblDescripcion = new Label("Descripción:");
-        lblDescripcion.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblDescripcion, 0, 9);
-
-        txtDescripcion = new TextArea();
-        txtDescripcion.setPromptText("Breve descripción del bus...");
-        txtDescripcion.setPrefRowCount(2);
-        txtDescripcion.maxWidthProperty().bind(miGrilla.widthProperty().multiply(0.45));
-        txtDescripcion.setMaxHeight(Double.MAX_VALUE);
-        txtDescripcion.setWrapText(true);
-        miGrilla.add(txtDescripcion, 1, 9);
 
         // Campo 9: Estado (ComboBox)
         Label lblEstado = new Label("Estado:");
         lblEstado.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblEstado, 0, 10);
+        miGrilla.add(lblEstado, 0, 9);
 
         cmbEstadoBus = new ComboBox<>();
         cmbEstadoBus.setMaxWidth(Double.MAX_VALUE);
@@ -276,12 +261,12 @@ public class VistaBusCrear extends StackPane {
         cmbEstadoBus.setMinHeight(Region.USE_PREF_SIZE);
         cmbEstadoBus.getItems().addAll("Seleccione estado", "Activo", "Inactivo");
         cmbEstadoBus.getSelectionModel().select(0);
-        miGrilla.add(cmbEstadoBus, 1, 10);
+        miGrilla.add(cmbEstadoBus, 1, 9);
 
         // Campo 10: Imagen
         Label lblImagen = new Label("Imagen:");
         lblImagen.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblImagen, 0, 11);
+        miGrilla.add(lblImagen, 0, 10);
 
         cajaImagen = new TextField();
         cajaImagen.setDisable(true);
@@ -315,7 +300,7 @@ public class VistaBusCrear extends StackPane {
 
         HBox.setHgrow(cajaImagen, Priority.ALWAYS);
         HBox panelImagen = new HBox(5, cajaImagen, btnSeleccionarImagen);
-        miGrilla.add(panelImagen, 1, 11);
+        miGrilla.add(panelImagen, 1, 10);
 
         // Previsualización de imagen
         imgPorDefecto = Icono.obtenerIcono(Configuracion.ICONO_NO_DISPONIBLE, 150);
@@ -332,7 +317,7 @@ public class VistaBusCrear extends StackPane {
                 + "-fx-border-radius: 8; -fx-background-radius: 8;");
         btnGrabar.setCursor(Cursor.HAND);
         btnGrabar.setOnAction(e -> guardarBus());
-        miGrilla.add(btnGrabar, 1, 12);
+        miGrilla.add(btnGrabar, 1, 11);
     }
 
     private Boolean formularioCompleto() {
@@ -365,13 +350,6 @@ public class VistaBusCrear extends StackPane {
         if (dateFechaAdquisicion.getValue() == null) {
             Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
                     "Fecha no seleccionada", "Debe seleccionar la fecha de adquisición");
-            return false;
-        }
-
-        if (txtDescripcion.getText().isBlank()) {
-            Mensaje.mostrar(Alert.AlertType.WARNING, this.getScene().getWindow(),
-                    "Campo vacío", "Debe ingresar una descripción");
-            txtDescripcion.requestFocus();
             return false;
         }
 
@@ -422,7 +400,6 @@ public class VistaBusCrear extends StackPane {
         chkAireAcondicionado.setSelected(false);
         chkWifi.setSelected(false);
         chkBano.setSelected(false);
-        txtDescripcion.clear();
         cmbEstadoBus.getSelectionModel().select(0);
         cajaImagen.clear();
         rutaImagenSeleccionada = "";

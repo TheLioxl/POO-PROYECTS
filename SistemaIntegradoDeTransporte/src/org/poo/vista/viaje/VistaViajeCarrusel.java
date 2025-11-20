@@ -103,12 +103,12 @@ public class VistaViajeCarrusel extends BorderPane {
         organizadorVertical.getChildren().add(0, bloqueSeparador);
 
         viajeTitulo = new SimpleStringProperty(
-                "Detalle del Viaje (" + (indiceActual + 1) + " / " + totalViajes + ")");
+                "DETALLES DEL VIAJE: (" + (indiceActual + 1) + " / " + totalViajes + ")");
 
         Label lblTitulo = new Label();
         lblTitulo.textProperty().bind(viajeTitulo);
         lblTitulo.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
-        lblTitulo.setFont(Font.font("Arial", FontWeight.BOLD, 26));
+        lblTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 26));
         organizadorVertical.getChildren().add(lblTitulo);
     }
 
@@ -151,8 +151,8 @@ public class VistaViajeCarrusel extends BorderPane {
     private void construirPanelCentro() {
         StackPane centerPane = new StackPane();
 
-        Rectangle miMarco = Marco.crear(miEscenario, 0.70, 0.80,
-                Configuracion.DEGRADE_ARREGLO_VIAJE,
+        Rectangle miMarco = Marco.crear(miEscenario, 0.75, 0.80,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE);
         centerPane.getChildren().addAll(miMarco, organizadorVertical);
 
@@ -251,7 +251,7 @@ public class VistaViajeCarrusel extends BorderPane {
         viajeRuta = new SimpleStringProperty(objCargado.getRutaViaje().toString());
         Label lblTituloViaje = new Label();
         lblTituloViaje.textProperty().bind(Bindings.concat(viajeFecha, " - ", viajeRuta));
-        lblTituloViaje.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        lblTituloViaje.setFont(Font.font("Rockwell", FontWeight.BOLD, 24));
         lblTituloViaje.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblTituloViaje);
 
@@ -280,17 +280,17 @@ public class VistaViajeCarrusel extends BorderPane {
         // Bus
         viajeBus = new SimpleStringProperty(objCargado.getBusViaje().toString());
         Label lblBus = new Label();
-        lblBus.textProperty().bind(Bindings.concat("🚌 Bus: ", viajeBus));
-        lblBus.setFont(Font.font("Arial", tamanioFuente));
-        lblBus.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblBus.textProperty().bind(Bindings.concat("Bus: ", viajeBus));
+        lblBus.setFont(Font.font("Rockwell", tamanioFuente));
+        lblBus.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblBus);
 
         // Conductor
         viajeConductor = new SimpleStringProperty(objCargado.getConductorViaje().getNombreConductor());
         Label lblConductor = new Label();
-        lblConductor.textProperty().bind(Bindings.concat("👨‍✈️ Conductor: ", viajeConductor));
-        lblConductor.setFont(Font.font("Arial", tamanioFuente));
-        lblConductor.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblConductor.textProperty().bind(Bindings.concat("Conductor: ", viajeConductor));
+        lblConductor.setFont(Font.font("Rockwell", tamanioFuente));
+        lblConductor.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblConductor);
 
         // Horario (Salida - Llegada)
@@ -298,32 +298,32 @@ public class VistaViajeCarrusel extends BorderPane {
             objCargado.getHoraSalidaViaje() + " → " + objCargado.getHoraLlegadaViaje()
         );
         Label lblHorario = new Label();
-        lblHorario.textProperty().bind(Bindings.concat("🕐 Horario: ", viajeHorario));
-        lblHorario.setFont(Font.font("Arial", tamanioFuente));
-        lblHorario.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblHorario.textProperty().bind(Bindings.concat("Horario: ", viajeHorario));
+        lblHorario.setFont(Font.font("Rockwell", tamanioFuente));
+        lblHorario.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblHorario);
 
         // Precio
         viajePrecio = new SimpleStringProperty(String.format("$%.2f", objCargado.getPrecioViaje()));
         Label lblPrecio = new Label();
-        lblPrecio.textProperty().bind(Bindings.concat("💰 Precio: ", viajePrecio));
-        lblPrecio.setFont(Font.font("Arial", tamanioFuente));
-        lblPrecio.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblPrecio.textProperty().bind(Bindings.concat("Precio: ", viajePrecio));
+        lblPrecio.setFont(Font.font("Rockwell", tamanioFuente));
+        lblPrecio.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblPrecio);
 
         // Asientos Disponibles
         viajeAsientos = new SimpleIntegerProperty(objCargado.getAsientosDisponiblesViaje());
         Label lblAsientos = new Label();
-        lblAsientos.textProperty().bind(Bindings.concat("💺 Asientos disponibles: ", viajeAsientos.asString()));
-        lblAsientos.setFont(Font.font("Arial", tamanioFuente));
-        lblAsientos.setTextFill(Color.web(Configuracion.AZUL_MEDIO));
+        lblAsientos.textProperty().bind(Bindings.concat("Asientos disponibles: ", viajeAsientos.asString()));
+        lblAsientos.setFont(Font.font("Rockwell", tamanioFuente));
+        lblAsientos.setTextFill(Color.web(Configuracion.AZUL_OSCURO));
         organizadorVertical.getChildren().add(lblAsientos);
 
         // Estado
         viajeEstado = new SimpleBooleanProperty(objCargado.getEstadoViaje());
         Label lblEstado = new Label();
-        lblEstado.textProperty().bind(Bindings.when(viajeEstado).then("✅ ACTIVO").otherwise("❌ INACTIVO"));
-        lblEstado.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        lblEstado.textProperty().bind(Bindings.when(viajeEstado).then("Activo").otherwise("Inactivo"));
+        lblEstado.setFont(Font.font("Rockwell", FontWeight.BOLD, 20));
         lblEstado.textFillProperty().bind(
                 viajeEstado.map(dato -> dato ? Color.web(Configuracion.VERDE_EXITO) 
                         : Color.web(Configuracion.ROJO_ERROR))
@@ -334,7 +334,7 @@ public class VistaViajeCarrusel extends BorderPane {
     private void actualizarContenido() {
         objCargado = ViajeControladorUna.obtenerViaje(indiceActual);
 
-        viajeTitulo.set("Carrusel de Viajes (" + (indiceActual + 1) + " / " + totalViajes + ")");
+        viajeTitulo.set("DETALLES DEL VIAJE: (" + (indiceActual + 1) + " / " + totalViajes + ")");
         viajeFecha.set(objCargado.getFechaViaje().toString());
         viajeRuta.set(objCargado.getRutaViaje().toString());
         viajeBus.set(objCargado.getBusViaje().toString());

@@ -55,7 +55,7 @@ public class VistaViajeAdministrar extends StackPane {
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_VIAJE,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -122,6 +122,14 @@ public class VistaViajeAdministrar extends StackPane {
             new SimpleStringProperty(obj.getValue().getHoraSalidaViaje().toString()));
         colHoraSalida.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
         colHoraSalida.setStyle(ESTILO_CENTRAR);
+        
+        // Hora Llegada
+        TableColumn<ViajeDto, String> colHoraLlegada = new TableColumn<>("Llegada");
+        colHoraLlegada.setCellValueFactory(obj
+                -> new SimpleStringProperty(obj.getValue().getHoraLlegadaViaje().toString()));
+        colHoraLlegada.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        colHoraLlegada.setStyle(ESTILO_CENTRAR);
+
 
         // Precio
         TableColumn<ViajeDto, String> colPrecio = new TableColumn<>("Precio");
@@ -183,6 +191,7 @@ public class VistaViajeAdministrar extends StackPane {
         miTabla.getColumns().add(colRuta);
         miTabla.getColumns().add(colBus);
         miTabla.getColumns().add(colHoraSalida);
+        miTabla.getColumns().add(colHoraLlegada);
         miTabla.getColumns().add(colPrecio);
         miTabla.getColumns().add(colAsientos);
         miTabla.getColumns().add(colEstado);

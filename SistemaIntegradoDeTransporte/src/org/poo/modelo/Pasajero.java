@@ -11,14 +11,13 @@ public class Pasajero {
     private Boolean esMayorPasajero;
     private LocalDate fechaNacimientoPasajero;
     private String telefonoPasajero;
-    private String emailPasajero;
     private String nombreImagendocumentoPublicoPasajero;
     private String nombreImagendocumentoPrivadoPasajero;
 
     public Pasajero() {
     }
 
-    public Pasajero(Integer idPasajero, String nombrePasajero, String documentoPasajero, String tipoDocumentoPasajero, Boolean esMayorPasajero, LocalDate fechaNacimientoPasajero, String telefonoPasajero, String emailPasajero, String nombreImagendocumentoPublicoPasajero, String nombreImagendocumentoPrivadoPasajero) {
+    public Pasajero(Integer idPasajero, String nombrePasajero, String documentoPasajero, String tipoDocumentoPasajero, Boolean esMayorPasajero, LocalDate fechaNacimientoPasajero, String telefonoPasajero, String nombreImagendocumentoPublicoPasajero, String nombreImagendocumentoPrivadoPasajero) {
         this.idPasajero = idPasajero;
         this.nombrePasajero = nombrePasajero;
         this.documentoPasajero = documentoPasajero;
@@ -26,7 +25,6 @@ public class Pasajero {
         this.esMayorPasajero = esMayorPasajero;
         this.fechaNacimientoPasajero = fechaNacimientoPasajero;
         this.telefonoPasajero = telefonoPasajero;
-        this.emailPasajero = emailPasajero;
         this.nombreImagendocumentoPublicoPasajero = nombreImagendocumentoPublicoPasajero;
         this.nombreImagendocumentoPrivadoPasajero = nombreImagendocumentoPrivadoPasajero;
     }
@@ -85,14 +83,6 @@ public class Pasajero {
 
     public void setTelefonoPasajero(String telefonoPasajero) {
         this.telefonoPasajero = telefonoPasajero;
-    }
-
-    public String getEmailPasajero() {
-        return emailPasajero;
-    }
-
-    public void setEmailPasajero(String emailPasajero) {
-        this.emailPasajero = emailPasajero;
     }
 
     public String getNombreImagendocumentoPublicoPasajero() {

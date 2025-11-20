@@ -44,8 +44,8 @@ public class VistaViajeListar extends StackPane {
         marco = Marco.crear(
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
-                Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_VIAJE,
+                Configuracion.MARCO_ALTO_PORCENTAJE + 0.2,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -72,7 +72,7 @@ public class VistaViajeListar extends StackPane {
         int cant = ViajeControladorListar.obtenerCantidadViajes();
         Text titulo = new Text("LISTA DE VIAJES (" + cant + ")");
         titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        titulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 28));
 
         cajaVertical.getChildren().addAll(bloqueSeparador, titulo);
     }
@@ -87,9 +87,9 @@ public class VistaViajeListar extends StackPane {
 
     private TableColumn<ViajeDto, String> crearColumnaFecha() {
         TableColumn<ViajeDto, String> columna = new TableColumn<>("Fecha Viaje");
-        columna.setCellValueFactory(obj -> 
-            new SimpleStringProperty(obj.getValue().getFechaViaje() != null ? 
-                obj.getValue().getFechaViaje().toString() : ""));
+        columna.setCellValueFactory(obj
+                -> new SimpleStringProperty(obj.getValue().getFechaViaje() != null
+                        ? obj.getValue().getFechaViaje().toString() : ""));
         columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
@@ -97,9 +97,9 @@ public class VistaViajeListar extends StackPane {
 
     private TableColumn<ViajeDto, String> crearColumnaHoraSalida() {
         TableColumn<ViajeDto, String> columna = new TableColumn<>("Hora Salida");
-        columna.setCellValueFactory(obj -> 
-            new SimpleStringProperty(obj.getValue().getHoraSalidaViaje() != null ? 
-                obj.getValue().getHoraSalidaViaje().toString() : ""));
+        columna.setCellValueFactory(obj
+                -> new SimpleStringProperty(obj.getValue().getHoraSalidaViaje() != null
+                        ? obj.getValue().getHoraSalidaViaje().toString() : ""));
         columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
@@ -107,9 +107,9 @@ public class VistaViajeListar extends StackPane {
 
     private TableColumn<ViajeDto, String> crearColumnaHoraLlegada() {
         TableColumn<ViajeDto, String> columna = new TableColumn<>("Hora Llegada");
-        columna.setCellValueFactory(obj -> 
-            new SimpleStringProperty(obj.getValue().getHoraLlegadaViaje() != null ? 
-                obj.getValue().getHoraLlegadaViaje().toString() : ""));
+        columna.setCellValueFactory(obj
+                -> new SimpleStringProperty(obj.getValue().getHoraLlegadaViaje() != null
+                        ? obj.getValue().getHoraLlegadaViaje().toString() : ""));
         columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
@@ -117,9 +117,9 @@ public class VistaViajeListar extends StackPane {
 
     private TableColumn<ViajeDto, String> crearColumnaRuta() {
         TableColumn<ViajeDto, String> columna = new TableColumn<>("Ruta");
-        columna.setCellValueFactory(obj -> 
-            new SimpleStringProperty(obj.getValue().getRutaViaje() != null ? 
-                obj.getValue().getRutaViaje().toString() : ""));
+        columna.setCellValueFactory(obj
+                -> new SimpleStringProperty(obj.getValue().getRutaViaje() != null
+                        ? obj.getValue().getRutaViaje().toString() : ""));
         columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
         columna.setStyle(ESTILO_IZQUIERDA);
         return columna;
@@ -127,9 +127,9 @@ public class VistaViajeListar extends StackPane {
 
     private TableColumn<ViajeDto, String> crearColumnaConductor() {
         TableColumn<ViajeDto, String> columna = new TableColumn<>("Conductor");
-        columna.setCellValueFactory(obj -> 
-            new SimpleStringProperty(obj.getValue().getConductorViaje() != null ? 
-                obj.getValue().getConductorViaje().toString() : ""));
+        columna.setCellValueFactory(obj
+                -> new SimpleStringProperty(obj.getValue().getConductorViaje() != null
+                        ? obj.getValue().getConductorViaje().toString() : ""));
         columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.12));
         columna.setStyle(ESTILO_IZQUIERDA);
         return columna;
@@ -137,9 +137,9 @@ public class VistaViajeListar extends StackPane {
 
     private TableColumn<ViajeDto, String> crearColumnaBus() {
         TableColumn<ViajeDto, String> columna = new TableColumn<>("Bus");
-        columna.setCellValueFactory(obj -> 
-            new SimpleStringProperty(obj.getValue().getBusViaje() != null ? 
-                obj.getValue().getBusViaje().toString() : ""));
+        columna.setCellValueFactory(obj
+                -> new SimpleStringProperty(obj.getValue().getBusViaje() != null
+                        ? obj.getValue().getBusViaje().toString() : ""));
         columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.10));
         columna.setStyle(ESTILO_CENTRAR);
         return columna;
@@ -161,10 +161,24 @@ public class VistaViajeListar extends StackPane {
         return columna;
     }
 
+    private TableColumn<ViajeDto, String> crearColumnaTiquetes() {
+        TableColumn<ViajeDto, String> columna = new TableColumn<>("Tiquetes");
+        columna.setCellValueFactory(obj
+                -> new SimpleStringProperty(
+                        obj.getValue().getTiquetesViaje() == null
+                        ? "0"
+                        : String.valueOf(obj.getValue().getTiquetesViaje().size())
+                )
+        );
+        columna.prefWidthProperty().bind(miTabla.widthProperty().multiply(0.08));
+        columna.setStyle(ESTILO_CENTRAR);
+        return columna;
+    }
+
     private TableColumn<ViajeDto, String> crearColumnaEstado() {
         TableColumn<ViajeDto, String> columna = new TableColumn<>("Estado");
         columna.setCellValueFactory(obj -> {
-            String estado = obj.getValue().getEstadoViaje() ? "Activo" : "Cancelado";
+            String estado = obj.getValue().getEstadoViaje() ? "Activo" : "Inactivo";
             return new SimpleStringProperty(estado);
         });
 
@@ -197,6 +211,7 @@ public class VistaViajeListar extends StackPane {
                 crearColumnaBus(),
                 crearColumnaAsientos(),
                 crearColumnaPrecio(),
+                crearColumnaTiquetes(),
                 crearColumnaEstado()
         ));
     }
@@ -211,8 +226,9 @@ public class VistaViajeListar extends StackPane {
         miTabla.setPlaceholder(new Text("No hay viajes registrados"));
         miTabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
-        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.95));
-        miTabla.maxHeightProperty().bind(miEscenario.heightProperty().multiply(0.60));
+
+        miTabla.maxWidthProperty().bind(miEscenario.widthProperty().multiply(0.90));
+        miTabla.maxHeightProperty().bind(miEscenario.heightProperty().multiply(0.65));
 
         miEscenario.heightProperty().addListener((o, oldVal, newVal)
                 -> miTabla.setPrefHeight(newVal.doubleValue()));

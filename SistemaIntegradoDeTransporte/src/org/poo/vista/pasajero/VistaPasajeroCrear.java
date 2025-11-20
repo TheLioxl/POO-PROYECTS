@@ -42,8 +42,8 @@ public class VistaPasajeroCrear extends StackPane {
 
     private static final int H_GAP = 10;
     private static final int V_GAP = 20;
-    private static final int ALTO_FILA = 40;
-    private static final int ALTO_CAJA = 35;
+    private static final int ALTO_FILA = 30;
+    private static final int ALTO_CAJA = 30;
     private static final int TAMANIO_FUENTE = 20;
     private static final double AJUSTE_TITULO = 0.1;
 
@@ -77,7 +77,7 @@ public class VistaPasajeroCrear extends StackPane {
                 Configuracion.MARCO_ALTO_PORCENTAJE,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
                 // Si creas un degrade propio para pasajero, cámbialo aquí:
-                Configuracion.DEGRADE_ARREGLO_CONDUCTOR,
+                Configuracion.DEGRADE_ARREGLO_TERMINAL,
                 Configuracion.DEGRADE_BORDE);
 
         getChildren().add(miMarco);
@@ -94,18 +94,17 @@ public class VistaPasajeroCrear extends StackPane {
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setPrefSize(miAnchoGrilla, alto);
-        miGrilla.setMinSize(miAnchoGrilla, alto);
-        miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        miGrilla.maxWidthProperty().bind(widthProperty().multiply(0.70));
+        miGrilla.maxHeightProperty().bind(heightProperty().multiply(0.80));
+        miGrilla.setAlignment(Pos.CENTER);
 
         ColumnConstraints col0 = new ColumnConstraints();
         ColumnConstraints col1 = new ColumnConstraints();
         ColumnConstraints col2 = new ColumnConstraints();
-
-        col0.setPrefWidth(200);
-        col1.setPrefWidth(200);
-        col2.setPrefWidth(200);
-
+        
+        col0.setPercentWidth(30);  // etiqueta
+        col1.setPercentWidth(45);  // campo de texto
+        col2.setPercentWidth(30);  // imagen
         col1.setHgrow(Priority.ALWAYS);
         miGrilla.getColumnConstraints().addAll(col0, col1, col2);
 
@@ -113,6 +112,7 @@ public class VistaPasajeroCrear extends StackPane {
             RowConstraints fila = new RowConstraints();
             fila.setMinHeight(ALTO_FILA);
             fila.setMaxHeight(ALTO_FILA);
+            fila.setVgrow(Priority.ALWAYS);
             miGrilla.getRowConstraints().add(fila);
         }
     }
@@ -190,8 +190,8 @@ public class VistaPasajeroCrear extends StackPane {
         rbMenor = new RadioButton("Menor de edad");
         rbMayor.setToggleGroup(grupoMayor);
         rbMenor.setToggleGroup(grupoMayor);
-        rbMayor.setFont(Font.font("Arial", 14));
-        rbMenor.setFont(Font.font("Arial", 14));
+        rbMayor.setFont(Font.font("Times new roman", 14));
+        rbMenor.setFont(Font.font("Times new roman", 14));
         HBox boxMayor = new HBox(15, rbMayor, rbMenor);
         boxMayor.setAlignment(Pos.CENTER_LEFT);
         miGrilla.add(boxMayor, 1, 6);
@@ -209,22 +209,10 @@ public class VistaPasajeroCrear extends StackPane {
         // Formulario.soloNumeros(txtTelefonoPasajero);
         miGrilla.add(txtTelefonoPasajero, 1, 7);
 
-        // EMAIL
-        Label lblEmail = new Label("Email:");
-        lblEmail.setFont(Font.font("Times New Roman", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblEmail, 0, 8);
-
-        txtEmailPasajero = new TextField();
-        txtEmailPasajero.setPromptText("Ej: correo@dominio.com");
-        txtEmailPasajero.setPrefHeight(ALTO_CAJA);
-        GridPane.setHgrow(txtEmailPasajero, Priority.ALWAYS);
-        Formulario.cantidadCaracteres(txtEmailPasajero, 60);
-        miGrilla.add(txtEmailPasajero, 1, 8);
-
         // IMAGEN DOCUMENTO
         Label lblImagen = new Label("Imagen del documento:");
         lblImagen.setFont(Font.font("Times New Roman", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblImagen, 0, 9);
+        miGrilla.add(lblImagen, 0, 8);
 
         cajaImagen = new TextField();
         cajaImagen.setDisable(true);
@@ -241,13 +229,13 @@ public class VistaPasajeroCrear extends StackPane {
             if (rutaImagenSeleccionada.isEmpty()) {
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
-                miGrilla.add(imgPorDefecto, 2, 1, 1, 10);
+                miGrilla.add(imgPorDefecto, 2, 5);
             } else {
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, 2, 1, 1, 10);
+                miGrilla.add(imgPrevisualizar, 2, 5);
             }
         });
 
@@ -255,12 +243,12 @@ public class VistaPasajeroCrear extends StackPane {
         HBox panelHorizontal = new HBox(2);
         panelHorizontal.setAlignment(Pos.BOTTOM_RIGHT);
         panelHorizontal.getChildren().addAll(cajaImagen, btnSeleccionarImagen);
-        miGrilla.add(panelHorizontal, 1, 9);
+        miGrilla.add(panelHorizontal, 1, 8);
 
         imgPorDefecto = Icono.obtenerIcono("imgNoDisponible.png", 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
         GridPane.setValignment(imgPorDefecto, VPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 10);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
         // BOTÓN GRABAR
         btnGrabar = new Button("GRABAR PASAJERO");
@@ -272,7 +260,7 @@ public class VistaPasajeroCrear extends StackPane {
                 + "-fx-border-radius: 8; -fx-background-radius: 8;");
         btnGrabar.setCursor(Cursor.HAND);
         btnGrabar.setOnAction(e -> guardarPasajero());
-        miGrilla.add(btnGrabar, 1, 10);
+        miGrilla.add(btnGrabar, 1, 9);
     }
 
     // ================== VALIDACIÓN ==================
@@ -320,13 +308,6 @@ public class VistaPasajeroCrear extends StackPane {
             return false;
         }
 
-        if (txtEmailPasajero.getText().isBlank()) {
-            Mensaje.mostrar(Alert.AlertType.WARNING, ventana,
-                    "Campo vacío", "Debe ingresar el email");
-            txtEmailPasajero.requestFocus();
-            return false;
-        }
-
         if (rutaImagenSeleccionada.isBlank()) {
             Mensaje.mostrar(Alert.AlertType.WARNING, ventana,
                     "Imagen no seleccionada", "Debe seleccionar la imagen del documento");
@@ -346,7 +327,6 @@ public class VistaPasajeroCrear extends StackPane {
             dto.setFechaNacimientoPasajero(dpFechaNacimiento.getValue());
             dto.setEsMayorPasajero(rbMayor.isSelected()); // true = mayor, false = menor
             dto.setTelefonoPasajero(txtTelefonoPasajero.getText());
-            dto.setEmailPasajero(txtEmailPasajero.getText());
             dto.setNombreImagenPublicoPasajero(cajaImagen.getText());
 
             if (PasajeroControladorGrabar.crearPasajero(dto, rutaImagenSeleccionada)) {
@@ -385,7 +365,7 @@ public class VistaPasajeroCrear extends StackPane {
 
         miGrilla.getChildren().remove(imgPrevisualizar);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        miGrilla.add(imgPorDefecto, 2, 1, 1, 10);
+        miGrilla.add(imgPorDefecto, 2, 5);
 
         txtNombrePasajero.requestFocus();
     }

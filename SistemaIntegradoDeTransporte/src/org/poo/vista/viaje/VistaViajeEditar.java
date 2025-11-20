@@ -28,13 +28,17 @@ import org.poo.recurso.utilidad.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 
 public class VistaViajeEditar extends StackPane {
 
     private static final int H_GAP = 10;
-    private static final int V_GAP = 12;
-    private static final int ALTO_CAJA = 35;
-    private static final int TAMANIO_FUENTE = 16;
+    private static final int V_GAP = 18;
+    private static final int ALTO_FILA = 28;
+    private static final int ALTO_CAJA = 27;
+    private static final int TAMANIO_FUENTE = 17;
+    private static final double AJUSTE_TITULO = 0.2;
 
     private final GridPane miGrilla;
     private final StackPane miFormulario;
@@ -88,8 +92,8 @@ public class VistaViajeEditar extends StackPane {
         miMarco = Marco.crear(
                 miEscenario,
                 Configuracion.MARCO_ANCHO_PORCENTAJE,
-                Configuracion.MARCO_ALTO_PORCENTAJE,
-                Configuracion.DEGRADE_ARREGLO_VIAJE,
+                Configuracion.MARCO_ALTO_PORCENTAJE + 0.1,
+                Configuracion.DEGRADE_ARREGLO_RUTA,
                 Configuracion.DEGRADE_BORDE
         );
 
@@ -97,6 +101,7 @@ public class VistaViajeEditar extends StackPane {
 
         configurarGrilla(ancho, alto);
         crearTitulo();
+        colocarFrmElegante();
         crearFormulario();
         getChildren().add(miGrilla);
     }
@@ -106,50 +111,49 @@ public class VistaViajeEditar extends StackPane {
     }
 
     private void configurarGrilla(double ancho, double alto) {
-        double anchoGrilla = ancho * Configuracion.GRILLA_ANCHO_PORCENTAJE;
+        double miAnchoGrilla = ancho * Configuracion.GRILLA_ANCHO_PORCENTAJE;
 
         miGrilla.setHgap(H_GAP);
         miGrilla.setVgap(V_GAP);
-        miGrilla.setAlignment(Pos.TOP_CENTER);
-        miGrilla.setPrefSize(anchoGrilla, alto);
-        miGrilla.setMinSize(anchoGrilla, alto);
-        miGrilla.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        miGrilla.maxWidthProperty().bind(widthProperty().multiply(0.70));
+        miGrilla.maxHeightProperty().bind(heightProperty().multiply(0.60));
+        miGrilla.setAlignment(Pos.CENTER);
+
 
         ColumnConstraints col0 = new ColumnConstraints();
-        col0.setPercentWidth(35);
-        
         ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(65);
-        col1.setHgrow(Priority.ALWAYS);
+        ColumnConstraints col2 = new ColumnConstraints();
         
-        miGrilla.getColumnConstraints().addAll(col0, col1);
+        col0.setPercentWidth(30);  // etiqueta
+        col1.setPercentWidth(45);  // campo de texto
+        col2.setPercentWidth(30);  // imagen
+        col1.setHgrow(Priority.ALWAYS);
+
+        miGrilla.getColumnConstraints().addAll(col0, col1, col2);
+
+        for (int i = 0; i < 17; i++) {
+            RowConstraints fila = new RowConstraints();
+            fila.setMinHeight(ALTO_FILA);
+            fila.setMaxHeight(ALTO_FILA);
+            fila.setVgrow(Priority.ALWAYS);
+            miGrilla.getRowConstraints().add(fila);
+        }
     }
 
     private void crearTitulo() {
-        int columna = 0, fila = 0, colSpan = 2, rowSpan = 1;
-
-        Region espacioSuperior = new Region();
-        espacioSuperior.prefHeightProperty().bind(miEscenario.heightProperty().multiply(0.02));
-        miGrilla.add(espacioSuperior, columna, fila, colSpan, rowSpan);
-
-        fila = 1;
-        Text titulo = new Text("Formulario Actualización de Viaje");
-        titulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
-        titulo.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        GridPane.setHalignment(titulo, HPos.CENTER);
-        miGrilla.add(titulo, columna, fila, colSpan, rowSpan);
+        Text miTitulo = new Text("FORMULARIO - EDITAR VIAJE");
+        miTitulo.setFill(Color.web(Configuracion.AZUL_OSCURO));
+        miTitulo.setFont(Font.font("Rockwell", FontWeight.BOLD, 26));
+        GridPane.setHalignment(miTitulo, HPos.CENTER);
+        GridPane.setMargin(miTitulo, new Insets(30, 0, 0, 0));
+        miGrilla.add(miTitulo, 0, 0, 3, 2);//nombre, columna, fila, union de filas 
     }
 
     private void crearFormulario() {
-        int fila = 2;
-        int primeraColumna = 0;
-        int segundaColumna = 1;
 
-        // BUS
-        fila++;
         Label lblBus = new Label("Bus:");
-        lblBus.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblBus, primeraColumna, fila);
+        lblBus.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblBus, 0, 2);
 
         cmbBusViaje = new ComboBox<>();
         cmbBusViaje.setMaxWidth(Double.MAX_VALUE);
@@ -184,13 +188,11 @@ public class VistaViajeEditar extends StackPane {
             }
         });
         
-        miGrilla.add(cmbBusViaje, segundaColumna, fila);
+        miGrilla.add(cmbBusViaje, 1, 2);
 
-        // RUTA
-        fila++;
         Label lblRuta = new Label("Ruta:");
-        lblRuta.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblRuta, primeraColumna, fila);
+        lblRuta.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblRuta, 0, 3);
 
         cmbRutaViaje = new ComboBox<>();
         cmbRutaViaje.setMaxWidth(Double.MAX_VALUE);
@@ -225,13 +227,11 @@ public class VistaViajeEditar extends StackPane {
             }
         });
         
-        miGrilla.add(cmbRutaViaje, segundaColumna, fila);
+        miGrilla.add(cmbRutaViaje, 1, 3);
 
-        // CONDUCTOR
-        fila++;
         Label lblConductor = new Label("Conductor:");
-        lblConductor.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblConductor, primeraColumna, fila);
+        lblConductor.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblConductor, 0, 4);
 
         cmbConductorViaje = new ComboBox<>();
         cmbConductorViaje.setMaxWidth(Double.MAX_VALUE);
@@ -267,26 +267,24 @@ public class VistaViajeEditar extends StackPane {
             }
         });
         
-        miGrilla.add(cmbConductorViaje, segundaColumna, fila);
+        miGrilla.add(cmbConductorViaje, 1, 4);
 
         // FECHA
-        fila++;
         Label lblFecha = new Label("Fecha del Viaje:");
-        lblFecha.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblFecha, primeraColumna, fila);
+        lblFecha.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblFecha, 0, 5);
 
         dateFechaViaje = new DatePicker();
         dateFechaViaje.setMaxWidth(Double.MAX_VALUE);
         dateFechaViaje.setPrefHeight(ALTO_CAJA);
         dateFechaViaje.setValue(objViaje.getFechaViaje());
         Formulario.deshabilitarFechasPasadas(dateFechaViaje);
-        miGrilla.add(dateFechaViaje, segundaColumna, fila);
+        miGrilla.add(dateFechaViaje, 1, 5);
 
         // HORA SALIDA
-        fila++;
         Label lblHoraSalida = new Label("Hora de Salida:");
-        lblHoraSalida.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblHoraSalida, primeraColumna, fila);
+        lblHoraSalida.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblHoraSalida, 0, 6);
 
         spinnerHoraSalida = new Spinner<>();
         SpinnerValueFactory<Integer> horaFactory = 
@@ -312,13 +310,12 @@ public class VistaViajeEditar extends StackPane {
         horaSalidaBox.getChildren().addAll(
             spinnerHoraSalida, new Label(":"), spinnerMinutoSalida
         );
-        miGrilla.add(horaSalidaBox, segundaColumna, fila);
+        miGrilla.add(horaSalidaBox, 1, 6);
 
         // HORA LLEGADA
-        fila++;
         Label lblHoraLlegada = new Label("Hora de Llegada:");
-        lblHoraLlegada.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblHoraLlegada, primeraColumna, fila);
+        lblHoraLlegada.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblHoraLlegada, 0, 7);
 
         spinnerHoraLlegada = new Spinner<>();
         SpinnerValueFactory<Integer> horaLlegadaFactory = 
@@ -344,26 +341,24 @@ public class VistaViajeEditar extends StackPane {
         horaLlegadaBox.getChildren().addAll(
             spinnerHoraLlegada, new Label(":"), spinnerMinutoLlegada
         );
-        miGrilla.add(horaLlegadaBox, segundaColumna, fila);
+        miGrilla.add(horaLlegadaBox, 1, 7);
 
         // PRECIO
-        fila++;
         Label lblPrecio = new Label("Precio:");
-        lblPrecio.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblPrecio, primeraColumna, fila);
+        lblPrecio.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblPrecio, 0, 8);
 
         txtPrecio = new TextField();
         txtPrecio.setText(String.valueOf(objViaje.getPrecioViaje()));
         txtPrecio.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtPrecio, Priority.ALWAYS);
         Formulario.soloDecimales(txtPrecio);
-        miGrilla.add(txtPrecio, segundaColumna, fila);
+        miGrilla.add(txtPrecio, 1, 8);
 
         // ASIENTOS
-        fila++;
         Label lblAsientos = new Label("Asientos Disponibles:");
-        lblAsientos.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblAsientos, primeraColumna, fila);
+        lblAsientos.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblAsientos, 0, 9);
 
         spinnerAsientos = new Spinner<>();
         SpinnerValueFactory<Integer> asientosFactory = 
@@ -373,13 +368,12 @@ public class VistaViajeEditar extends StackPane {
         spinnerAsientos.setPrefHeight(ALTO_CAJA);
         spinnerAsientos.setMaxWidth(Double.MAX_VALUE);
         spinnerAsientos.setEditable(true);
-        miGrilla.add(spinnerAsientos, segundaColumna, fila);
+        miGrilla.add(spinnerAsientos, 1, 9);
 
         // CARACTERÍSTICAS
-        fila++;
         Label lblCaracteristicas = new Label("Características:");
-        lblCaracteristicas.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblCaracteristicas, primeraColumna, fila);
+        lblCaracteristicas.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblCaracteristicas, 0, 10);
 
         chkViajeDirecto = new CheckBox("Viaje Directo");
         chkIncluyeRefrigerio = new CheckBox("Incluye Refrigerio");
@@ -389,47 +383,44 @@ public class VistaViajeEditar extends StackPane {
         chkIncluyeRefrigerio.setSelected(objViaje.getIncluyeRefrigerio() != null ? objViaje.getIncluyeRefrigerio() : false);
         chkParadasIntermedias.setSelected(objViaje.getTieneParadasIntermedias() != null ? objViaje.getTieneParadasIntermedias() : false);
         
-        chkViajeDirecto.setFont(Font.font("Arial", 13));
-        chkIncluyeRefrigerio.setFont(Font.font("Arial", 13));
-        chkParadasIntermedias.setFont(Font.font("Arial", 13));
+        chkViajeDirecto.setFont(Font.font("Times new roman", 12));
+        chkIncluyeRefrigerio.setFont(Font.font("Times new roman", 12));
+        chkParadasIntermedias.setFont(Font.font("Times new roman", 12));
 
         VBox vboxCaracteristicas = new VBox(3);
         vboxCaracteristicas.getChildren().addAll(
             chkViajeDirecto, chkIncluyeRefrigerio, chkParadasIntermedias
         );
-        miGrilla.add(vboxCaracteristicas, segundaColumna, fila);
+        miGrilla.add(vboxCaracteristicas, 1, 10);
 
         // DESCRIPCIÓN
-        fila++;
         Label lblDescripcion = new Label("Descripción:");
-        lblDescripcion.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblDescripcion, primeraColumna, fila);
+        lblDescripcion.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblDescripcion, 0, 11);
 
         txtDescripcion = new TextField();
         txtDescripcion.setText(objViaje.getDescripcionViaje());
         txtDescripcion.setPrefHeight(ALTO_CAJA);
         GridPane.setHgrow(txtDescripcion, Priority.ALWAYS);
         Formulario.cantidadCaracteres(txtDescripcion, 100);
-        miGrilla.add(txtDescripcion, segundaColumna, fila);
+        miGrilla.add(txtDescripcion, 1, 11);
 
         // NOTAS ADICIONALES
-        fila++;
         Label lblNotas = new Label("Notas Adicionales:");
-        lblNotas.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblNotas, primeraColumna, fila);
+        lblNotas.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblNotas, 0, 12);
 
         txtNotasAdicionales = new TextArea();
         txtNotasAdicionales.setText(objViaje.getNotasAdicionalesViaje());
         txtNotasAdicionales.setPrefRowCount(2);
         txtNotasAdicionales.setWrapText(true);
         txtNotasAdicionales.setMaxWidth(Double.MAX_VALUE);
-        miGrilla.add(txtNotasAdicionales, segundaColumna, fila);
+        miGrilla.add(txtNotasAdicionales, 1, 12);
 
         // ESTADO
-        fila++;
         Label lblEstado = new Label("Estado:");
-        lblEstado.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblEstado, primeraColumna, fila);
+        lblEstado.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblEstado, 0, 13);
 
         cmbEstadoViaje = new ComboBox<>();
         cmbEstadoViaje.setMaxWidth(Double.MAX_VALUE);
@@ -441,13 +432,12 @@ public class VistaViajeEditar extends StackPane {
         } else {
             cmbEstadoViaje.getSelectionModel().select(2);
         }
-        miGrilla.add(cmbEstadoViaje, segundaColumna, fila);
+        miGrilla.add(cmbEstadoViaje, 1, 13);
 
         // IMAGEN
-        fila++;
         Label lblImagen = new Label("Imagen:");
-        lblImagen.setFont(Font.font("Arial", FontWeight.NORMAL, TAMANIO_FUENTE));
-        miGrilla.add(lblImagen, primeraColumna, fila);
+        lblImagen.setFont(Font.font("Times new roman", FontWeight.NORMAL, TAMANIO_FUENTE));
+        miGrilla.add(lblImagen, 0, 14);
 
         txtImagen = new TextField();
         txtImagen.setText(objViaje.getNombreImagenPublicoViaje());
@@ -460,9 +450,6 @@ public class VistaViajeEditar extends StackPane {
 
         Button btnSeleccionarImagen = new Button("+");
         btnSeleccionarImagen.setPrefHeight(ALTO_CAJA);
-        btnSeleccionarImagen.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-        
-        final int filaImagenPreview = fila + 1;
         
         btnSeleccionarImagen.setOnAction(e -> {
             rutaImagenSeleccionada = GestorImagen.obtenerRutaImagen(txtImagen, selector);
@@ -471,40 +458,38 @@ public class VistaViajeEditar extends StackPane {
                 miGrilla.getChildren().remove(imgPorDefecto);
                 miGrilla.getChildren().remove(imgPrevisualizar);
                 
-                imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 120);
+                imgPrevisualizar = Icono.previsualizar(rutaImagenSeleccionada, 150);
                 GridPane.setHalignment(imgPrevisualizar, HPos.CENTER);
-                miGrilla.add(imgPrevisualizar, segundaColumna, filaImagenPreview);
+                miGrilla.add(imgPrevisualizar, 2, 6);
             }
         });
 
         HBox.setHgrow(txtImagen, Priority.ALWAYS);
         HBox panelImagen = new HBox(5, txtImagen, btnSeleccionarImagen);
-        miGrilla.add(panelImagen, segundaColumna, fila);
+        miGrilla.add(panelImagen, 1, 14);
 
         // PREVISUALIZACIÓN
-        fila++;
         imgPorDefecto = Icono.obtenerFotosExternas(
-                objViaje.getNombreImagenPrivadoViaje(), 120);
+                objViaje.getNombreImagenPrivadoViaje(), 150);
         GridPane.setHalignment(imgPorDefecto, HPos.CENTER);
-        miGrilla.add(imgPorDefecto, segundaColumna, fila);
+        miGrilla.add(imgPorDefecto, 2, 6);
 
         // BOTÓN ACTUALIZAR
-        fila++;
-        Button btnActualizar = new Button("Actualizar Viaje");
+        Button btnActualizar = new Button("ACTUALIZAR");
         btnActualizar.setPrefHeight(ALTO_CAJA);
         btnActualizar.setMaxWidth(Double.MAX_VALUE);
         btnActualizar.setTextFill(Color.web("#FFFFFF"));
-        btnActualizar.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        btnActualizar.setFont(Font.font("Rockwell", FontWeight.BOLD, 14));
         btnActualizar.setStyle("-fx-background-color: " + Configuracion.AZUL_MEDIO + ";");
+        btnActualizar.setCursor(Cursor.HAND);
         btnActualizar.setOnAction(e -> actualizarViaje());
-        miGrilla.add(btnActualizar, segundaColumna, fila);
 
         // BOTÓN REGRESAR
-        fila++;
-        Button btnRegresar = new Button("Regresar");
+        Button btnRegresar = new Button("VOLVER");
         btnRegresar.setPrefHeight(ALTO_CAJA);
         btnRegresar.setMaxWidth(Double.MAX_VALUE);
-        btnRegresar.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+        btnRegresar.setFont(Font.font("Rockwell", FontWeight.BOLD, 14));
+        btnRegresar.setCursor(Cursor.HAND);
         btnRegresar.setOnAction(e -> {
             if (desdeCarrusel) {
                 panelCuerpo = ViajeControladorVentana.carrusel(
@@ -518,7 +503,16 @@ public class VistaViajeEditar extends StackPane {
             panelPrincipal.setCenter(null);
             panelPrincipal.setCenter(panelCuerpo);
         });
-        miGrilla.add(btnRegresar, segundaColumna, fila);
+        
+        HBox botones = new HBox(10);
+        HBox.setHgrow(btnActualizar, Priority.ALWAYS);
+        HBox.setHgrow(btnRegresar, Priority.ALWAYS);
+        botones.setAlignment(Pos.CENTER);
+        botones.setFillHeight(true);
+        botones.setMaxWidth(Double.MAX_VALUE);
+
+        botones.getChildren().addAll(btnActualizar, btnRegresar);
+        miGrilla.add(botones, 1, 15);
     }
 
     private Boolean formularioCompleto() {
@@ -609,5 +603,17 @@ public class VistaViajeEditar extends StackPane {
                         "Error", "No se pudo actualizar el viaje");
             }
         }
+    }
+
+    private void colocarFrmElegante() {
+        Runnable calcular = () -> {
+            double alturaMarco = miMarco.getHeight();
+            if (alturaMarco > 0) {
+                double desplazamiento = alturaMarco * AJUSTE_TITULO;
+                miGrilla.setTranslateY(-alturaMarco / 4 + desplazamiento);
+            }
+        };
+        calcular.run();
+        miMarco.heightProperty().addListener((obs, antes, despues) -> calcular.run());
     }
 }
